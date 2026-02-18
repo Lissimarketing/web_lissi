@@ -1,0 +1,28 @@
+---
+// src/components/CTASection.astro
+---
+<section class="py-24 bg-slate-950 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1.5px, transparent 1.5px); background-size: 40px 40px;"></div>
+  
+  <div class="max-w-5xl mx-auto px-4 relative z-10 text-center">
+    <h2 class="text-4xl md:text-6xl font-black text-white mb-8 tracking-tighter">
+      ¿Listo para llevar tu operación <br> <span class="text-blue-500">al siguiente nivel?</span>
+    </h2>
+    <p class="text-xl text-slate-400 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
+      Únete a las empresas que ya están transformando su mantenimiento con Lissi. Agenda una demo técnica hoy mismo.
+    </p>
+    
+    <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+      <button 
+        onclick="window.openCalendly()"
+        class="w-full sm:w-auto px-10 py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest text-lg hover:bg-blue-700 transition-all shadow-2xl shadow-blue-500/40 cursor-pointer"
+      >
+        Agendar Reunión
+      </button>
+
+      <a href="https://wa.me/56963192849" target="_blank" class="w-full sm:w-auto px-10 py-5 bg-white text-slate-900 rounded-2xl font-black uppercase tracking-widest text-lg hover:bg-slate-100 transition-all">
+        Hablemos por WhatsApp
+      </a>
+    </div>
+  </div>
+</section>

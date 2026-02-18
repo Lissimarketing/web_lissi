@@ -1,0 +1,51 @@
+---
+// src/components/Partners.astro
+const brands = ["DAIKIN", "CARRIER", "SAMSUNG", "LG", "ANWO", "TRANE", "YORK", "LENNOX", "MITSUBISHI"];
+---
+
+<section id="partners-section" class="py-20 bg-[#070b14] overflow-hidden relative group">
+  
+  <div id="spotlight" class="pointer-events-none absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" 
+       style="background: radial-gradient(500px circle at var(--x) var(--y), rgba(37, 99, 235, 0.12), transparent 80%);">
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 relative z-20">
+    
+    <p class="text-xs font-bold text-blue-500 uppercase tracking-[0.3em] mb-16 text-center opacity-90">
+      Estandarizado para los líderes del mercado HVAC-R
+    </p>
+    
+    <div class="flex overflow-hidden">
+      <div class="flex gap-24 items-center animate-scroll whitespace-nowrap">
+        {brands.concat(brands).map((brand) => (
+          <span class="text-2xl md:text-5xl font-black italic tracking-tighter text-white/30 hover:text-white transition-all duration-300 cursor-default select-none">
+            {brand}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const section = document.getElementById('partners-section');
+  section?.addEventListener('mousemove', (e) => {
+    const rect = section.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    section.style.setProperty('--x', `${x}px`);
+    section.style.setProperty('--y', `${y}px`);
+  });
+</script>
+
+<style>
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-scroll {
+    display: flex;
+    width: max-content;
+    animation: scroll 50s linear infinite;
+  }
+</style>

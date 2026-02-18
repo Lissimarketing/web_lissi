@@ -1,0 +1,96 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Software HVAC-R para gestión de servicios técnicos." />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<link rel="preconnect" href="https://assets.calendly.com">
+		<link rel="dns-prefetch" href="https://assets.calendly.com">
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		
+		<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+		<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+		<title>{title} | Lissi HVAC-R</title>
+
+		<script is:inline>
+			window.openCalendly = function() {
+				if (typeof Calendly !== 'undefined') {
+					Calendly.initPopupWidget({url: 'https://calendly.com/lissi_2026/estas-a-un-paso'});
+				} else {
+					window.open('https://calendly.com/lissi_2026/estas-a-un-paso', '_blank');
+				}
+				return false;
+			}
+		</script>
+	</head>
+	<body class="bg-white text-slate-800 font-sans antialiased overflow-x-hidden">
+		<slot />
+
+		<script>
+			const observerOptions = {
+				root: null,
+				rootMargin: '0px',
+				threshold: 0.1
+			};
+
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('active');
+						observer.unobserve(entry.target);
+					}
+				});
+			}, observerOptions);
+
+			function runAnimations() {
+				const elements = document.querySelectorAll('h1, h2, h3, p, .group, a, li, img, svg, span, button');
+				
+				elements.forEach((el) => {
+					if (!el.classList.contains('reveal')) {
+						el.classList.add('reveal');
+						observer.observe(el);
+					}
+				});
+			}
+
+			runAnimations();
+			document.addEventListener('astro:page-load', runAnimations);
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	html {
+		scroll-behavior: smooth;
+	}
+
+	.reveal {
+		opacity: 0;
+		transform: translateY(30px);
+		transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+		will-change: opacity, transform;
+	}
+
+	.reveal.active {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	.reveal:nth-child(2) { transition-delay: 100ms; }
+	.reveal:nth-child(3) { transition-delay: 200ms; }
+</style>

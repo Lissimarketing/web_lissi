@@ -1,0 +1,84 @@
+---
+// src/components/FAQ.astro
+const faqs = [
+  {
+    q: "¿Necesito instalar algo en mis servidores?",
+    a: "No. Lissi es 100% nube (SaaS). Accedes desde cualquier navegador y tus datos están respaldados diariamente en servidores de alta seguridad (Google Cloud)."
+  },
+  {
+    q: "¿Cómo funciona la migración de datos?",
+    a: "Si ya tienes listas de clientes o equipos en Excel, nuestro equipo de onboarding te ayuda a importarlos masivamente para que no partas de cero."
+  },
+  {
+    q: "¿La App funciona sin internet?",
+    a: "Sí. Sabemos que los técnicos entran a subterráneos o techos sin señal. La App guarda la información offline y la sincroniza apenas recupera conexión."
+  },
+  {
+    q: "¿Puedo cambiar de plan después?",
+    a: "Absolutamente. Puedes subir o bajar de plan en cualquier momento según la estacionalidad de tu negocio."
+  }
+];
+---
+
+<section class="py-24 bg-white border-t border-slate-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+      
+      <div class="lg:col-span-4">
+        <h2 class="text-3xl font-extrabold text-slate-900 mb-6 tracking-tight">
+          Preguntas frecuentes
+        </h2>
+        <p class="text-slate-500 text-lg mb-8 leading-relaxed">
+          Resolvemos las dudas más comunes de gerentes y dueños de empresas HVAC.
+        </p>
+        
+        <a href="mailto:soporte@lissi.app" class="inline-flex items-center text-lissi-600 font-semibold hover:text-lissi-700 transition-colors">
+          ¿Tienes otra duda? Escríbenos
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+
+      <div class="lg:col-span-8">
+        <div class="divide-y divide-slate-100">
+          {faqs.map((faq) => (
+            <details class="group py-6 cursor-pointer">
+              <summary class="flex justify-between items-center font-medium list-none text-slate-900 hover:text-lissi-600 transition-colors">
+                <span class="text-lg">{faq.q}</span>
+                <span class="transition-transform duration-300 group-open:rotate-45">
+                  <svg class="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                </span>
+              </summary>
+              <div class="text-slate-500 mt-4 leading-relaxed pr-12 animate-fade-in">
+                {faq.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  details > summary {
+    list-style: none;
+  }
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  /* Animación suave de aparición */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
