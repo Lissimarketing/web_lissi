@@ -1,84 +1,127 @@
 ---
 // src/components/FAQ.astro
+const DEMO_URL = "https://app.lissi.app/demo"; // Reemplaza esto con tu link de Calendly o página de agendamiento
 const faqs = [
-  {
-    q: "¿Necesito instalar algo en mis servidores?",
-    a: "No. Lissi es 100% nube (SaaS). Accedes desde cualquier navegador y tus datos están respaldados diariamente en servidores de alta seguridad (Google Cloud)."
-  },
-  {
-    q: "¿Cómo funciona la migración de datos?",
-    a: "Si ya tienes listas de clientes o equipos en Excel, nuestro equipo de onboarding te ayuda a importarlos masivamente para que no partas de cero."
-  },
-  {
-    q: "¿La App funciona sin internet?",
-    a: "Sí. Sabemos que los técnicos entran a subterráneos o techos sin señal. La App guarda la información offline y la sincroniza apenas recupera conexión."
-  },
-  {
-    q: "¿Puedo cambiar de plan después?",
-    a: "Absolutamente. Puedes subir o bajar de plan en cualquier momento según la estacionalidad de tu negocio."
-  }
+  { q: "¿Cómo funciona la prueba de 21 días?", a: "Te registras, entras de inmediato y usas Lissi completo durante 21 días sin pagar nada y sin tarjeta de crédito. Si decides quedarte, eliges tu plan; si no, no se te cobra." },
+  { q: "¿Necesito tarjeta de crédito para empezar?", a: "No. Empiezas la prueba solo con tu correo electrónico. Solo te solicitaremos un medio de pago si decides contratar un plan oficial al terminar el trial." },
+  { q: "¿Cuánto demoro en tener todo funcionando?", a: "Puedes crear tu cuenta y registrar tus primeros equipos el mismo día. Si tienes tu inventario actual en Excel, nuestro equipo te asiste en la importación masiva para que no partas de cero." },
+  { q: "¿La app funciona sin internet?", a: "Sí. Sabemos que los técnicos operan en subterráneos o salas de máquinas aisladas. La aplicación nativa guarda la trazabilidad offline de forma encriptada y sincroniza automáticamente al recuperar la señal." },
+  { q: "¿Necesito instalar algo en mis servidores?", a: "No. Lissi es una plataforma 100% Cloud. Accedes desde cualquier navegador y tus datos se respaldan a diario en infraestructura de alta disponibilidad y seguridad (Google Cloud)." },
+  { q: "¿Puedo cambiar de plan después?", a: "Por supuesto. Lissi es escalable. Puedes hacer upgrade o downgrade de tu plan según el volumen de tu operación, sin contratos forzosos ni multas ocultas." },
 ];
 ---
+<section id="faq" class="relative bg-[#0A0F1C] py-24 md:py-32 overflow-hidden border-t border-slate-800/50">
+  
+  <div class="absolute inset-0 pointer-events-none opacity-[0.15]"
+       style="background-image: linear-gradient(rgba(0,229,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.2) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse 80% 60% at 50% 10%, black 20%, transparent 100%);"></div>
 
-<section class="py-24 bg-white border-t border-slate-100">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
-      
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+
+      <!-- ========================================== -->
+      <!-- COLUMNA IZQUIERDA: COPY & CTA DE REUNIÓN   -->
+      <!-- ========================================== -->
       <div class="lg:col-span-4">
-        <h2 class="text-3xl font-extrabold text-slate-900 mb-6 tracking-tight">
-          Preguntas frecuentes
+        <p class="font-mono text-xs uppercase tracking-[0.2em] text-cyan-400 mb-4">// Dudas frecuentes</p>
+        <h2 class="font-display text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-5 leading-[1.1]">
+          Lo que todo dueño se pregunta.
         </h2>
-        <p class="text-slate-500 text-lg mb-8 leading-relaxed">
-          Resolvemos las dudas más comunes de gerentes y dueños de empresas HVAC.
+        <p class="text-slate-400 leading-relaxed mb-8 font-light">
+          Entendemos que cambiar la forma en que operas es una decisión crítica. ¿Te queda otra duda? Agenda una reunión con nuestro equipo.
         </p>
         
-        <a href="mailto:soporte@lissi.app" class="inline-flex items-center text-lissi-600 font-semibold hover:text-lissi-700 transition-colors">
-          ¿Tienes otra duda? Escríbenos
-          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        <!-- CTA Agendar Reunión -->
+        <a href={DEMO_URL} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-6 py-3.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm font-bold hover:bg-slate-700 hover:border-slate-500 transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_10px_rgba(0,0,0,0.2)] active:scale-[0.98] group">
+          <svg class="w-4 h-4 text-cyan-400 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Agendar Reunión
         </a>
       </div>
 
-      <div class="lg:col-span-8">
-        <div class="divide-y divide-slate-100">
-          {faqs.map((faq) => (
-            <details class="group py-6 cursor-pointer">
-              <summary class="flex justify-between items-center font-medium list-none text-slate-900 hover:text-lissi-600 transition-colors">
-                <span class="text-lg">{faq.q}</span>
-                <span class="transition-transform duration-300 group-open:rotate-45">
-                  <svg class="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                  </svg>
+      <!-- ========================================== -->
+      <!-- COLUMNA DERECHA: ACORDEÓN DE PREGUNTAS     -->
+      <!-- ========================================== -->
+      <div class="lg:col-span-8 w-full">
+        <div class="space-y-4" id="faq-container">
+          {faqs.map((faq, i) => (
+            <div class="faq-card group rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-sm overflow-hidden transition-all duration-300 hover:border-slate-600">
+              
+              <button class="faq-trigger w-full flex items-center gap-4 p-5 md:p-6 text-left focus:outline-none" aria-expanded="false">
+                <span class="font-mono text-xs text-slate-500 flex-shrink-0 group-[.is-open]:text-cyan-400 transition-colors duration-300">
+                  {String(i + 1).padStart(2, '0')}
                 </span>
-              </summary>
-              <div class="text-slate-500 mt-4 leading-relaxed pr-12 animate-fade-in">
-                {faq.a}
+                
+                <span class="flex-1 font-bold text-slate-300 text-[15px] md:text-base group-[.is-open]:text-white transition-colors duration-300">
+                  {faq.q}
+                </span>
+                
+                <span class="flex-shrink-0 relative w-8 h-8 rounded-full border border-slate-700 bg-slate-800/50 flex items-center justify-center text-slate-400 transition-all duration-300 group-[.is-open]:border-cyan-500/50 group-[.is-open]:bg-cyan-500/10 group-[.is-open]:text-cyan-400 group-[.is-open]:rotate-45">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                </span>
+              </button>
+              
+              <div class="faq-content grid grid-rows-[0fr] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                <div class="overflow-hidden">
+                  <div class="px-5 md:px-6 pb-5 md:pb-6 pt-0 ml-[1.5rem] md:ml-[2.25rem]">
+                    <div class="w-full h-px bg-gradient-to-r from-slate-800 to-transparent mb-4"></div>
+                    <p class="text-slate-400 font-light leading-relaxed text-sm">
+                      {faq.a}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </details>
+            </div>
           ))}
         </div>
       </div>
 
     </div>
-
   </div>
 </section>
 
 <style>
-  details > summary {
-    list-style: none;
-  }
-  details > summary::-webkit-details-marker {
-    display: none;
-  }
-  
-  /* Animación suave de aparición */
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-in-out;
+  .faq-card.is-open .faq-content { grid-template-rows: 1fr; }
+  .faq-card.is-open { 
+    background-color: rgba(15, 23, 42, 0.8); 
+    border-color: rgba(0, 229, 255, 0.3);
+    box-shadow: 0 10px 30px -10px rgba(0, 229, 255, 0.05);
   }
   
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-content { transition: none; }
   }
 </style>
+
+<script>
+  function initFAQ() {
+    const container = document.getElementById('faq-container');
+    if (!container) return;
+
+    const cards = container.querySelectorAll('.faq-card');
+
+    cards.forEach((card) => {
+      const trigger = card.querySelector('.faq-trigger');
+      if (!trigger) return;
+
+      if (trigger.getAttribute('data-init')) return;
+      trigger.setAttribute('data-init', 'true');
+
+      trigger.addEventListener('click', () => {
+        const isOpen = card.classList.contains('is-open');
+
+        cards.forEach(c => {
+          c.classList.remove('is-open');
+          const btn = c.querySelector('.faq-trigger');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+        });
+
+        if (!isOpen) {
+          card.classList.add('is-open');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  }
+
+  initFAQ();
+  document.addEventListener('astro:page-load', initFAQ);
+</script>

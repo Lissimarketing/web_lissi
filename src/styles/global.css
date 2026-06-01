@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+@theme {
+  /* ---------- Marca: Navy (azul profundo) ---------- */
+  --color-navy-50:  #eef3f8;
+  --color-navy-100: #d6e2ee;
+  --color-navy-200: #adc4dc;
+  --color-navy-300: #7b9cc0;
+  --color-navy-400: #466f9d;
+  --color-navy-500: #1f4a7a;
+  --color-navy-600: #143a64;
+  --color-navy-700: #0d2d4f;
+  --color-navy-800: #0a2540; /* núcleo de marca */
+  --color-navy-900: #071c33;
+  --color-navy-950: #040f1d;
+
+  /* ---------- Acento: Cyan ---------- */
+  --color-cyan-50:  #e0fbff;
+  --color-cyan-100: #b8f4fb;
+  --color-cyan-200: #7fe9f4;
+  --color-cyan-300: #3dd8ea;
+  --color-cyan-400: #14c6dd;
+  --color-cyan-500: #00bcd4; /* núcleo de acento */
+  --color-cyan-600: #00a0b8;
+  --color-cyan-700: #007f93;
+  --color-cyan-800: #045f6e;
+  --color-cyan-900: #083f49;
+
+  /* ---------- Tipografía ---------- */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, sans-serif;
+}

@@ -1,0 +1,353 @@
+{
+  "_meta": {
+    "version": "1.1",
+    "ultimaActualizacion": "2026-05-31",
+    "descripcion": "Base de pautas de mantencion HVAC-R para el generador de Lissi. Estructurado por tipo de orden (preventiva, correctiva, instalacion), tipo de equipo y frecuencia. Incluye parametros medibles por equipo. Base segun practica estandar ANSI/ASHRAE/ACCA Standard 180 y recomendaciones generales de fabricante.",
+    "fuenteMarco": "ANSI/ASHRAE/ACCA Standard 180 + practica de industria.",
+    "disclaimer": "Pautas de referencia, NO norma de obligatorio cumplimiento. Tareas, parametros y frecuencias dependen del equipo, fabricante, uso y sitio. Adaptar segun manual del fabricante y criterio profesional.",
+    "comoActualizar": "Cada equipo tiene 'mediciones' (parametros a registrar: label + unidad) y sus frecuencias con grupos de 'tareas'. Para agregar un equipo copia un bloque y cambia los valores. Guarda y publica.",
+    "camposMedicion": "Cada medicion es {label, unidad}. La unidad puede quedar vacia para datos sin unidad (ej: estado OK/bajo)."
+  },
+
+  "tiposOrden": {
+
+    "preventiva": {
+      "label": "Preventiva",
+      "descripcion": "Mantencion planificada para conservar el equipo y prevenir fallas.",
+      "tieneFrecuencia": true,
+      "frecuencias": ["mensual", "trimestral", "semestral", "anual"],
+      "equipos": {
+
+        "split-muro": {
+          "nombre": "Split Muro / Pared",
+          "icon": "M4 6h16M4 12h16M4 18h16",
+          "mediciones": [
+            { "label": "Temp. inyeccion", "unidad": "°C" },
+            { "label": "Temp. retorno", "unidad": "°C" },
+            { "label": "Delta T (retorno - inyeccion)", "unidad": "°C" },
+            { "label": "Presion de succion", "unidad": "psi" },
+            { "label": "Amperaje", "unidad": "A" },
+            { "label": "Sobrecalentamiento", "unidad": "K" }
+          ],
+          "mensual": [
+            { "grupo": "Filtros y aire", "tareas": ["Limpieza de filtros de aire de la unidad interior.", "Revision de rejillas de inyeccion y retorno por suciedad."] },
+            { "grupo": "Drenaje", "tareas": ["Verificacion y limpieza de bandeja y linea de drenaje.", "Comprobar que el agua drene sin estancamiento."] },
+            { "grupo": "Operacion", "tareas": ["Medicion y registro de temperaturas (ver parametros).", "Comprobacion de control remoto y modos.", "Revision visual de serpentines."] }
+          ],
+          "trimestral": [
+            { "grupo": "Limpieza profunda", "tareas": ["Lavado de serpentin evaporador.", "Limpieza del condensador exterior."] },
+            { "grupo": "Circuito refrigerante", "tareas": ["Registro de presion de succion (ver parametros).", "Revision de aislacion termica de tuberias."] },
+            { "grupo": "Electrico", "tareas": ["Medicion y registro de amperaje (ver parametros)."] }
+          ],
+          "semestral": [
+            { "grupo": "Electrico", "tareas": ["Reapriete de terminales de fuerza y control.", "Inspeccion de capacitor de marcha."] },
+            { "grupo": "Mecanico", "tareas": ["Revision de soportes y antivibratorios.", "Verificacion de fijaciones de la unidad exterior."] }
+          ],
+          "anual": [
+            { "grupo": "Circuito refrigerante", "tareas": ["Prueba de fugas con detector electronico.", "Verificacion de carga segun placa.", "Registro de sobrecalentamiento (ver parametros)."] },
+            { "grupo": "Integral", "tareas": ["Limpieza quimica profunda de serpentines.", "Informe de estado general."] }
+          ]
+        },
+
+        "cassette": {
+          "nombre": "Cassette (techo)",
+          "icon": "M3 3h18v18H3zM9 9h6v6H9z",
+          "mediciones": [
+            { "label": "Temp. inyeccion", "unidad": "°C" },
+            { "label": "Temp. retorno", "unidad": "°C" },
+            { "label": "Delta T", "unidad": "°C" },
+            { "label": "Presion de succion", "unidad": "psi" },
+            { "label": "Amperaje", "unidad": "A" },
+            { "label": "Sobrecalentamiento", "unidad": "K" }
+          ],
+          "mensual": [
+            { "grupo": "Filtros y aire", "tareas": ["Limpieza del filtro panel del cassette.", "Revision de aspas/difusores y deflectores."] },
+            { "grupo": "Drenaje", "tareas": ["Prueba de la bomba de condensado integrada.", "Limpieza de bandeja y flotador de seguridad."] },
+            { "grupo": "Operacion", "tareas": ["Medicion y registro de delta T (ver parametros).", "Revision visual de serpentin."] }
+          ],
+          "trimestral": [
+            { "grupo": "Limpieza profunda", "tareas": ["Lavado del serpentin evaporador.", "Limpieza del condensador exterior."] },
+            { "grupo": "Electrico", "tareas": ["Registro de amperaje (ver parametros).", "Verificacion de la bomba de drenaje bajo carga."] }
+          ],
+          "semestral": [
+            { "grupo": "Electrico", "tareas": ["Reapriete de borneras de fuerza y control.", "Inspeccion de capacitores."] },
+            { "grupo": "Mecanico", "tareas": ["Revision de fijaciones al cielo y antivibratorios."] }
+          ],
+          "anual": [
+            { "grupo": "Circuito refrigerante", "tareas": ["Prueba de fugas.", "Registro de sobrecalentamiento (ver parametros).", "Verificacion de carga segun placa."] },
+            { "grupo": "Integral", "tareas": ["Limpieza quimica profunda.", "Informe de estado general."] }
+          ]
+        },
+
+        "ducto": {
+          "nombre": "Ducto / Fan Coil ducted",
+          "icon": "M4 8h16v8H4zM8 8v8M16 8v8",
+          "mediciones": [
+            { "label": "Temp. inyeccion", "unidad": "°C" },
+            { "label": "Temp. retorno", "unidad": "°C" },
+            { "label": "Delta T", "unidad": "°C" },
+            { "label": "Presion de succion", "unidad": "psi" },
+            { "label": "Amperaje motor", "unidad": "A" }
+          ],
+          "mensual": [
+            { "grupo": "Filtros y aire", "tareas": ["Cambio o limpieza de filtros segun tipo.", "Inspeccion de rejillas, difusores y dampers."] },
+            { "grupo": "Drenaje", "tareas": ["Limpieza de bandeja y linea de condensado.", "Verificacion de P-trap (sello hidraulico)."] }
+          ],
+          "trimestral": [
+            { "grupo": "Distribucion de aire", "tareas": ["Inspeccion de ductos accesibles por fugas.", "Verificacion de operacion de dampers."] },
+            { "grupo": "Mecanico", "tareas": ["Revision de tension y desgaste de correa (si aplica).", "Lubricacion de descansos (si aplica)."] }
+          ],
+          "semestral": [
+            { "grupo": "Electrico", "tareas": ["Reapriete de terminales.", "Registro de amperaje del motor (ver parametros)."] }
+          ],
+          "anual": [
+            { "grupo": "Limpieza profunda", "tareas": ["Lavado de serpentines.", "Limpieza interior del gabinete."] },
+            { "grupo": "Circuito refrigerante", "tareas": ["Prueba de fugas y verificacion de carga.", "Registro de delta T (ver parametros)."] }
+          ]
+        },
+
+        "vrf": {
+          "nombre": "Sistema VRF / VRV",
+          "icon": "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
+          "mediciones": [
+            { "label": "Presion de alta", "unidad": "psi" },
+            { "label": "Presion de baja", "unidad": "psi" },
+            { "label": "Amperaje total", "unidad": "A" },
+            { "label": "Temp. de descarga", "unidad": "°C" }
+          ],
+          "mensual": [
+            { "grupo": "Unidades interiores", "tareas": ["Limpieza de filtros en todas las unidades interiores.", "Prueba de bombas de condensado donde aplique."] },
+            { "grupo": "Diagnostico", "tareas": ["Revision de codigos/historial en el controlador central.", "Inspeccion visual de la(s) unidad(es) exterior(es)."] }
+          ],
+          "trimestral": [
+            { "grupo": "Unidad exterior", "tareas": ["Limpieza del serpentin condensador.", "Verificacion de ventiladores DC."] },
+            { "grupo": "Comunicacion", "tareas": ["Revision de borneras de comunicacion (bus de datos)."] }
+          ],
+          "semestral": [
+            { "grupo": "Refrigerante", "tareas": ["Lectura y registro de presiones via software (ver parametros).", "Revision de cajas de derivacion (branch/BS) si aplica."] }
+          ],
+          "anual": [
+            { "grupo": "Integral", "tareas": ["Limpieza quimica de intercambiadores.", "Reapriete de borneras de fuerza y comunicacion.", "Verificacion de carga adicional segun tuberia.", "Informe consolidado del sistema."] }
+          ]
+        },
+
+        "chiller": {
+          "nombre": "Chiller / Enfriadora",
+          "icon": "M13 10V3L4 14h7v7l9-11h-7z",
+          "mediciones": [
+            { "label": "Presion de alta", "unidad": "psi" },
+            { "label": "Presion de baja", "unidad": "psi" },
+            { "label": "Temp. agua entrada", "unidad": "°C" },
+            { "label": "Temp. agua salida", "unidad": "°C" },
+            { "label": "Delta T agua", "unidad": "°C" },
+            { "label": "Amperaje compresor", "unidad": "A" },
+            { "label": "Sobrecalentamiento", "unidad": "K" },
+            { "label": "Subenfriamiento", "unidad": "K" }
+          ],
+          "mensual": [
+            { "grupo": "Operacion", "tareas": ["Revision de alarmas y estado en panel.", "Lectura y registro de presiones (ver parametros).", "Verificacion de nivel de aceite del compresor."] },
+            { "grupo": "Inspeccion", "tareas": ["Inspeccion visual de fugas de agua y refrigerante.", "Verificacion de ruidos o vibraciones anormales."] }
+          ],
+          "trimestral": [
+            { "grupo": "Circuito refrigerante", "tareas": ["Registro de sobrecalentamiento y subenfriamiento (ver parametros).", "Verificacion de flujo y delta T del agua."] },
+            { "grupo": "Hidraulico/Electrico", "tareas": ["Prueba de switch de flujo (flow switch).", "Revision de contactores y arrancadores.", "Lavado del condensador (si es por aire)."] }
+          ],
+          "semestral": [
+            { "grupo": "Agua", "tareas": ["Analisis de calidad del agua del circuito.", "Revision de tratamiento quimico (si aplica)."] }
+          ],
+          "anual": [
+            { "grupo": "Compresor", "tareas": ["Analisis de aceite (acidez).", "Megado (aislacion) de motores."] },
+            { "grupo": "Intercambiadores", "tareas": ["Limpieza de tubos del evaporador/condensador.", "Limpieza de tableros y reapriete general."] }
+          ]
+        },
+
+        "fancoil": {
+          "nombre": "Fan Coil (agua)",
+          "icon": "M4 8h16v8H4zM4 12h16",
+          "mediciones": [
+            { "label": "Temp. inyeccion", "unidad": "°C" },
+            { "label": "Temp. retorno", "unidad": "°C" },
+            { "label": "Delta T", "unidad": "°C" },
+            { "label": "Amperaje", "unidad": "A" }
+          ],
+          "mensual": [
+            { "grupo": "Filtros y aire", "tareas": ["Limpieza de filtros.", "Revision de rejillas."] },
+            { "grupo": "Drenaje", "tareas": ["Limpieza de bandeja y drenaje de condensado."] }
+          ],
+          "trimestral": [
+            { "grupo": "Hidraulico", "tareas": ["Verificacion de valvulas de control (2 o 3 vias).", "Purga de aire del serpentin.", "Revision de fugas en conexiones hidraulicas."] }
+          ],
+          "semestral": [
+            { "grupo": "Mecanico/Electrico", "tareas": ["Revision del motor y descansos.", "Reapriete de terminales electricos.", "Registro de amperaje (ver parametros)."] }
+          ],
+          "anual": [
+            { "grupo": "Limpieza profunda", "tareas": ["Lavado del serpentin de agua.", "Limpieza interior del gabinete.", "Verificacion del aislamiento de tuberias."] }
+          ]
+        },
+
+        "uma": {
+          "nombre": "UMA / Manejadora de aire",
+          "icon": "M4 6h16v12H4zM4 10h16M9 6v12",
+          "mediciones": [
+            { "label": "Temp. inyeccion", "unidad": "°C" },
+            { "label": "Temp. retorno", "unidad": "°C" },
+            { "label": "Amperaje motor", "unidad": "A" },
+            { "label": "Caida de presion filtros", "unidad": "Pa" }
+          ],
+          "mensual": [
+            { "grupo": "Filtros y aire", "tareas": ["Inspeccion y cambio de filtros segun diferencial de presion (ver parametros).", "Revision de tomas de aire exterior y dampers."] },
+            { "grupo": "Drenaje", "tareas": ["Limpieza de bandeja y verificacion de P-trap."] }
+          ],
+          "trimestral": [
+            { "grupo": "Mecanico", "tareas": ["Revision de tension, alineacion y desgaste de correas.", "Lubricacion de descansos del ventilador.", "Inspeccion de poleas."] },
+            { "grupo": "Aire", "tareas": ["Verificacion de dampers y actuadores.", "Revision de seccion de humidificacion (si aplica)."] }
+          ],
+          "semestral": [
+            { "grupo": "Electrico/Control", "tareas": ["Reapriete de terminales de fuerza y control.", "Verificacion de sensores.", "Registro de amperaje del motor (ver parametros)."] }
+          ],
+          "anual": [
+            { "grupo": "Limpieza profunda", "tareas": ["Lavado de serpentines de frio/calor.", "Limpieza interior del gabinete y plenum.", "Inspeccion de aislacion interna."] },
+            { "grupo": "Integral", "tareas": ["Balanceo de flujo de aire (si requiere).", "Informe de estado general."] }
+          ]
+        },
+
+        "camara-frio": {
+          "nombre": "Cámara de Frío",
+          "icon": "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
+          "mediciones": [
+            { "label": "Temp. setpoint", "unidad": "°C" },
+            { "label": "Temp. real camara", "unidad": "°C" },
+            { "label": "Presion de alta", "unidad": "psi" },
+            { "label": "Presion de baja", "unidad": "psi" },
+            { "label": "Amperaje compresor", "unidad": "A" }
+          ],
+          "mensual": [
+            { "grupo": "Evaporador", "tareas": ["Revision de escarcha/hielo excesivo.", "Prueba de resistencias de deshielo y temporizador.", "Limpieza del evaporador."] },
+            { "grupo": "Operacion", "tareas": ["Registro de temperatura setpoint vs real (ver parametros).", "Revision de sellos de puertas y cortinas de lamas.", "Verificacion de cierre hermetico."] }
+          ],
+          "trimestral": [
+            { "grupo": "Unidad condensadora", "tareas": ["Limpieza del condensador.", "Registro de presiones de alta y baja (ver parametros).", "Revision de ventiladores."] },
+            { "grupo": "Control", "tareas": ["Verificacion de controlador y sondas."] }
+          ],
+          "semestral": [
+            { "grupo": "Seguridad", "tareas": ["Prueba de presostatos de alta y baja (cortes de seguridad).", "Verificacion de alarmas de temperatura.", "Prueba de iluminacion y boton de panico interior."] }
+          ],
+          "anual": [
+            { "grupo": "Compresor/Refrigerante", "tareas": ["Inspeccion de nivel y calidad de aceite.", "Prueba de fugas de refrigerante.", "Reapriete del cuadro electrico y contactores de deshielo."] }
+          ]
+        },
+
+        "condensadora": {
+          "nombre": "Unidad Condensadora / Rack",
+          "icon": "M5 8h14v8H5zM5 12h14M9 8v8M13 8v8",
+          "mediciones": [
+            { "label": "Presion de alta", "unidad": "psi" },
+            { "label": "Presion de baja", "unidad": "psi" },
+            { "label": "Amperaje compresor", "unidad": "A" },
+            { "label": "Temp. de descarga", "unidad": "°C" }
+          ],
+          "mensual": [
+            { "grupo": "Inspeccion", "tareas": ["Limpieza del serpentin condensador.", "Verificacion de ventiladores y motores.", "Revision visual de fugas de aceite o refrigerante."] }
+          ],
+          "trimestral": [
+            { "grupo": "Operacion", "tareas": ["Lectura y registro de presiones (ver parametros).", "Registro de amperaje de compresores (ver parametros).", "Verificacion de nivel de aceite."] }
+          ],
+          "semestral": [
+            { "grupo": "Seguridad", "tareas": ["Prueba de presostatos de seguridad.", "Revision de valvulas y separador de aceite (en racks)."] }
+          ],
+          "anual": [
+            { "grupo": "Integral", "tareas": ["Analisis de aceite.", "Reapriete electrico general.", "Prueba de hermeticidad.", "Megado de motores."] }
+          ]
+        }
+
+      }
+    },
+
+    "correctiva": {
+      "label": "Correctiva",
+      "descripcion": "Diagnostico y reparacion ante una falla. No es checklist fijo: depende del sintoma. Protocolo de diagnostico seguro y ordenado.",
+      "tieneFrecuencia": false,
+      "mediciones": [
+        { "label": "Codigo de error mostrado", "unidad": "" },
+        { "label": "Voltaje de alimentacion", "unidad": "V" },
+        { "label": "Presion de alta", "unidad": "psi" },
+        { "label": "Presion de baja", "unidad": "psi" },
+        { "label": "Amperaje", "unidad": "A" }
+      ],
+      "protocolo": [
+        { "grupo": "1. Seguridad primero", "tareas": ["Confirma el sintoma reportado y cuando ocurre.", "Antes de abrir tableros, evalua si requieres cortar energia. Usa EPP.", "Verifica que no haya riesgo electrico, de presion ni de partes en movimiento."] },
+        { "grupo": "2. Lectura de la falla", "tareas": ["Revisa display o LEDs por codigo de error. Usa el Decodificador de codigos de Lissi.", "Anota el codigo exacto y el modelo del equipo (placa).", "Revisa el historial del equipo: fallas previas e intervenciones."] },
+        { "grupo": "3. Inspeccion ordenada", "tareas": ["Verifica alimentacion electrica: voltaje, fases, protecciones y conexiones.", "Inspecciona circuito refrigerante: presiones, fugas, filtro deshidratador.", "Revisa lado aire/agua: filtros sucios, flujo bloqueado, drenaje obstruido.", "Comprueba sensores y controles segun el codigo de falla."] },
+        { "grupo": "4. Diagnostico y accion", "tareas": ["Aisla la causa raiz antes de reemplazar componentes.", "Repara o reemplaza el componente identificado.", "La intervencion en el circuito refrigerante debe hacerla personal certificado."] },
+        { "grupo": "5. Cierre", "tareas": ["Prueba el equipo y verifica que el sintoma se resolvio.", "Registra causa, accion y repuestos usados.", "Documenta con fotos y entrega el informe al cliente."] }
+      ]
+    },
+
+    "instalacion": {
+      "label": "Instalación / Puesta en marcha",
+      "descripcion": "Checklist de instalacion y puesta en marcha (commissioning).",
+      "tieneFrecuencia": false,
+      "equipos": {
+
+        "dx": {
+          "nombre": "Split / Cassette / Ducto (DX)",
+          "icon": "M4 6h16M4 12h16M4 18h16",
+          "mediciones": [
+            { "label": "Vacio alcanzado", "unidad": "microns" },
+            { "label": "Presion de succion", "unidad": "psi" },
+            { "label": "Presion de descarga", "unidad": "psi" },
+            { "label": "Delta T", "unidad": "°C" },
+            { "label": "Amperaje", "unidad": "A" },
+            { "label": "Sobrecalentamiento", "unidad": "K" },
+            { "label": "Subenfriamiento", "unidad": "K" }
+          ],
+          "checklist": [
+            { "grupo": "Recepcion y montaje", "tareas": ["Verificar que el equipo corresponde a lo cotizado (modelo, capacidad, refrigerante).", "Inspeccionar por danos de transporte.", "Montaje nivelado con soportes adecuados.", "Verificar distancias minimas de ventilacion exterior."] },
+            { "grupo": "Cañerias y conexiones", "tareas": ["Abocardado correcto (flare) y apriete con torque adecuado.", "Aislacion termica completa de lineas de refrigerante.", "Linea de drenaje con pendiente correcta."] },
+            { "grupo": "Vacio y carga", "tareas": ["Prueba de hermeticidad con nitrogeno antes del vacio.", "Vacio del sistema y verificacion de retencion (ver parametros).", "Apertura de valvulas y ajuste de carga segun longitud de tuberia."] },
+            { "grupo": "Electrico", "tareas": ["Verificar alimentacion, proteccion y seccion de cable.", "Conexion de cableado de fuerza y comunicacion segun diagrama.", "Verificar puesta a tierra."] },
+            { "grupo": "Puesta en marcha", "tareas": ["Arranque y verificacion de modos frio/calor.", "Medicion y registro de parametros (ver parametros).", "Verificacion de drenaje real con agua.", "Capacitacion al cliente y entrega de manual y garantia."] }
+          ]
+        },
+
+        "vrf": {
+          "nombre": "VRF / VRV",
+          "icon": "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
+          "mediciones": [
+            { "label": "Vacio alcanzado", "unidad": "microns" },
+            { "label": "Carga adicional cargada", "unidad": "kg" },
+            { "label": "Presion de alta", "unidad": "psi" },
+            { "label": "Presion de baja", "unidad": "psi" }
+          ],
+          "checklist": [
+            { "grupo": "Montaje y tuberia", "tareas": ["Verificar diametros y longitudes segun ingenieria.", "Instalacion correcta de cajas de derivacion (refnet/branch).", "Aislacion termica completa."] },
+            { "grupo": "Hermeticidad y vacio", "tareas": ["Prueba de presion con nitrogeno (etapas segun fabricante).", "Vacio profundo del sistema completo (ver parametros).", "Carga adicional calculada segun longitud total (ver parametros)."] },
+            { "grupo": "Comunicacion y control", "tareas": ["Conexion del bus de comunicacion entre unidades.", "Direccionamiento (addressing) de cada unidad interior.", "Configuracion del controlador central."] },
+            { "grupo": "Commissioning", "tareas": ["Test run / autochequeo segun software del fabricante.", "Verificacion de todas las unidades interiores.", "Registro de presiones (ver parametros).", "Entrega y capacitacion al cliente."] }
+          ]
+        },
+
+        "camara-frio": {
+          "nombre": "Cámara de Frío",
+          "icon": "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
+          "mediciones": [
+            { "label": "Vacio alcanzado", "unidad": "microns" },
+            { "label": "Tiempo de pull-down", "unidad": "min" },
+            { "label": "Temp. final alcanzada", "unidad": "°C" },
+            { "label": "Presion de alta", "unidad": "psi" },
+            { "label": "Presion de baja", "unidad": "psi" },
+            { "label": "Amperaje", "unidad": "A" }
+          ],
+          "checklist": [
+            { "grupo": "Estructura", "tareas": ["Verificar sellado de paneles, puertas y pisos.", "Comprobar hermeticidad de cierres y cortinas.", "Instalacion de iluminacion y boton de panico interior."] },
+            { "grupo": "Refrigeracion", "tareas": ["Montaje de evaporador y condensadora con distancias correctas.", "Conexion de canerias, aislacion y drenaje con resistencia anticongelamiento.", "Prueba de hermeticidad, vacio y carga (ver parametros)."] },
+            { "grupo": "Control y deshielo", "tareas": ["Configuracion del controlador: setpoint, deshielo, alarmas.", "Verificacion de resistencias de deshielo y temporizador.", "Prueba de presostatos de seguridad."] },
+            { "grupo": "Puesta en marcha", "tareas": ["Pull-down: verificar tiempo de bajada hasta setpoint (ver parametros).", "Registro de presiones, temperaturas y amperajes (ver parametros).", "Entrega, capacitacion y manual al cliente."] }
+          ]
+        }
+
+      }
+    }
+
+  }
+}

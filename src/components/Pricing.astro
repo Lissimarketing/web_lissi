@@ -1,269 +1,515 @@
 ---
 // src/components/Pricing.astro
+
+/**
+ * ==========================================
+ * INTERFACES & TIPOS
+ * ==========================================
+ */
+interface PlanFeature {
+  text: string;
+  included: boolean;
+}
+
+interface Plan {
+  id: string;
+  name: string;
+  tagline: string;
+  monthly: string | null;
+  annual: string | null;
+  users: string;
+  clients: string;
+  icon: string;
+  features: PlanFeature[];
+  cta: string;
+  href: string;
+  highlight: boolean;
+  popularBadge?: string;
+}
+
+interface ComparativeItem {
+  f: string;
+  tooltip?: string;
+  v: (boolean | string)[];
+}
+
+interface ComparativeCategory {
+  cat: string;
+  icon: string;
+  items: ComparativeItem[];
+}
+
+/**
+ * ==========================================
+ * DATOS DE CONFIGURACIÓN
+ * ==========================================
+ */
+const SIGNUP_URL = "https://app.lissi.app/signup";
+const CONTACT_URL = "mailto:ventas@lissi.cl";
+
+const planes: Plan[] = [
+  {
+    id: "base",
+    name: "Base",
+    tagline: "Para digitalizar tu operación diaria.",
+    monthly: "97.000",
+    annual: "67.900",
+    users: "5",
+    clients: "—",
+    icon: "M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z",
+    features: [
+      { text: "Órdenes de trabajo ilimitadas", included: true },
+      { text: "Trazabilidad básica por activo", included: true },
+      { text: "Informes PDF con tu logo", included: true },
+      { text: "App móvil (iOS/Android)", included: true },
+      { text: "Automatización IA", included: false }
+    ],
+    cta: "Empezar gratis",
+    href: SIGNUP_URL,
+    highlight: false
+  },
+  {
+    id: "crecimiento",
+    name: "Crecimiento",
+    tagline: "Para equipos en plena expansión.",
+    monthly: "197.000",
+    annual: "137.900",
+    users: "10",
+    clients: "5",
+    icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6",
+    features: [
+      { text: "Todo lo del plan Base", included: true },
+      { text: "Portal para clientes finales", included: true },
+      { text: "Código QR y multisede", included: true },
+      { text: "Analítica y envío automático", included: true },
+      { text: "Agente IA y OCR de placas", included: false }
+    ],
+    cta: "Empezar gratis",
+    href: SIGNUP_URL,
+    highlight: true,
+    popularBadge: "Más elegido"
+  },
+  {
+    id: "avanzado",
+    name: "Avanzado",
+    tagline: "Para operaciones consolidadas.",
+    monthly: "247.000",
+    annual: "172.900",
+    users: "15",
+    clients: "5",
+    icon: "M13 10V3L4 14h7v7l9-11h-7z",
+    features: [
+      { text: "Todo lo del plan Crecimiento", included: true },
+      { text: "Agente IA y OCR de placas", included: true },
+      { text: "Métricas de rendimiento técnico", included: true },
+      { text: "Onboarding asistido 1-a-1", included: true },
+      { text: "Soporte SLA dedicado", included: false }
+    ],
+    cta: "Empezar gratis",
+    href: SIGNUP_URL,
+    highlight: false
+  },
+  {
+    id: "corporativo",
+    name: "Corporativo",
+    tagline: "Operaciones industriales a gran escala.",
+    monthly: null,
+    annual: null,
+    users: "Ilimitados",
+    clients: "A medida",
+    icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0h2M5 21H3m4-14h2m-2 4h2m6-4h2m-2 4h2",
+    features: [
+      { text: "Usuarios y clientes ilimitados", included: true },
+      { text: "Integración API REST completa", included: true },
+      { text: "Capacitación en terreno", included: true },
+      { text: "Ejecutivo de cuenta dedicado", included: true },
+      { text: "SLA de soporte garantizado", included: true }
+    ],
+    cta: "Contactar a ventas",
+    href: CONTACT_URL,
+    highlight: false
+  },
+];
+
+const comparativa: ComparativeCategory[] = [
+  {
+    cat: "Usuarios y accesos",
+    icon: "M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z",
+    items: [
+      { f: "Usuarios (admin, supervisor, técnico)", v: ["5", "10", "15", "A medida"] },
+      { f: "Clientes finales (portal VIP)", tooltip: "Acceso seguro y de solo lectura para que tus clientes vean el estado de sus equipos.", v: ["—", "5", "5", "Ilimitado"] },
+      { f: "Costo por usuario adicional", v: ["$19.900", "$19.900", "$19.900", "Consultar"] },
+      { f: "Costo por cliente final adicional", v: ["—", "$29.990", "$29.990", "Consultar"] },
+      { f: "Autenticación de Dos Pasos (2FA)", v: [true, true, true, true] },
+    ]
+  },
+  {
+    cat: "Órdenes y terreno",
+    icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2",
+    items: [
+      { f: "Creación de OTs ilimitadas", v: [true, true, true, true] },
+      { f: "App móvil con modo offline", tooltip: "Los técnicos pueden completar OTs sin señal. Se sincroniza al recuperar conexión.", v: [true, true, true, true] },
+      { f: "Carga de fotos georreferenciadas", v: [true, true, true, true] },
+      { f: "Firmas digitales validadas", v: [true, true, true, true] },
+      { f: "Dictado por voz para bitácoras", v: [false, true, true, true] },
+      { f: "Creación de OT interactiva con IA", tooltip: "Lissi procesa audios de WhatsApp para crear órdenes estructuradas automáticamente.", v: [false, false, true, true] },
+      { f: "Escaneo OCR de placas de equipos", tooltip: "Usa la cámara para leer números de serie y modelos directamente de la placa.", v: [false, false, true, true] },
+    ]
+  },
+  {
+    cat: "Equipos y trazabilidad",
+    icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+    items: [
+      { f: "Historial completo por equipo", v: [true, true, true, true] },
+      { f: "Importación masiva vía Excel/CSV", v: [true, true, true, true] },
+      { f: "Generación de Códigos QR", v: [false, true, true, true] },
+      { f: "Manejo de sucursales (Multisede)", v: [false, true, true, true] },
+      { f: "Control de inventario de repuestos", v: [false, false, false, true] },
+    ]
+  },
+  {
+    cat: "Informes y Analítica",
+    icon: "M9 19v-6m4 6V9m4 10V5M3 21h18",
+    items: [
+      { f: "Informes PDF personalizados", v: [true, true, true, true] },
+      { f: "Envío automático de PDF al cliente", v: [false, true, true, true] },
+      { f: "Dashboard de analítica general", v: [false, true, true, true] },
+      { f: "Reporte de rendimiento técnico", tooltip: "Mide tiempos de ejecución, puntualidad y efectividad por empleado.", v: [false, false, true, true] },
+      { f: "Exportación de datos brutos (API)", v: [false, false, false, true] },
+    ]
+  },
+];
+
+const colNames = planes.map(p => p.name);
+const colPrices = ["$97.000", "$197.000", "$247.000", "A medida"];
 ---
-<section id="precios" class="py-24 bg-white relative overflow-hidden">
-  
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-500/5 rounded-full blur-[120px] -z-10"></div>
+
+<section id="pricing" class="relative bg-[#0A0F1C] py-24 lg:py-32 overflow-hidden scroll-mt-24 font-sans border-t border-slate-800/50">
+
+  <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[140px] mix-blend-screen opacity-80"></div>
+    <div class="absolute top-1/2 -left-40 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[140px] mix-blend-screen opacity-50"></div>
+    <div class="absolute inset-0 opacity-[0.15]" style="background-image: linear-gradient(rgba(0,229,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.2) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse 90% 70% at 50% 10%, black 20%, transparent 100%);"></div>
+  </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    
-    <div class="text-center max-w-3xl mx-auto mb-12">
-      <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">
-        Planes que <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500">escalan contigo.</span>
+
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold uppercase tracking-widest mb-6">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500 shadow-[0_0_8px_#00E5FF]"></span>
+        </span>
+        Planes transparentes
+      </span>
+      <h2 class="font-display text-4xl md:text-[3.5rem] font-black tracking-tight text-white mb-6 text-balance leading-[1.05]">
+        Digitaliza tu operación.<br/>
+        <span class="text-slate-400 font-light">De principio a fin.</span>
       </h2>
-      <p class="text-lg text-slate-500 font-medium">
-        Elige la potencia que tu operación necesita hoy.
+      <p class="text-lg text-slate-400 md:text-xl text-balance font-light">
+        Comienza con 21 días gratis. Cancela en cualquier momento. <br class="hidden md:block"/>Sin contratos forzosos ni letras pequeñas.
       </p>
     </div>
 
-    <div class="flex justify-center items-center gap-4 mb-16">
-      <span class="text-sm font-bold text-slate-900 transition-colors" id="label-monthly">Mensual</span>
+    <div class="flex items-center justify-center gap-4 mb-16" role="group" aria-label="Selección de ciclo de facturación">
+      <span class="text-sm font-semibold text-white transition-colors" id="label-monthly">Mensual</span>
       
-      <button id="billing-toggle" class="relative w-14 h-8 rounded-full bg-slate-200 transition-colors focus:outline-none ring-offset-2 focus:ring-2 ring-blue-500" aria-pressed="false">
-        <span id="toggle-circle" class="absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-sm transition-transform duration-300 ease-spring"></span>
+      <button
+        id="billing-toggle"
+        class="relative inline-flex h-8 w-16 items-center rounded-full bg-slate-800 border border-slate-700 transition-colors focus:outline-none hover:border-cyan-500"
+        role="switch"
+        aria-checked="false"
+        aria-label="Cambiar a facturación anual">
+        <span class="sr-only">Cambiar facturación anual</span>
+        <span id="toggle-bg" class="absolute inset-0 rounded-full bg-cyan-500/20 opacity-0 transition-opacity duration-300"></span>
+        <span id="toggle-circle" class="inline-block h-6 w-6 transform rounded-full bg-white shadow-md transition duration-300 ease-in-out translate-x-1 relative z-10"></span>
       </button>
-
-      <span class="text-sm font-medium text-slate-500 transition-colors flex items-center gap-2" id="label-annual">
+      
+      <span class="text-sm font-medium text-slate-500 flex items-center gap-2 transition-colors" id="label-annual">
         Anual
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-100 text-cyan-700 uppercase tracking-wide">
-          Ahorra 22%
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-cyan-400/10 text-cyan-400 border border-cyan-400/20 uppercase tracking-wider">
+          Ahorra 30%
         </span>
       </span>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-full mx-auto items-stretch mb-16">
-      
-      <div class="flex flex-col h-full bg-white border border-slate-200 rounded-[2rem] p-6 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-2 transition-all duration-300 group">
-        <div class="mb-4">
-            <span class="inline-block px-3 py-1 bg-slate-100 text-slate-500 text-[10px] font-bold tracking-wider rounded-full uppercase">
-                Para Independientes
-            </span>
-        </div>
-        <h3 class="text-xl font-bold text-slate-900 mb-2">Freelance</h3>
-        <p class="text-slate-500 text-sm mb-6">Gestiona tus propios servicios.</p>
-        
-        <div class="mb-6 h-[80px]">
-           <div class="flex items-baseline gap-1">
-             <span class="text-4xl font-black text-slate-900 transition-all duration-500 price-value" data-monthly="27.000" data-annual="21.000">$27.000</span>
-           </div>
-           <span class="text-slate-400 text-xs block mt-1 billing-period">+ IVA / mes</span>
-        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-stretch mb-24">
+      {planes.map((plan) => (
+        <article class={`group relative flex flex-col rounded-[2rem] p-8 transition-all duration-300 ${
+          plan.highlight
+            ? "bg-slate-900 border-2 border-cyan-500/50 shadow-[0_20px_50px_rgba(0,229,255,0.1)] lg:-mt-4 lg:mb-4 z-20"
+            : "bg-slate-900/40 border border-slate-700/60 hover:border-slate-500/60 z-10"
+        }`}>
+          
+          {plan.highlight && (
+            <div class="absolute top-0 inset-x-0 flex justify-center -mt-3.5 z-20">
+              <span class="inline-flex items-center gap-1.5 bg-cyan-400 text-[#0A0F1C] text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-[0_0_15px_rgba(0,229,255,0.4)] border border-cyan-300">
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                {plan.popularBadge}
+              </span>
+            </div>
+          )}
 
-        <div class="mt-auto">
-            <button onclick="openModal()" class="w-full py-3 px-4 bg-slate-50 text-slate-600 font-bold rounded-xl hover:bg-slate-100 border border-slate-200 transition-all text-sm group-hover:border-blue-200 group-hover:text-blue-600">
-                Unirse a Lista de Espera
-            </button>
-        </div>
-      </div>
+          {plan.highlight && (
+            <div class="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent rounded-[2rem] pointer-events-none"></div>
+          )}
 
-      <div class="flex flex-col h-full bg-white rounded-[2rem] p-8 border border-slate-200 shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-300 hover:-translate-y-2 transition-all duration-300 relative overflow-hidden group">
-        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
+          <div class="relative z-10 flex flex-col h-full">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class={`text-2xl font-display font-bold ${plan.highlight ? "text-white" : "text-slate-200"}`}>{plan.name}</h3>
+              <div class={`p-2.5 rounded-xl ${plan.highlight ? "bg-[#0A0F1C] text-cyan-400 border border-slate-700 shadow-inner" : "bg-slate-800 text-slate-400 border border-slate-700"}`}>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d={plan.icon}/></svg>
+              </div>
+            </div>
 
-        <h3 class="text-xl font-bold text-slate-900 mb-2">Pequeña Empresa</h3>
-        <p class="text-slate-500 text-sm mb-6">Digitaliza tu operación base.</p>
-        
-        <div class="mb-6 h-[80px]">
-          <div class="flex items-baseline gap-1">
-            <span class="text-4xl font-black text-slate-900 transition-all duration-500 price-value" data-monthly="97.000" data-annual="75.660">$97.000</span>
+            <p class={`text-sm min-h-[40px] leading-relaxed font-light ${plan.highlight ? "text-slate-300" : "text-slate-500"}`}>{plan.tagline}</p>
+
+            <div class="my-6 min-h-[80px] flex flex-col justify-center border-y py-6 border-slate-800">
+              {plan.monthly ? (
+                <>
+                  <div class="flex items-baseline gap-1">
+                    <span class={`font-display font-black text-4xl tracking-tight price-value transition-opacity duration-200 ${plan.highlight ? "text-white" : "text-slate-200"}`} data-monthly={plan.monthly} data-annual={plan.annual}>
+                      ${plan.monthly}
+                    </span>
+                  </div>
+                  <span class="text-[10px] font-mono uppercase tracking-widest mt-2 block billing-period text-slate-500">
+                    + IVA / MES
+                  </span>
+                </>
+              ) : (
+                <span class={`font-display text-4xl font-black ${plan.highlight ? "text-white" : "text-slate-200"}`}>A medida</span>
+              )}
+            </div>
+
+            <ul class="space-y-3 mb-8">
+              <li class={`flex items-center gap-3 text-sm font-semibold ${plan.highlight ? "text-white" : "text-slate-300"}`}>
+                <svg class={`w-5 h-5 ${plan.highlight ? "text-cyan-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                {plan.users} <span class="font-light text-slate-400">Usuarios</span>
+              </li>
+              <li class={`flex items-center gap-3 text-sm font-semibold ${plan.highlight ? "text-white" : "text-slate-300"}`}>
+                <svg class={`w-5 h-5 ${plan.highlight ? "text-cyan-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                {plan.clients} <span class="font-light text-slate-400">Clientes (Portales)</span>
+              </li>
+            </ul>
+
+            <ul class="space-y-4 text-sm flex-1 mb-8">
+              {plan.features.map((feature) => (
+                <li class={`flex items-start gap-3 ${feature.included ? (plan.highlight ? "text-slate-200" : "text-slate-300") : "text-slate-600 line-through"}`}>
+                  <svg class={`w-5 h-5 shrink-0 mt-0.5 ${feature.included ? (plan.highlight ? "text-cyan-400" : "text-slate-400") : "text-slate-700"}`} fill="currentColor" viewBox="0 0 20 20">
+                    {feature.included
+                      ? <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                      : <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    }
+                  </svg>
+                  <span class="font-light leading-snug">{feature.text}</span>
+                </li>
+              ))}
+            </ul>
+
+            <a href={plan.href} class={`w-full py-4 px-6 text-center text-sm font-bold rounded-xl transition-all duration-300 uppercase tracking-wider ${
+              plan.highlight
+                ? "bg-cyan-400 text-[#0A0F1C] hover:bg-cyan-300 shadow-[0_0_20px_rgba(0,229,255,0.2)]"
+                : "bg-slate-800 text-white border border-slate-700 hover:bg-slate-700 hover:border-slate-600"
+            }`}>
+              {plan.cta}
+            </a>
           </div>
-          <span class="text-slate-400 text-xs block mt-1 billing-period">+ IVA / mes</span>
-        </div>
-        
-        <div class="text-sm font-bold text-blue-700 bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-lg inline-block mb-6 text-center w-full">
-            Hasta 5 Usuarios
-        </div>
-        
-        <ul class="space-y-4 text-sm text-slate-600 mb-8 flex-1">
-          <li class="flex items-start"><span class="mr-2 text-cyan-500 font-bold">✓</span> <span>Base de Datos: <b>1.000 Equipos</b></span></li>
-          <li class="flex items-start"><span class="mr-2 text-cyan-500 font-bold">✓</span> <span>Cartera: <b>100 Clientes</b></span></li>
-          <li class="flex items-start"><span class="mr-2 text-cyan-500 font-bold">✓</span> <span>Soporte: <b>48 Horas</b></span></li>
-          <li class="flex items-start"><span class="mr-2 text-cyan-500 font-bold">✓</span> <span>Incluye Capacitación</span></li>
-        </ul>
-
-        <a href="https://wa.me/56963192849?text=Hola,%20me%20interesa%20el%20Plan%20Pyme" target="_blank" class="block w-full py-3 px-4 bg-white border-2 border-slate-900 text-slate-900 font-bold text-center rounded-xl hover:bg-slate-50 transition-colors">
-          Solicitar Plan
-        </a>
-      </div>
-
-      <div class="flex flex-col h-full bg-slate-900 rounded-[2rem] p-8 border border-slate-800 shadow-2xl relative overflow-hidden transform hover:-translate-y-2 transition-all duration-300">
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-blue-600 blur-[80px] opacity-40 pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-cyan-500 blur-[80px] opacity-20 pointer-events-none"></div>
-        
-        <div class="flex justify-between items-start mb-2 relative z-10">
-            <h3 class="text-xl font-bold text-white">Crecimiento</h3>
-            <span class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider shadow-lg shadow-blue-500/40">
-                Popular
-            </span>
-        </div>
-        <p class="text-slate-400 text-sm mb-6 relative z-10">Para equipos en expansión.</p>
-        
-        <div class="mb-6 h-[80px] relative z-10">
-          <div class="flex items-baseline gap-1">
-             <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200 transition-all duration-500 price-value" data-monthly="197.000" data-annual="153.660">$197.000</span>
-          </div>
-          <span class="text-slate-400 text-xs block mt-1 billing-period">+ IVA / mes</span>
-        </div>
-
-        <div class="text-sm font-bold text-cyan-300 bg-cyan-950/40 border border-cyan-900/50 px-3 py-1.5 rounded-lg inline-block mb-6 text-center w-full relative z-10">
-            Hasta 12 Usuarios
-        </div>
-
-        <ul class="space-y-4 text-sm text-slate-300 mb-8 flex-1 relative z-10">
-          <li class="flex items-start"><span class="mr-2 text-blue-400 font-bold">✓</span> <span>Base de Datos: <b>5.000 Equipos</b></span></li>
-          <li class="flex items-start"><span class="mr-2 text-blue-400 font-bold">✓</span> <span>Cartera: <b>500 Clientes</b></span></li>
-          <li class="flex items-start"><span class="mr-2 text-blue-400 font-bold">✓</span> <span>Soporte Prioritario <b>24 Horas</b></span></li>
-          <li class="flex items-start"><span class="mr-2 text-blue-400 font-bold">✓</span> <span>Portal Cliente: <b>3 Accesos</b></span></li>
-        </ul>
-
-        <a href="https://wa.me/56963192849?text=Hola,%20me%20interesa%20el%20Plan%20Crecimiento" target="_blank" class="block w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-center rounded-xl hover:shadow-lg hover:shadow-blue-500/40 transition-all relative z-10">
-          Empezar Ahora
-        </a>
-      </div>
-
-      <div class="flex flex-col h-full bg-white rounded-[2rem] p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
-        <h3 class="text-xl font-bold text-slate-900 mb-2">Corporativo</h3>
-        <p class="text-slate-500 text-sm mb-6">Operaciones a gran escala.</p>
-        
-        <div class="mb-6 flex items-center h-[80px]">
-          <span class="text-3xl font-black text-slate-900">A medida</span>
-        </div>
-
-        <div class="text-sm font-bold text-slate-600 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-lg inline-block mb-6 text-center w-full">
-            +12 Usuarios
-        </div>
-
-        <ul class="space-y-4 text-sm text-slate-600 mb-8 flex-1">
-          <li class="flex items-start"><span class="mr-2 text-green-500 font-bold">✓</span> <span>Usuarios Ilimitados</span></li>
-          <li class="flex items-start"><span class="mr-2 text-green-500 font-bold">✓</span> <span>Base de Datos <b>Ilimitada</b></span></li>
-          <li class="flex items-start"><span class="mr-2 text-green-500 font-bold">✓</span> <span>Onboarding VIP</span></li>
-          <li class="flex items-start"><span class="mr-2 text-green-500 font-bold">✓</span> <span>Capacitación Presencial/Remota</span></li>
-        </ul>
-        
-        <a href="mailto:ventas@lissi.app" class="block w-full py-3 px-4 bg-white border border-slate-200 text-slate-600 font-bold text-center rounded-xl hover:bg-slate-50 transition-colors">
-          Contactar Ventas
-        </a>
-      </div>
+        </article>
+      ))}
     </div>
 
-    <div class="text-center border-t border-slate-200 pt-10 max-w-4xl mx-auto">
-      <p class="text-slate-500 text-sm mb-4 font-bold uppercase tracking-widest">Tu inversión está protegida</p>
-      <div class="flex flex-col md:flex-row justify-center gap-8 text-slate-600 text-sm">
-        <div class="flex items-center justify-center gap-2">
-          <span class="text-2xl">🔒</span>
-          <span><b>Sin contratos forzosos.</b> Cancela cuando quieras.</span>
-        </div>
-        <div class="flex items-center justify-center gap-2">
-          <span class="text-2xl">🛡️</span>
-          <span><b>Garantía de 30 días.</b> Si no te sirve, te devolvemos el dinero.</span>
+    <div class="flex flex-col items-center">
+      <button
+        id="toggle-tabla"
+        class="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-[#0A0F1C] border border-slate-800 shadow-sm text-slate-300 font-bold hover:border-cyan-500/50 hover:text-cyan-400 transition-all focus:outline-none"
+        aria-expanded="false"
+        aria-controls="tabla-comparativa-wrapper">
+        <svg class="w-5 h-5 text-slate-500 group-hover:text-cyan-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <span id="tabla-btn-text">Ver todas las características en detalle</span>
+        <svg id="tabla-chevron" class="w-5 h-5 text-slate-500 group-hover:text-cyan-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+
+      <div id="tabla-comparativa-wrapper" class="w-full grid grid-rows-[0fr] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] overflow-hidden opacity-0 max-w-6xl">
+        <div class="min-h-0 pt-12">
+
+          <div class="overflow-x-auto pb-6 rounded-2xl border border-slate-800 shadow-2xl bg-slate-900/40 backdrop-blur-md">
+            <table class="w-full text-left border-collapse min-w-[900px]">
+              <caption class="sr-only">Comparación detallada de planes de Lissi</caption>
+
+              <thead class="bg-[#0A0F1C] text-white sticky top-0 z-20 border-b border-slate-800 shadow-md">
+                <tr>
+                  <th scope="col" class="p-6 font-semibold w-1/3">
+                    <span class="text-xs uppercase tracking-[0.2em] text-cyan-400 font-mono">Características</span>
+                  </th>
+                  {colNames.map((name, idx) => (
+                    <th scope="col" class={`p-6 text-center border-l border-slate-800 w-1/6 relative ${idx === 1 ? 'bg-cyan-500/5' : ''}`}>
+                      {idx === 1 && <div class="absolute inset-x-0 top-0 h-1 bg-cyan-400"></div>}
+                      <span class={`block text-lg font-bold ${idx === 1 ? 'text-cyan-400' : 'text-white'}`}>{name}</span>
+                      <span class="block text-xs text-slate-500 mt-1 font-mono">{colPrices[idx]}</span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody class="divide-y divide-slate-800/60">
+                {comparativa.map((category) => (
+                  <>
+                    <tr class="bg-slate-800/40">
+                      <th scope="colgroup" colspan="5" class="px-6 py-4 border-t border-slate-700">
+                        <div class="flex items-center gap-3">
+                          <div class="p-2 bg-[#0A0F1C] rounded-lg border border-slate-700">
+                            <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d={category.icon}/></svg>
+                          </div>
+                          <span class="font-bold text-sm text-slate-200 uppercase tracking-wider font-mono">{category.cat}</span>
+                        </div>
+                      </th>
+                    </tr>
+
+                    {category.items.map((item, rowIdx) => (
+                      <tr class={`group hover:bg-slate-800/40 transition-colors ${rowIdx % 2 === 0 ? 'bg-transparent' : 'bg-slate-900/20'}`}>
+                        <th scope="row" class="px-6 py-4 font-normal text-sm text-slate-300 flex items-center gap-2 relative">
+                          {item.f}
+                          
+                          {item.tooltip && (
+                            <div class="relative flex items-center justify-center group/tt cursor-help">
+                              <svg class="w-4 h-4 text-slate-500 hover:text-cyan-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                              <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 p-3 bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl opacity-0 invisible group-hover/tt:opacity-100 group-hover/tt:visible transition-all duration-200 z-50 shadow-2xl text-center font-light leading-relaxed">
+                                {item.tooltip}
+                                <div class="absolute w-3 h-3 bg-slate-800 border-b border-r border-slate-700 transform rotate-45 left-1/2 -translate-x-1/2 -bottom-[7px]"></div>
+                              </div>
+                            </div>
+                          )}
+                        </th>
+                        
+                        {item.v.map((val, colIdx) => (
+                          <td class={`px-4 py-4 text-center border-l border-slate-800 ${colIdx === 1 ? 'bg-cyan-500/5' : ''}`}>
+                            {typeof val === 'boolean' ? (
+                              val
+                                ? <svg class={`w-5 h-5 mx-auto ${colIdx === 1 ? 'text-cyan-400' : 'text-slate-500'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                : <span class="block w-4 h-[2px] bg-slate-700 mx-auto rounded-full"></span>
+                            ) : (
+                              <span class={`text-sm font-medium ${colIdx === 1 ? 'text-white' : 'text-slate-400'}`}>{val}</span>
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </>
+                ))}
+              </tbody>
+
+              <tfoot class="bg-[#0A0F1C] border-t-2 border-slate-700">
+                <tr>
+                  <td class="p-6"></td>
+                  {colNames.map((name, idx) => (
+                    <td class={`p-4 text-center border-l border-slate-800 ${idx === 1 ? 'bg-cyan-500/5' : ''}`}>
+                      <a href={idx === 3 ? CONTACT_URL : SIGNUP_URL} class={`inline-block w-full py-3 px-4 text-xs font-bold rounded-xl transition-all tracking-wide uppercase ${
+                        idx === 1
+                          ? "bg-cyan-400 text-[#0A0F1C] hover:bg-cyan-300 shadow-[0_0_15px_rgba(0,229,255,0.2)]"
+                          : "bg-slate-800 border border-slate-700 text-white hover:border-cyan-400 hover:text-cyan-400"
+                      }`}>
+                        Seleccionar
+                      </a>
+                    </td>
+                  ))}
+                </tr>
+              </tfoot>
+            </table>
+          </div>
         </div>
       </div>
     </div>
 
   </div>
-
-  <div id="waitlist-modal" class="fixed inset-0 z-[200] hidden items-center justify-center p-4">
-    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
-    
-    <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 transform transition-all scale-100">
-        <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-        
-        <div class="text-center mb-6">
-            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span class="text-2xl">🚀</span>
-            </div>
-            <h3 class="text-2xl font-bold text-slate-900">Únete al Plan Freelance</h3>
-            <p class="text-slate-500 mt-2 text-sm">Estamos liberando cupos gradualmente. Déjanos tus datos y te avisaremos apenas puedas entrar.</p>
-        </div>
-
-        <form class="space-y-4" onsubmit="event.preventDefault(); alert('¡Gracias! Te avisaremos pronto.'); closeModal();">
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Nombre</label>
-                <input type="text" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Tu nombre" required>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Correo Electrónico</label>
-                <input type="email" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="hola@tuempresa.com" required>
-            </div>
-            <button type="submit" class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30">
-                Avísenme cuando esté listo
-            </button>
-        </form>
-    </div>
-  </div>
-
 </section>
 
-<script>
-  // Lógica del Toggle (IGUAL QUE ANTES)
-  const toggleBtn = document.getElementById('billing-toggle');
-  const toggleCircle = document.getElementById('toggle-circle');
-  const prices = document.querySelectorAll('.price-value');
-  const billingPeriods = document.querySelectorAll('.billing-period');
-  const labelMonthly = document.getElementById('label-monthly');
-  const labelAnnual = document.getElementById('label-annual');
-
-  let isAnnual = false;
-
-  if(toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      isAnnual = !isAnnual;
-      
-      if(isAnnual) {
-        toggleBtn.classList.replace('bg-slate-200', 'bg-blue-600');
-        toggleCircle.style.transform = 'translateX(24px)';
-        labelAnnual.classList.add('text-slate-900');
-        labelAnnual.classList.remove('text-slate-500');
-        labelMonthly.classList.remove('text-slate-900');
-        labelMonthly.classList.add('text-slate-400');
-      } else {
-        toggleBtn.classList.replace('bg-blue-600', 'bg-slate-200');
-        toggleCircle.style.transform = 'translateX(0)';
-        labelMonthly.classList.add('text-slate-900');
-        labelMonthly.classList.remove('text-slate-400');
-        labelAnnual.classList.remove('text-slate-900');
-        labelAnnual.classList.add('text-slate-500');
-      }
-
-      prices.forEach(price => {
-        price.style.opacity = '0';
-        setTimeout(() => {
-          if(isAnnual) {
-            price.innerText = '$' + price.dataset.annual;
-          } else {
-            price.innerText = '$' + price.dataset.monthly;
-          }
-          price.style.opacity = '1';
-        }, 200);
-      });
-
-      billingPeriods.forEach(period => {
-         if(isAnnual) {
-             period.innerHTML = '+ IVA / mes <br><span class="text-green-500 font-bold">facturado anualmente</span>';
-         } else {
-             period.innerHTML = '+ IVA / mes';
-         }
-      });
-    });
-  }
-
-  // Lógica del Modal
-  window.openModal = function() {
-    const modal = document.getElementById('waitlist-modal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-  }
-
-  window.closeModal = function() {
-    const modal = document.getElementById('waitlist-modal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  }
-</script>
-
 <style>
-    .ease-spring {
-        transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+  /* El tooltip necesita estar en un contenedor con z-index alto al hacer hover para no quedar oculto por otras filas */
+  tr:hover { z-index: 10; position: relative; }
+
+  #billing-toggle[aria-checked="true"] #toggle-bg {
+    opacity: 1;
+  }
+  #billing-toggle[aria-checked="true"] #toggle-circle {
+    transform: translateX(32px);
+  }
 </style>
+
+<script>
+  function initializePricingInteractivity() {
+    const toggleBtn = document.getElementById('billing-toggle');
+    if (toggleBtn && !toggleBtn.dataset.initialized) {
+      toggleBtn.dataset.initialized = 'true';
+
+      const priceElements = document.querySelectorAll('.price-value');
+      const periodElements = document.querySelectorAll('.billing-period');
+      const labelMonthly = document.getElementById('label-monthly');
+      const labelAnnual = document.getElementById('label-annual');
+
+      let isAnnual = false; // COMIENZA EN MENSUAL
+
+      toggleBtn.addEventListener('click', () => {
+        isAnnual = !isAnnual;
+        toggleBtn.setAttribute('aria-checked', isAnnual.toString());
+
+        labelAnnual?.classList.toggle('text-white', isAnnual);
+        labelAnnual?.classList.toggle('text-slate-500', !isAnnual);
+        labelMonthly?.classList.toggle('text-white', !isAnnual);
+        labelMonthly?.classList.toggle('text-slate-500', isAnnual);
+
+        priceElements.forEach((el) => {
+          const htmlEl = el as HTMLElement;
+          htmlEl.style.opacity = '0';
+          setTimeout(() => {
+            htmlEl.textContent = '$' + (isAnnual ? htmlEl.dataset.annual : htmlEl.dataset.monthly);
+            htmlEl.style.opacity = '1';
+          }, 200);
+        });
+
+        periodElements.forEach((el) => {
+          if (isAnnual) {
+            el.innerHTML = '+ IVA / mes <span class="text-cyan-400 font-bold ml-1 tracking-wider bg-cyan-400/10 px-1.5 rounded">[-30%]</span>';
+          } else {
+            el.innerHTML = '+ IVA / MES';
+          }
+        });
+      });
+    }
+
+    const tableBtn = document.getElementById('toggle-tabla');
+    if (tableBtn && !tableBtn.dataset.initialized) {
+      tableBtn.dataset.initialized = 'true';
+
+      const tableWrapper = document.getElementById('tabla-comparativa-wrapper');
+      const chevron = document.getElementById('tabla-chevron');
+      const btnText = document.getElementById('tabla-btn-text');
+
+      let isTableOpen = false;
+
+      tableBtn.addEventListener('click', () => {
+        isTableOpen = !isTableOpen;
+        tableBtn.setAttribute('aria-expanded', isTableOpen.toString());
+
+        if (tableWrapper) {
+          tableWrapper.style.gridTemplateRows = isTableOpen ? '1fr' : '0fr';
+          tableWrapper.style.opacity = isTableOpen ? '1' : '0';
+        }
+
+        if (chevron) {
+          chevron.style.transform = isTableOpen ? 'rotate(180deg)' : 'rotate(0)';
+        }
+
+        if (btnText) {
+          btnText.textContent = isTableOpen
+            ? 'Ocultar características detalladas'
+            : 'Ver todas las características en detalle';
+        }
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initializePricingInteractivity);
+  document.addEventListener('astro:page-load', initializePricingInteractivity);
+</script>

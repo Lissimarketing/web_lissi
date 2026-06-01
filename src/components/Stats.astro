@@ -1,62 +1,125 @@
 ---
 // src/components/Stats.astro
-const stats = [
-  { 
-    label: "Productividad", 
-    value: "+25%", 
-    desc: "Más servicios facturables por técnico cada mes."
-  },
-  { 
-    label: "Precisión", 
-    value: "99%", 
-    desc: "Eliminación de errores en informes y cobros."
-  },
-  { 
-    label: "Ahorro Admin", 
-    value: "15h", 
-    desc: "Horas recuperadas a la semana en gestión."
-  }
-];
 ---
-
-<section class="py-8 md:py-12 bg-white relative overflow-hidden">
+<section class="relative bg-[#0A0F1C] pt-12 pb-24 z-20">
   
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-500/5 rounded-full blur-[80px] -z-10"></div>
-
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    <div class="text-center mb-12 max-w-3xl mx-auto">
-      <span class="text-blue-600 font-bold tracking-wider uppercase text-xs mb-3 block">
-        Retorno de Inversión
-      </span>
+    <!-- Contenedor estilo "Server Rack / Telemetría" -->
+    <div class="relative rounded-2xl bg-[#0A0F1C] border border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden">
       
-      <h3 class="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-        Resultados tangibles<br class="hidden md:block" />
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500">
-          desde el primer mes.
-        </span>
-      </h3>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {stats.map((stat) => (
-        <div class="group relative p-8 rounded-[2rem] bg-white border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-500 text-center">
-          
-          <div class="relative z-10">
-            <div class="text-6xl md:text-7xl font-black mb-2 tracking-tighter text-slate-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 transition-all duration-500">
-              {stat.value}
-            </div>
-            
-            <div class="text-xs font-bold text-blue-600 mb-3 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full inline-block">
-              {stat.label}
-            </div>
-            
-            <p class="text-slate-500 text-base leading-snug font-medium max-w-[220px] mx-auto text-balance">
-              {stat.desc}
-            </p>
-          </div>
+      <!-- Barra superior de estado -->
+      <div class="flex items-center justify-between px-6 py-3 border-b border-slate-800/80 bg-slate-900/60">
+        <div class="flex items-center gap-2.5">
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+          <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-400">Volumen de Operación Lissi</span>
         </div>
-      ))}
+        <div class="flex items-center gap-2">
+          <span class="font-mono text-[10px] uppercase tracking-widest text-emerald-400 hidden sm:block">System Online</span>
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Resplandor interno sutil -->
+      <div class="absolute top-0 left-1/4 w-[500px] h-[300px] bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+      <!-- Grilla de 3 Métricas Asimétricas -->
+      <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-800 relative z-10">
+        
+        <!-- Métrica 1: La Protagonista (Órdenes) -->
+        <div class="p-8 md:p-10 relative group overflow-hidden bg-slate-900/20">
+          <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+          <p class="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 mb-3">Trabajo Ejecutado</p>
+          <div class="flex items-baseline gap-1 mb-2">
+            <span class="text-3xl md:text-4xl font-black text-white">+</span>
+            <!-- target en 75000 -->
+            <span class="font-display text-5xl md:text-6xl font-black text-white tracking-tight counter-value" data-target="75000">0</span>
+          </div>
+          <p class="text-sm text-slate-400 font-light leading-relaxed pr-4">Órdenes de trabajo completadas sin tocar un solo papel.</p>
+        </div>
+
+        <!-- Métrica 2 (Equipos) -->
+        <div class="p-8 md:p-10 relative group hover:bg-slate-900/30 transition-colors duration-500">
+          <p class="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-3 group-hover:text-slate-400 transition-colors">Activos en Monitoreo</p>
+          <div class="flex items-baseline gap-1 mb-2">
+            <span class="text-3xl md:text-4xl font-black text-slate-300">+</span>
+            <span class="font-display text-5xl md:text-6xl font-black text-slate-200 tracking-tight counter-value" data-target="53000">0</span>
+          </div>
+          <p class="text-sm text-slate-500 font-light leading-relaxed pr-4 group-hover:text-slate-400 transition-colors">Equipos HVAC-R trazados con un historial completo e inmutable.</p>
+        </div>
+
+        <!-- Métrica 3 (Técnicos) -->
+        <div class="p-8 md:p-10 relative group hover:bg-slate-900/30 transition-colors duration-500">
+          <p class="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-3 group-hover:text-slate-400 transition-colors">Fuerza de Terreno</p>
+          <div class="flex items-baseline gap-1 mb-2">
+            <span class="text-3xl md:text-4xl font-black text-slate-300">+</span>
+            <span class="font-display text-5xl md:text-6xl font-black text-slate-200 tracking-tight counter-value" data-target="500">0</span>
+          </div>
+          <p class="text-sm text-slate-500 font-light leading-relaxed pr-4 group-hover:text-slate-400 transition-colors">Usuarios activos sincronizando datos en tiempo real mes a mes.</p>
+        </div>
+
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  function initCounters() {
+    const counters = document.querySelectorAll('.counter-value');
+    if (counters.length === 0) return;
+
+    // Detectar si el usuario prefiere menos movimiento en su OS
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = entry.target as HTMLElement;
+          
+          if (target.getAttribute('data-animated') === 'true') return;
+          target.setAttribute('data-animated', 'true');
+          
+          const targetValue = parseInt(target.getAttribute('data-target') || '0', 10);
+          
+          const formatNumber = (num: number) => {
+            return num.toLocaleString('es-CL'); // Formatea con puntos (ej. 50.000)
+          };
+
+          if (prefersReducedMotion) {
+            target.textContent = formatNumber(targetValue);
+            return;
+          }
+
+          const duration = 2500; // 2.5 segundos de animación
+          const startTime = performance.now();
+
+          const updateCounter = (currentTime: number) => {
+            const elapsedTime = currentTime - startTime;
+            if (elapsedTime < duration) {
+              // Easing out easeOutExpo (arranca rápido, termina lento)
+              const progress = elapsedTime / duration;
+              const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+              const currentValue = Math.floor(targetValue * easeOut);
+              
+              target.textContent = formatNumber(currentValue);
+              requestAnimationFrame(updateCounter);
+            } else {
+              target.textContent = formatNumber(targetValue);
+            }
+          };
+          
+          requestAnimationFrame(updateCounter);
+          observer.unobserve(target); // Dejar de observar una vez que anima
+        }
+      });
+    }, { threshold: 0.5 }); // Arranca cuando se ve la mitad del componente
+
+    counters.forEach(counter => observer.observe(counter));
+  }
+
+  initCounters();
+  document.addEventListener('astro:page-load', initCounters);
+</script>

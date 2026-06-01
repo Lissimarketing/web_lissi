@@ -1,0 +1,104 @@
+---
+// src/components/CookieBanner.astro
+const GA_ID = "G-XXXXXXXXXX";
+---
+<div id="cookie-banner" class="fixed bottom-6 left-6 right-6 md:right-auto md:max-w-[340px] z-[160] hidden opacity-0">
+  <div class="rounded-2xl bg-[#0A0F1C]/90 backdrop-blur-2xl border border-slate-700/80 shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-5 relative overflow-hidden">
+    
+    <div class="absolute -top-10 -left-10 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl pointer-events-none"></div>
+
+    <div class="flex items-start gap-3 mb-5 relative z-10">
+      <div class="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center justify-center flex-shrink-0 shadow-inner">
+        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      </div>
+      <div>
+        <p class="font-bold text-white text-sm mb-1 tracking-tight">Privacidad y Cookies</p>
+        <p class="text-[11px] text-slate-400 leading-relaxed font-light">Usamos cookies para analítica y mejorar tu experiencia. Puedes configurar tus preferencias.</p>
+      </div>
+    </div>
+    
+    <div class="flex gap-2.5 relative z-10">
+      <button id="cookie-reject" class="flex-1 px-3 py-2.5 rounded-xl border border-slate-700 text-slate-300 text-xs font-semibold hover:bg-slate-800 hover:text-white transition-all cursor-pointer">
+        Esenciales
+      </button>
+      <button id="cookie-accept" class="flex-1 px-3 py-2.5 rounded-xl bg-white text-[#0A0F1C] text-xs font-bold hover:bg-cyan-50 hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all cursor-pointer">
+        Aceptar
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Animación de entrada elegante con retraso */
+  .animate-cookie-in {
+    animation: cookie-slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.5s;
+  }
+  
+  /* Animación de salida rápida */
+  .animate-cookie-out {
+    animation: cookie-slide-down 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes cookie-slide-up {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes cookie-slide-down {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to { opacity: 0; transform: translateY(20px) scale(0.95); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-cookie-in { animation: none; opacity: 1; }
+    .animate-cookie-out { animation: none; opacity: 0; }
+  }
+</style>
+
+<script define:vars={{ GA_ID }}>
+  function initCookies() {
+    const banner = document.getElementById('cookie-banner');
+    if (!banner || banner.dataset.init) return;
+    banner.dataset.init = '1';
+
+    function loadGA() {
+      if (!GA_ID || GA_ID.includes('XXXX') || window.__gaLoaded) return;
+      window.__gaLoaded = true;
+      const s = document.createElement('script');
+      s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ window.dataLayer.push(arguments); }
+      window.gtag = gtag; gtag('js', new Date()); gtag('config', GA_ID);
+    }
+
+    const choice = localStorage.getItem('cookie-consent');
+    if (choice === 'accepted') { loadGA(); return; }
+    if (choice === 'rejected') { return; }
+
+    // Quita el hidden y agrega la clase que inicia la animación css (con delay)
+    banner.classList.remove('hidden');
+    banner.classList.add('animate-cookie-in');
+
+    const closeBanner = () => {
+      banner.classList.remove('animate-cookie-in');
+      banner.classList.add('animate-cookie-out');
+      // Ocultar del DOM después de que termine la animación de salida
+      setTimeout(() => banner.classList.add('hidden'), 400);
+    };
+
+    document.getElementById('cookie-accept').addEventListener('click', () => {
+      localStorage.setItem('cookie-consent', 'accepted'); 
+      closeBanner();
+      loadGA();
+    });
+
+    document.getElementById('cookie-reject').addEventListener('click', () => {
+      localStorage.setItem('cookie-consent', 'rejected'); 
+      closeBanner();
+    });
+  }
+
+  initCookies();
+  document.addEventListener('astro:page-load', initCookies);
+</script>

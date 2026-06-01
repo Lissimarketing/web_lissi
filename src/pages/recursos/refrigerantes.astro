@@ -1,0 +1,210 @@
+---
+// src/pages/recursos/refrigerantes.astro
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+const SIGNUP_URL = "https://app.lissi.app/signup";
+
+// GWP (100 años, referencial IPCC). ODP solo HCFC. Estado regulatorio evoluciona — ver normativa vigente.
+const refrigerantes = [
+  { id:"R404A", nombre:"R-404A", tipo:"HFC (mezcla)", clase:"A1", gwp:3922, odp:0, glide:"Bajo (~0,7°C)", estado:"En reemplazo · GWP muy alto", apps:"Refrigeración comercial y baja temperatura", uso:"refrig", pt:true },
+  { id:"R410A", nombre:"R-410A", tipo:"HFC (mezcla)", clase:"A1", gwp:2088, odp:0, glide:"Insignificante", estado:"En transición · phase-down HFC", apps:"Aire acondicionado split y VRF", uso:"ac", pt:true },
+  { id:"R22", nombre:"R-22", tipo:"HCFC", clase:"A1", gwp:1810, odp:0.055, glide:"Ninguno", estado:"En eliminación · Protocolo de Montreal", apps:"Equipos antiguos de AC y refrigeración", uso:"ambos", pt:true },
+  { id:"R407C", nombre:"R-407C", tipo:"HFC (mezcla)", clase:"A1", gwp:1774, odp:0, glide:"Alto (~7°C)", estado:"Transición · reemplazo de R-22", apps:"Aire acondicionado", uso:"ac", pt:false },
+  { id:"R134a", nombre:"R-134a", tipo:"HFC", clase:"A1", gwp:1430, odp:0, glide:"Ninguno", estado:"En transición · phase-down HFC", apps:"Media temperatura, chillers, automotriz", uso:"refrig", pt:true },
+  { id:"R32", nombre:"R-32", tipo:"HFC", clase:"A2L", gwp:675, odp:0, glide:"Insignificante", estado:"Vigente · bajo GWP", apps:"Aire acondicionado split nuevo", uso:"ac", pt:false },
+  { id:"R454B", nombre:"R-454B", tipo:"HFO (mezcla)", clase:"A2L", gwp:466, odp:0, glide:"Bajo", estado:"Vigente · muy bajo GWP", apps:"Aire acondicionado de nueva generación", uso:"ac", pt:false },
+];
+
+// Tablas PT [PSIG, °C]. R-410A y R-22 validados; R-404A y R-134a referenciales.
+const ptData = {
+  R410A: [[11.6,-40],[18.5,-34.4],[26.9,-28.9],[36.8,-23.3],[48.6,-17.8],[62.3,-12.2],[78.3,-6.7],[96.8,-1.1],[118.9,4.4],[142,10],[170,15.6],[201,21.1],[235,26.7],[274,32.2],[317,37.8],[365,43.3],[418,48.9],[476,54.4],[539,60],[608,65.6]],
+  R22: [[10,-31],[24,-17.8],[34,-12.2],[43,-6.7],[58,0],[68.5,4.4],[84,10],[103,15.6],[121.5,21.1],[143,26.7],[168,32.2],[196,37.8],[226,43.3],[260,48.9],[296,54.4]],
+  R404A: [[16,-34.4],[28,-28.9],[41,-23.3],[56,-17.8],[72,-12.2],[88,-6.7],[110,0],[124,4.4],[155,12.8],[180,21.1],[210,28],[234.6,37.8],[280,43.3],[320,48.9]],
+  R134a: [[6,-20],[12,-12],[18,-6.7],[27,0],[37,7.2],[49,15.6],[57,21.1],[71,26.7],[86,32.2],[104,37.8],[124,43.3],[147,48.9],[172,54.4],[185,60]],
+};
+const conPT = refrigerantes.filter(r => r.pt);
+---
+<Layout title="Guía de Refrigerantes HVAC-R">
+  <Navbar />
+  <main class="pt-28 md:pt-32 pb-24 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-10">
+        <a href="/recursos" class="text-sm text-navy-400 hover:text-cyan-600 transition-colors">← Recursos</a>
+        <h1 class="font-display text-3xl md:text-5xl font-extrabold text-navy-900 tracking-tight mt-3 mb-3 text-balance">
+          Guía de refrigerantes HVAC-R
+        </h1>
+        <p class="text-lg text-navy-500 max-w-2xl text-balance">
+          Consulta presión-temperatura al instante y compara el GWP, la clase de seguridad y el estado regulatorio de cada refrigerante.
+        </p>
+      </div>
+
+      <!-- CONSULTA PT -->
+      <section class="bg-navy-900 rounded-2xl p-6 md:p-8 mb-14">
+        <h2 class="font-display text-xl font-bold text-white mb-1">Consulta presión ↔ temperatura</h2>
+        <p class="text-navy-300 text-sm mb-6">Saca la temperatura de saturación desde la presión, o al revés.</p>
+
+        <div class="flex flex-wrap gap-4 items-end">
+          <div>
+            <label class="block text-xs font-semibold text-navy-400 uppercase tracking-wider mb-2">Refrigerante</label>
+            <select id="pt-refrig" class="bg-white border border-navy-200 rounded-lg px-3 py-2.5 font-medium text-navy-900 focus:ring-2 focus:ring-cyan-500 outline-none">
+              {conPT.map(r => <option value={r.id}>{r.nombre}</option>)}
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-navy-400 uppercase tracking-wider mb-2">Tengo</label>
+            <div class="inline-flex rounded-lg bg-navy-800 p-1">
+              <button data-dir="p2t" class="ptdir-btn px-3 py-1.5 rounded-md text-sm font-semibold transition-all">Presión</button>
+              <button data-dir="t2p" class="ptdir-btn px-3 py-1.5 rounded-md text-sm font-semibold transition-all">Temperatura</button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-navy-400 uppercase tracking-wider mb-2"><span id="pt-in-label">Presión</span></label>
+            <div class="flex gap-2">
+              <input type="number" step="any" id="pt-input" class="w-28 bg-white border border-navy-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-cyan-500 outline-none" placeholder="0" />
+              <div id="pt-unit-wrap" class="inline-flex rounded-lg bg-navy-800 p-1">
+                <button data-pu="psi" class="ptu-btn px-2.5 py-1.5 rounded-md text-sm font-semibold">PSI</button>
+                <button data-pu="bar" class="ptu-btn px-2.5 py-1.5 rounded-md text-sm font-semibold">bar</button>
+              </div>
+            </div>
+          </div>
+          <div class="flex-1 min-w-[140px]">
+            <p class="text-xs font-semibold text-navy-400 uppercase tracking-wider mb-2">Resultado</p>
+            <p class="font-display text-3xl font-extrabold text-cyan-400" id="pt-result">—</p>
+          </div>
+        </div>
+        <p class="text-xs text-navy-500 mt-4">R-410A y R-22 validados; R-404A y R-134a referenciales (verifica con la carta de tu proveedor). Para mezclas con glide alto usa la temperatura de tu manómetro digital.</p>
+      </section>
+
+      <!-- COMPARADOR -->
+      <section>
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <h2 class="font-display text-2xl font-bold text-navy-900">Comparador de refrigerantes</h2>
+          <div class="flex flex-wrap gap-2">
+            {["Todos","Aire acondicionado","Refrigeración"].map((f,i) => (
+              <button data-uso={f} class={`uso-btn px-4 py-2 rounded-full text-sm font-semibold transition-all ${i===0?"bg-navy-800 text-white":"bg-white text-navy-600 border border-navy-200"}`}>{f}</button>
+            ))}
+          </div>
+        </div>
+
+        <div id="refrig-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {refrigerantes.map(r => (
+            <div class="refrig-card border border-navy-100 rounded-2xl p-5 hover:shadow-lg transition-all" data-uso={r.uso}>
+              <div class="flex items-start justify-between mb-4">
+                <div>
+                  <h3 class="font-display text-xl font-bold text-navy-900">{r.nombre}</h3>
+                  <p class="text-xs text-navy-400">{r.tipo}</p>
+                </div>
+                <span class={`text-xs font-bold px-2.5 py-1 rounded-full ${r.gwp>=2000?"bg-red-50 text-red-700":r.gwp>=750?"bg-amber-50 text-amber-700":"bg-cyan-50 text-cyan-700"}`}>
+                  GWP {r.gwp.toLocaleString("es-CL")}
+                </span>
+              </div>
+              <div class="space-y-2 text-sm border-t border-navy-100 pt-3">
+                <div class="flex justify-between"><span class="text-navy-400">Clase seguridad</span><span class="font-medium text-navy-800">{r.clase}</span></div>
+                <div class="flex justify-between"><span class="text-navy-400">Glide</span><span class="font-medium text-navy-800">{r.glide}</span></div>
+                <div class="flex justify-between"><span class="text-navy-400">ODP</span><span class="font-medium text-navy-800">{r.odp}</span></div>
+              </div>
+              <p class="text-xs text-navy-500 mt-3 leading-relaxed">{r.apps}</p>
+              <div class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-navy-600">
+                <span class={`w-1.5 h-1.5 rounded-full ${r.estado.includes("Vigente")?"bg-cyan-500":r.estado.includes("eliminación")?"bg-red-500":"bg-amber-500"}`}></span>
+                {r.estado}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <p class="text-xs text-navy-400 mt-8 leading-relaxed">
+        Valores de GWP (horizonte 100 años) referenciales según informes IPCC; pueden variar entre fuentes. El estado regulatorio evoluciona — verifica la normativa vigente en Chile (Ministerio del Medio Ambiente) antes de tomar decisiones de reconversión.
+      </p>
+
+      <!-- CTA: tu ángulo CO₂ -->
+      <div class="mt-12 bg-gradient-to-br from-navy-800 to-navy-950 rounded-2xl p-8 text-center">
+        <h3 class="font-display text-2xl font-bold text-white mb-2 text-balance">Lleva la trazabilidad de tu refrigerante</h3>
+        <p class="text-navy-300 mb-6 max-w-xl mx-auto text-balance">Lissi registra cada carga y recuperación de refrigerante por equipo, ayudándote a controlar tu huella de CO₂ y a cumplir la normativa.</p>
+        <a href={SIGNUP_URL} class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-navy-900 rounded-xl font-semibold hover:bg-cyan-50 transition-all">
+          Empieza gratis
+          <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script define:vars={{ ptData }}>
+  function initRefrig() {
+    const grid = document.getElementById('refrig-grid');
+    if (!grid || grid.dataset.init) return;
+    grid.dataset.init = '1';
+
+    // Filtro por uso
+    const cards = Array.from(grid.querySelectorAll('.refrig-card'));
+    document.querySelectorAll('.uso-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const f = btn.getAttribute('data-uso');
+        document.querySelectorAll('.uso-btn').forEach((b) => {
+          const on = b === btn;
+          b.classList.toggle('bg-navy-800', on); b.classList.toggle('text-white', on);
+          b.classList.toggle('bg-white', !on); b.classList.toggle('text-navy-600', !on);
+          b.classList.toggle('border', !on); b.classList.toggle('border-navy-200', !on);
+        });
+        cards.forEach((c) => {
+          const u = c.getAttribute('data-uso');
+          const show = f === 'Todos' || (f === 'Aire acondicionado' && (u === 'ac' || u === 'ambos')) || (f === 'Refrigeración' && (u === 'refrig' || u === 'ambos'));
+          c.style.display = show ? '' : 'none';
+        });
+      });
+    });
+
+    // Consulta PT
+    let dir = 'p2t', pu = 'psi';
+    const refrig = document.getElementById('pt-refrig');
+    const input = document.getElementById('pt-input');
+    const result = document.getElementById('pt-result');
+    const inLabel = document.getElementById('pt-in-label');
+    const unitWrap = document.getElementById('pt-unit-wrap');
+
+    function interp(table, x, fromIdx, toIdx) {
+      const pts = table.map(p => [p[fromIdx], p[toIdx]]).sort((a,b)=>a[0]-b[0]);
+      if (x <= pts[0][0]) return pts[0][1];
+      if (x >= pts[pts.length-1][0]) return pts[pts.length-1][1];
+      for (let i=0;i<pts.length-1;i++){ if(x>=pts[i][0]&&x<=pts[i+1][0]) return pts[i][1]+(pts[i+1][1]-pts[i][1])*(x-pts[i][0])/(pts[i+1][0]-pts[i][0]); }
+      return null;
+    }
+    function calc() {
+      const table = ptData[refrig.value];
+      const v = parseFloat(input.value);
+      if (!table || isNaN(v)) { result.textContent = '—'; return; }
+      if (dir === 'p2t') {
+        const psig = pu === 'psi' ? v : v * 14.5038;
+        const t = interp(table, psig, 0, 1);
+        result.textContent = t.toFixed(1) + ' °C';
+      } else {
+        const psig = interp(table, v, 1, 0);
+        const out = pu === 'psi' ? psig : psig / 14.5038;
+        result.textContent = out.toFixed(1) + ' ' + (pu === 'psi' ? 'PSI' : 'bar');
+      }
+    }
+    function setActive(sel, attr, val) {
+      document.querySelectorAll(sel).forEach((b) => {
+        const on = b.getAttribute(attr) === val;
+        b.classList.toggle('bg-cyan-500', on); b.classList.toggle('text-white', on); b.classList.toggle('text-navy-300', !on);
+      });
+    }
+    document.querySelectorAll('.ptdir-btn').forEach((b)=>b.addEventListener('click',()=>{
+      dir=b.getAttribute('data-dir'); setActive('.ptdir-btn','data-dir',dir);
+      inLabel.textContent = dir==='p2t'?'Presión':'Temperatura (°C)';
+      unitWrap.style.display = dir==='p2t'?'':'none';
+      calc();
+    }));
+    document.querySelectorAll('.ptu-btn').forEach((b)=>b.addEventListener('click',()=>{ pu=b.getAttribute('data-pu'); setActive('.ptu-btn','data-pu',pu); calc(); }));
+    input.addEventListener('input', calc);
+    refrig.addEventListener('change', calc);
+    setActive('.ptdir-btn','data-dir','p2t'); setActive('.ptu-btn','data-pu','psi');
+  }
+  initRefrig();
+  document.addEventListener('astro:page-load', initRefrig);
+</script>

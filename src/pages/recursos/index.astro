@@ -1,0 +1,177 @@
+---
+// src/pages/recursos/index.astro
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const herramientas = [
+  { 
+    id: "errores",
+    title: "Decodificador de Errores", 
+    desc: "Ingresa el código de falla de cualquier marca y la IA te dirá exactamente qué componente revisar.", 
+    href: "/recursos/decodificador", 
+    icon: "M13 10V3L4 14h7v7l9-11h-7z",
+    color: "from-violet-500 to-fuchsia-500",
+    glow: "rgba(139, 92, 246, 0.15)",
+    tag: "IA Copilot",
+    status: "popular"
+  },
+  { 
+    id: "termo",
+    title: "Diagnóstico Termodinámico", 
+    desc: "Calcula el sobrecalentamiento y subenfriamiento en tiempo real para un ajuste perfecto de carga térmica.", 
+    href: "/recursos/termodinamica", 
+    icon: "M9 7h6m-6 4h6m-6 4h4M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z",
+    color: "from-cyan-400 to-blue-500",
+    glow: "rgba(0, 229, 255, 0.15)",
+    tag: "En Terreno",
+    status: "listo"
+  },
+  { 
+    id: "fgas",
+    title: "Huella F-Gas (CO₂)", 
+    desc: "Calcula el PCA y la Tonelada Equivalente de CO₂ al instante tras una recarga o recuperación de refrigerante.", 
+    href: "/recursos/f-gas", 
+    icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    color: "from-emerald-400 to-teal-500",
+    glow: "rgba(52, 211, 153, 0.15)",
+    tag: "Normativa",
+    status: "nuevo"
+  },
+  { 
+    id: "pautas",
+    title: "Generador de Pautas", 
+    desc: "Crea checklists técnicos profesionales por tipo de equipo (VRV, Chiller, Split) listos para descargar o exportar a Lissi.", 
+    href: "/recursos/pautas", 
+    icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+    color: "from-amber-400 to-orange-500",
+    glow: "rgba(251, 191, 36, 0.15)",
+    tag: "Operación",
+    status: "listo"
+  },
+  { 
+    id: "roi",
+    title: "Calculadora de ROI", 
+    desc: "Ayuda a tus clientes a decidir. Muestra el ahorro energético en dinero al cambiar un equipo viejo por uno Inverter.", 
+    href: "/recursos/roi", 
+    icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    color: "from-pink-500 to-rose-500",
+    glow: "rgba(244, 63, 94, 0.15)",
+    tag: "Ventas",
+    status: "beta"
+  }
+];
+---
+<Layout title="Lissi Tools | Herramientas HVAC-R Gratuitas">
+  <Navbar />
+  <main class="relative bg-[#0A0F1C] min-h-screen pt-32 pb-24 overflow-hidden">
+    
+    <!-- Arquitectura de Fondo Espacial -->
+    <div class="absolute inset-0 pointer-events-none opacity-[0.15]"
+         style="background-image: linear-gradient(rgba(0,229,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.2) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse 90% 70% at 50% 10%, black 20%, transparent 100%);"></div>
+    
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-cyan-600/10 rounded-full blur-[150px] pointer-events-none mix-blend-screen z-0"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- HEADER DEL HUB -->
+      <section class="text-center max-w-3xl mx-auto mb-20">
+        <div class="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-slate-900 border border-slate-800 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-300">Engineering as Marketing</p>
+        </div>
+        
+        <h1 class="font-display text-4xl md:text-6xl font-black text-white tracking-tight mb-6">
+          Lissi Tools
+        </h1>
+        <p class="text-lg text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+          Un ecosistema de mini-aplicaciones gratuitas diseñadas para resolver problemas reales en terreno. 
+          <strong class="text-white font-medium">Hechas por y para expertos HVAC-R.</strong>
+        </p>
+      </section>
+
+      <!-- APP LAUNCHER GRID -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+        {herramientas.map((tool) => (
+          <a href={tool.href} class="app-card group relative flex flex-col rounded-[2rem] bg-slate-900/40 border border-slate-800 p-8 hover:border-slate-600 transition-all duration-500 overflow-hidden" style={`--app-glow: ${tool.glow}`}>
+            
+            <!-- Resplandor dinámico con el mouse -->
+            <div class="card-glow absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none mix-blend-screen" 
+                 style="background: radial-gradient(400px circle at var(--mx) var(--my), var(--app-glow), transparent 60%);"></div>
+            
+            <!-- Icono y Badges -->
+            <div class="flex items-start justify-between mb-8 relative z-10">
+              <div class={`w-14 h-14 rounded-2xl bg-gradient-to-br ${tool.color} p-[1px] shadow-lg group-hover:scale-110 transition-transform duration-500`}>
+                <div class="w-full h-full rounded-[15px] bg-[#0A0F1C] flex items-center justify-center">
+                  <div class={`bg-gradient-to-br ${tool.color} bg-clip-text`}>
+                    <svg class="w-7 h-7 text-transparent" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d={tool.icon}/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-col items-end gap-2">
+                {tool.status === 'popular' && <span class="px-2.5 py-1 rounded-md bg-violet-500/10 border border-violet-500/20 font-mono text-[9px] uppercase tracking-wider text-violet-400 font-bold">Más Usada</span>}
+                {tool.status === 'nuevo' && <span class="px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 font-mono text-[9px] uppercase tracking-wider text-emerald-400 font-bold">Nuevo</span>}
+                {tool.status === 'beta' && <span class="px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 font-mono text-[9px] uppercase tracking-wider text-amber-400 font-bold">Beta</span>}
+              </div>
+            </div>
+
+            <!-- Contenido -->
+            <div class="relative z-10 flex-1 flex flex-col">
+              <span class="font-mono text-[10px] text-slate-500 uppercase tracking-widest mb-2">{tool.tag}</span>
+              <h3 class="font-display text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">{tool.title}</h3>
+              <p class="text-sm text-slate-400 font-light leading-relaxed mb-8 flex-1">{tool.desc}</p>
+              
+              <!-- Botón de Acción -->
+              <div class="mt-auto flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-300 group-hover:text-cyan-400 transition-colors">
+                Abrir aplicación 
+                <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </div>
+            </div>
+          </a>
+        ))}
+
+        <!-- Tarjeta de Feedback (Bucle de comunidad) -->
+        <div class="app-card relative flex flex-col items-center justify-center text-center rounded-[2rem] bg-transparent border border-dashed border-slate-700 p-8 hover:border-cyan-500/50 hover:bg-slate-900/20 transition-all duration-300">
+           <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 mb-4">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+           </div>
+           <h3 class="font-display text-lg font-bold text-white mb-2">¿Falta alguna herramienta?</h3>
+           <p class="text-xs text-slate-500 font-light mb-6 px-4">Este ecosistema lo construimos para ti. Dinos qué problema tienes en terreno y desarrollaremos una solución.</p>
+           <a href="mailto:comunidad@lissi.cl" class="px-5 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold hover:bg-slate-700 hover:text-white transition-colors border border-slate-700">
+             Sugerir herramienta
+           </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  function initAppHover() {
+    document.querySelectorAll('.app-card').forEach((card) => {
+      const el = card as HTMLElement;
+      if (el.dataset.init) return;
+      el.dataset.init = '1';
+      
+      const glow = el.querySelector('.card-glow') as HTMLElement;
+      if (!glow) return;
+
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        glow.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        glow.style.setProperty('--my', `${e.clientY - r.top}px`);
+        glow.style.opacity = '1';
+      });
+
+      el.addEventListener('mouseleave', () => {
+        glow.style.opacity = '0';
+      });
+    });
+  }
+  
+  initAppHover();
+  document.addEventListener('astro:page-load', initAppHover);
+</script>

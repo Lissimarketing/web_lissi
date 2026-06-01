@@ -1,0 +1,32 @@
+---
+// src/components/OfferBar.astro
+const SIGNUP_URL = "https://app.lissi.app/signup";
+---
+<div id="offer-bar" class="relative z-[90] bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900 border-b border-navy-700/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-center gap-3 h-10 text-center">
+      <span class="hidden sm:inline-flex w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+      <a href="/#precios" class="text-xs md:text-sm text-navy-200 hover:text-white transition-colors">
+        <span class="font-semibold text-white">30% de descuento</span> tu primer año si contratas durante el trial. <span class="text-cyan-400 font-semibold">Ver planes →</span>
+      </a>
+      <button id="offer-close" aria-label="Cerrar" class="absolute right-4 text-navy-400 hover:text-white transition-colors cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initOfferBar() {
+    const bar = document.getElementById('offer-bar');
+    if (!bar || bar.dataset.init) return;
+    bar.dataset.init = '1';
+    if (sessionStorage.getItem('offer-closed') === '1') { bar.style.display = 'none'; return; }
+    document.getElementById('offer-close')?.addEventListener('click', () => {
+      bar.style.display = 'none';
+      sessionStorage.setItem('offer-closed', '1');
+    });
+  }
+  initOfferBar();
+  document.addEventListener('astro:page-load', initOfferBar);
+</script>

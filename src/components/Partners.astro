@@ -1,51 +1,43 @@
 ---
 // src/components/Partners.astro
 const brands = ["DAIKIN", "CARRIER", "SAMSUNG", "LG", "ANWO", "TRANE", "YORK", "LENNOX", "MITSUBISHI"];
+const fila = [...brands, ...brands, ...brands]; // Triplicado para asegurar un loop fluido en pantallas ultra anchas
 ---
+<section class="bg-[#0A0F1C] py-10 md:py-12 border-y border-white/5 overflow-hidden flex flex-col md:flex-row items-center relative">
 
-<section id="partners-section" class="py-20 bg-[#070b14] overflow-hidden relative group">
-  
-  <div id="spotlight" class="pointer-events-none absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" 
-       style="background: radial-gradient(500px circle at var(--x) var(--y), rgba(37, 99, 235, 0.12), transparent 80%);">
+  <div class="absolute inset-y-0 left-0 w-24 md:w-40 bg-gradient-to-r from-[#0A0F1C] to-transparent z-10 pointer-events-none"></div>
+  <div class="absolute inset-y-0 right-0 w-24 md:w-40 bg-gradient-to-l from-[#0A0F1C] to-transparent z-10 pointer-events-none"></div>
+
+  <div class="relative z-20 px-4 md:px-8 mb-6 md:mb-0 md:border-r border-slate-800 flex-shrink-0 flex items-center justify-center">
+    <p class="font-mono text-[10px] uppercase tracking-widest text-slate-500 whitespace-nowrap">
+      Compatibilidad<br/><span class="text-cyan-500 font-bold">Universal</span>
+    </p>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 relative z-20">
-    
-    <p class="text-xs font-bold text-blue-500 uppercase tracking-[0.3em] mb-16 text-center opacity-90">
-      Estandarizado para los líderes del mercado HVAC-R
-    </p>
-    
-    <div class="flex overflow-hidden">
-      <div class="flex gap-24 items-center animate-scroll whitespace-nowrap">
-        {brands.concat(brands).map((brand) => (
-          <span class="text-2xl md:text-5xl font-black italic tracking-tighter text-white/30 hover:text-white transition-all duration-300 cursor-default select-none">
-            {brand}
-          </span>
-        ))}
-      </div>
+  <div class="relative flex overflow-hidden w-full" style="-webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);">
+    <div class="flex items-center gap-12 md:gap-20 animate-marquee whitespace-nowrap pl-12 md:pl-20">
+      {fila.map((brand) => (
+        <span class="font-display text-2xl md:text-3xl font-black text-slate-800 hover:text-slate-600 transition-colors duration-500 select-none tracking-tight">
+          {brand}
+        </span>
+      ))}
     </div>
   </div>
+
 </section>
 
-<script>
-  const section = document.getElementById('partners-section');
-  section?.addEventListener('mousemove', (e) => {
-    const rect = section.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    section.style.setProperty('--x', `${x}px`);
-    section.style.setProperty('--y', `${y}px`);
-  });
-</script>
-
 <style>
-  @keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
   }
-  .animate-scroll {
-    display: flex;
-    width: max-content;
-    animation: scroll 50s linear infinite;
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.33%); /* Al estar triplicado, movemos un tercio */ }
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee { animation: none; }
   }
 </style>

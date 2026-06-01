@@ -1,0 +1,158 @@
+---
+// src/pages/recursos/calculadora-carga-termica.astro
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+const SIGNUP_URL = "https://app.lissi.app/signup";
+---
+<Layout title="Calculadora de Carga Térmica HVAC-R">
+  <Navbar />
+  <main class="pt-28 md:pt-32 pb-24 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-8">
+        <a href="/recursos" class="text-sm text-navy-400 hover:text-cyan-600 transition-colors">← Recursos</a>
+        <h1 class="font-display text-3xl md:text-4xl font-extrabold text-navy-900 tracking-tight mt-3 mb-3 text-balance">
+          Calculadora de carga térmica
+        </h1>
+        <p class="text-lg text-navy-500 text-balance">
+          Estima la capacidad de refrigeración que necesita un espacio para predimensionar el equipo.
+        </p>
+      </div>
+
+      <!-- Aviso de honestidad, prominente -->
+      <div class="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8">
+        <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M12 3l9 16H3l9-16z"/></svg>
+        <p class="text-sm text-amber-800 leading-relaxed">
+          <b>Es una estimación para predimensionar.</b> El cálculo por componentes da un orden de magnitud (±15%). Para una cotización final, haz un estudio de carga detallado considerando orientación, materiales y aislación reales del recinto.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+
+        <!-- Inputs -->
+        <div class="space-y-5">
+          <div>
+            <label class="block text-sm font-medium text-navy-700 mb-1">Superficie del recinto (m²)</label>
+            <input type="number" step="any" id="area" value="50" class="ct-input w-full px-3 py-2.5 border border-navy-200 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-navy-700 mb-1">Exposición / aislación</label>
+            <select id="envelope" class="ct-input w-full px-3 py-2.5 border border-navy-200 rounded-lg bg-white focus:ring-2 focus:ring-cyan-500 outline-none">
+              <option value="30">Buena aislación · poca exposición solar</option>
+              <option value="45" selected>Estándar</option>
+              <option value="70">Mucho sol · techo/ventanal expuesto · mala aislación</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-sm font-medium text-navy-700 mb-1">N° de personas</label>
+              <input type="number" step="1" id="people" value="4" class="ct-input w-full px-3 py-2.5 border border-navy-200 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-navy-700 mb-1">Actividad</label>
+              <select id="activity" class="ct-input w-full px-3 py-2.5 border border-navy-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-cyan-500 outline-none">
+                <option value="120">Reposo / oficina</option>
+                <option value="150" selected>Trabajo ligero / tienda</option>
+                <option value="235">Trabajo moderado / taller</option>
+                <option value="440">Trabajo pesado / gimnasio</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-navy-700 mb-1">Iluminación instalada (W) <span class="text-navy-400 font-normal">— opcional</span></label>
+            <input type="number" step="any" id="lighting" value="500" class="ct-input w-full px-3 py-2.5 border border-navy-200 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-navy-700 mb-1">Equipos / electrónica (W) <span class="text-navy-400 font-normal">— opcional</span></label>
+            <input type="number" step="any" id="equipment" value="600" class="ct-input w-full px-3 py-2.5 border border-navy-200 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-navy-700 mb-1">Factor de seguridad (%)</label>
+            <input type="number" step="any" id="safety" value="15" class="ct-input w-full px-3 py-2.5 border border-navy-200 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none" />
+          </div>
+        </div>
+
+        <!-- Resultado -->
+        <div>
+          <div class="bg-navy-900 rounded-2xl p-7 sticky top-28">
+            <p class="text-sm text-navy-300 uppercase tracking-wider mb-2">Capacidad estimada</p>
+            <div class="font-display text-5xl font-extrabold text-white mb-1"><span id="r-btu">0</span> <span class="text-2xl text-cyan-400">BTU/h</span></div>
+            <div class="flex gap-4 text-sm text-navy-200 mb-6 mt-3">
+              <span><b id="r-kw" class="text-white">0</b> kW</span>
+              <span><b id="r-tr" class="text-white">0</b> TR</span>
+              <span><b id="r-frig" class="text-white">0</b> frig/h</span>
+            </div>
+            <div class="border-t border-navy-800 pt-4 space-y-1.5 text-sm">
+              <p class="text-navy-400 uppercase text-xs tracking-wider mb-2">Desglose</p>
+              <div class="flex justify-between text-navy-200"><span>Envolvente + sol</span><span id="d-env">0 W</span></div>
+              <div class="flex justify-between text-navy-200"><span>Personas</span><span id="d-people">0 W</span></div>
+              <div class="flex justify-between text-navy-200"><span>Iluminación</span><span id="d-light">0 W</span></div>
+              <div class="flex justify-between text-navy-200"><span>Equipos</span><span id="d-equip">0 W</span></div>
+              <div class="flex justify-between text-navy-200"><span>Factor seguridad</span><span id="d-safety">0 W</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 bg-navy-50 border border-navy-100 rounded-2xl p-7 text-center">
+        <h3 class="font-display text-xl font-bold text-navy-900 mb-2 text-balance">Guarda este cálculo en la ficha del proyecto</h3>
+        <p class="text-navy-500 mb-5 max-w-xl mx-auto text-sm text-balance">Con Lissi documentas cada dimensionamiento y lo dejas asociado al cliente y al equipo instalado.</p>
+        <a href={SIGNUP_URL} class="inline-flex items-center gap-2 px-7 py-3 bg-navy-800 text-white rounded-xl font-semibold hover:bg-navy-700 transition-all">
+          Empieza gratis
+          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  function initCargaTermica() {
+    const area = document.getElementById('area');
+    if (!area || area.dataset.init) return;
+    area.dataset.init = '1';
+
+    const $ = (id) => document.getElementById(id);
+    const num = (id) => { const v = parseFloat($(id).value); return isNaN(v) ? 0 : v; };
+
+    function calc() {
+      const qEnv = num('area') * parseFloat($('envelope').value);
+      const qPeople = num('people') * parseFloat($('activity').value);
+      const qLight = num('lighting');
+      const qEquip = num('equipment');
+      const subtotal = qEnv + qPeople + qLight + qEquip;
+      const qSafety = subtotal * (num('safety') / 100);
+      const totalW = subtotal + qSafety;
+
+      const btu = totalW * 3.41214;
+      const kw = totalW / 1000;
+      const tr = totalW / 3516.85;
+      const frig = totalW / 1.163;
+
+      $('r-btu').textContent = Math.round(btu).toLocaleString('es-CL');
+      $('r-kw').textContent = kw.toFixed(2);
+      $('r-tr').textContent = tr.toFixed(2);
+      $('r-frig').textContent = Math.round(frig).toLocaleString('es-CL');
+
+      const w = (n) => Math.round(n).toLocaleString('es-CL') + ' W';
+      $('d-env').textContent = w(qEnv);
+      $('d-people').textContent = w(qPeople);
+      $('d-light').textContent = w(qLight);
+      $('d-equip').textContent = w(qEquip);
+      $('d-safety').textContent = w(qSafety);
+    }
+
+    document.querySelectorAll('.ct-input').forEach((el) => el.addEventListener('input', calc));
+    calc();
+  }
+  initCargaTermica();
+  document.addEventListener('astro:page-load', initCargaTermica);
+</script>

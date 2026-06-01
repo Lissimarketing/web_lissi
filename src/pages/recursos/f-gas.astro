@@ -1,0 +1,553 @@
+---
+// src/pages/recursos/f-gas.astro
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const SIGNUP_URL = "https://app.lissi.app/signup";
+
+// GWP según IPCC AR5 (Quinto Reporte de Evaluación, 2014).
+// Estándar oficial UNFCCC / Acuerdo de París.
+// Fuente: IPCC AR5 WG1 Cap. 8, tabla 8.A.1
+const refrigerantes = [
+  { id: "R-410A", gwp: 1924, type: "HFC blend (azeotrópico)", asn: "A1", status: "phase-down", note: "Phase-out 2026 en EE.UU. (AIM Act). Reemplazos: R-32, R-454B." },
+  { id: "R-32",   gwp: 677,  type: "HFC puro", asn: "A2L", status: "ok", note: "Reemplazo oficial de R-410A. Levemente inflamable." },
+  { id: "R-454B", gwp: 466,  type: "HFO blend", asn: "A2L", status: "ok", note: "Alternativa moderna a R-410A. Levemente inflamable." },
+  { id: "R-22",   gwp: 1760, type: "HCFC", asn: "A1", status: "phased-out", note: "Producción prohibida desde 2020 (EE.UU., UE). Solo mantención." },
+  { id: "R-134a", gwp: 1300, type: "HFC puro", asn: "A1", status: "phase-down" },
+  { id: "R-1234yf", gwp: 1, type: "HFO puro", asn: "A2L", status: "ok", note: "Reemplazo de R-134a en automotriz. GWP < 1." },
+  { id: "R-404A", gwp: 3943, type: "HFC blend (con glide)", asn: "A1", status: "phase-down", note: "GWP muy alto. Reemplazos: R-448A, R-449A, R-454C." },
+  { id: "R-407C", gwp: 1624, type: "HFC blend", asn: "A1", status: "phase-down" },
+  { id: "R-290",  gwp: 3,    type: "Hidrocarburo (natural)", asn: "A3", status: "ok", note: "Propano. Inflamable A3. Carga limitada por norma." },
+  { id: "R-600a", gwp: 3,    type: "Hidrocarburo (natural)", asn: "A3", status: "ok", note: "Isobutano. Uso doméstico refrigeración." },
+  { id: "R-744",  gwp: 1,    type: "CO₂ (natural)", asn: "A1", status: "ok", note: "Sistema transcrítico. Alta presión." },
+  { id: "R-717",  gwp: 0,    type: "Amoníaco (natural)", asn: "B2L", status: "ok", note: "Industrial. Tóxico, requiere certificación." },
+];
+
+// Sugerencias de reemplazo low-GWP para los gases más comunes
+const retrofitMap = {
+  "R-410A": ["R-32", "R-454B"],
+  "R-22": ["R-32", "R-407C"],
+  "R-404A": ["R-454B", "R-32"],
+  "R-134a": ["R-1234yf", "R-513A"],
+  "R-407C": ["R-32", "R-454B"],
+};
+---
+<Layout title="Calculadora de Huella de Carbono (tCO₂e) | Lissi">
+  <Navbar />
+
+  <main class="relative bg-[#0A0F1C] min-h-screen pt-28 pb-24 font-sans selection:bg-emerald-500/30 overflow-hidden">
+
+    <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-emerald-900/15 to-transparent pointer-events-none"></div>
+    <div class="absolute top-1/3 -right-40 w-[500px] h-[500px] bg-emerald-600/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <a href="/recursos" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-emerald-400 transition-colors group mb-8">
+        <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Volver a Recursos
+      </a>
+
+      <div class="grid lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12 items-start">
+
+        <!-- IZQUIERDA: Info contextual -->
+        <div class="lg:sticky lg:top-28">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="font-mono text-[10px] font-bold uppercase tracking-widest text-emerald-300">Huella de refrigerante</span>
+          </div>
+
+          <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.05] mb-5">
+            Cuánto pesa tu<br/>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500">carga de refrigerante</span>
+          </h1>
+
+          <p class="text-slate-400 text-base leading-relaxed mb-8 max-w-md">
+            Calcula el equivalente en toneladas de CO₂ de la carga instalada en un equipo. Compara con alternativas modernas para vender retrofits con datos duros.
+          </p>
+
+          <!-- Contexto Kigali educativo (NO afirma leyes) -->
+          <div class="rounded-2xl bg-slate-900/60 border border-slate-800 p-5 mb-5">
+            <p class="font-mono text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-3">// Contexto Kigali / Montreal</p>
+            <p class="text-sm text-slate-300 leading-relaxed mb-3">
+              La <strong class="text-white">Enmienda de Kigali</strong> al Protocolo de Montreal impulsa la reducción gradual de HFCs de alto GWP a nivel global.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-400">
+              <li class="flex gap-2"><span class="text-emerald-400">→</span> <span>Chile fue el <strong class="text-slate-300">primer país en ratificar</strong> Kigali (2017). KIP en marcha desde 2025.</span></li>
+              <li class="flex gap-2"><span class="text-emerald-400">→</span> <span>LATAM (grupo A5): congelamiento 2024, −10% en 2029, −80% en 2045.</span></li>
+              <li class="flex gap-2"><span class="text-emerald-400">→</span> <span>EE.UU. (AIM Act): prohíbe equipos nuevos R-410A desde 2026.</span></li>
+            </ul>
+          </div>
+
+          <!-- Disclaimer honesto -->
+          <div class="rounded-2xl bg-amber-500/5 border border-amber-500/20 p-4">
+            <div class="flex gap-3">
+              <svg class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M12 3l9 16H3l9-16z"/></svg>
+              <p class="text-xs text-amber-200/80 leading-relaxed">
+                <strong class="text-amber-200">Huella directa del refrigerante.</strong> Asume liberación 100% del gas. No incluye huella indirecta por consumo eléctrico (TEWI). Valores GWP según IPCC AR5. Resultado orientativo, no constituye certificación oficial.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DERECHA: Calculadora -->
+        <div class="bg-slate-900/80 rounded-3xl border border-slate-700/70 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl overflow-hidden">
+
+          <!-- Tabs de modo -->
+          <div class="p-3 border-b border-slate-800 bg-[#0A0F1C]/40">
+            <div class="relative flex p-1 rounded-xl bg-[#030508] border border-slate-800">
+              <div id="tab-slider" class="absolute top-1 bottom-1 left-1 w-[calc(50%-3px)] bg-slate-800 rounded-lg shadow transition-transform duration-300 ease-out z-0"></div>
+              <button class="mode-btn relative z-10 flex-1 py-2.5 text-[11px] sm:text-xs font-bold text-white transition-colors uppercase tracking-wider" data-mode="huella">Huella</button>
+              <button class="mode-btn relative z-10 flex-1 py-2.5 text-[11px] sm:text-xs font-bold text-slate-500 hover:text-slate-300 transition-colors uppercase tracking-wider" data-mode="comparador">Comparador</button>
+            </div>
+          </div>
+
+          <div class="p-5 sm:p-7 md:p-8">
+
+            <!-- DISPLAY de resultado -->
+            <div class="relative rounded-2xl bg-[#030508] border border-slate-800 p-6 md:p-7 mb-6 overflow-hidden">
+              <div id="result-glow" class="absolute inset-0 transition-all duration-500 opacity-30 pointer-events-none" style="background: radial-gradient(circle at center, rgba(16,185,129,0.25) 0%, transparent 70%);"></div>
+
+              <!-- Modo Huella display -->
+              <div id="display-huella" class="relative">
+                <p class="font-mono text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-2">Huella equivalente</p>
+                <div class="flex items-start gap-2" aria-live="polite">
+                  <span id="result-value" class="font-display text-5xl sm:text-6xl md:text-7xl font-black text-white tracking-tighter tabular-nums leading-none">0.00</span>
+                  <span class="text-lg sm:text-xl font-bold text-emerald-400 mt-2 uppercase tracking-widest">tCO₂e</span>
+                </div>
+                <div class="flex items-center gap-2 mt-4 flex-wrap">
+                  <span id="result-pill" class="px-3 py-1.5 rounded-full border border-slate-700 bg-[#0A0F1C] text-[10px] md:text-xs font-bold uppercase tracking-wider text-slate-400 transition-colors">Ingresa la carga</span>
+                </div>
+              </div>
+
+              <!-- Modo Comparador display -->
+              <div id="display-comparador" class="relative hidden">
+                <p class="font-mono text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Ahorro por retrofit</p>
+                <div class="flex items-start gap-2 mb-2" aria-live="polite">
+                  <span id="result-saving-pct" class="font-display text-5xl sm:text-6xl md:text-7xl font-black text-emerald-400 tracking-tighter tabular-nums leading-none">0</span>
+                  <span class="text-3xl font-black text-emerald-400 mt-2">%</span>
+                </div>
+                <p class="text-sm text-slate-400 mb-3">
+                  <span id="result-saving-abs" class="font-mono text-emerald-400 font-bold">0.00 tCO₂e</span> menos al cambiar de gas.
+                </p>
+                <div class="grid grid-cols-2 gap-3 mt-4">
+                  <div class="rounded-xl bg-slate-900/60 border border-slate-800 p-3">
+                    <p class="font-mono text-[9px] uppercase text-slate-500 mb-1">Actual</p>
+                    <p id="compare-old" class="font-display text-xl font-black text-white tabular-nums">0.00</p>
+                    <p class="font-mono text-[9px] text-slate-500">tCO₂e</p>
+                  </div>
+                  <div class="rounded-xl bg-emerald-500/10 border border-emerald-500/30 p-3">
+                    <p class="font-mono text-[9px] uppercase text-emerald-400 mb-1">Con retrofit</p>
+                    <p id="compare-new" class="font-display text-xl font-black text-emerald-400 tabular-nums">0.00</p>
+                    <p class="font-mono text-[9px] text-emerald-400/60">tCO₂e</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Equivalencias humanas (solo modo Huella) -->
+            <div id="equivalencias" class="grid grid-cols-3 gap-2 mb-6">
+              <div class="rounded-xl bg-slate-900/50 border border-slate-800 p-3 text-center">
+                <svg class="w-5 h-5 text-emerald-400 mx-auto mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 011-1h4l3 5v6h-2"/></svg>
+                <p id="eq-cars" class="font-display text-lg font-black text-white tabular-nums leading-none">0</p>
+                <p class="font-mono text-[9px] uppercase text-slate-500 mt-1">autos/año</p>
+              </div>
+              <div class="rounded-xl bg-slate-900/50 border border-slate-800 p-3 text-center">
+                <svg class="w-5 h-5 text-emerald-400 mx-auto mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V8l7-5 7 5v13M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h.01M15 17h.01"/></svg>
+                <p id="eq-homes" class="font-display text-lg font-black text-white tabular-nums leading-none">0</p>
+                <p class="font-mono text-[9px] uppercase text-slate-500 mt-1">hogares/año</p>
+              </div>
+              <div class="rounded-xl bg-slate-900/50 border border-slate-800 p-3 text-center">
+                <svg class="w-5 h-5 text-emerald-400 mx-auto mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p id="eq-trees" class="font-display text-lg font-black text-white tabular-nums leading-none">0</p>
+                <p class="font-mono text-[9px] uppercase text-slate-500 mt-1">árboles/año</p>
+              </div>
+            </div>
+
+            <!-- Selector gas principal -->
+            <div class="mb-5">
+              <label for="gas-select" class="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-bold block mb-2">
+                <span id="gas-label">Refrigerante actual</span>
+              </label>
+              <div class="relative">
+                <select id="gas-select" class="w-full appearance-none bg-[#0A0F1C] border border-slate-700 hover:border-emerald-500/60 focus:border-emerald-500/80 focus:outline-none rounded-xl pl-4 pr-10 py-3.5 font-mono text-sm font-bold text-white tracking-wider cursor-pointer transition-colors">
+                  {refrigerantes.map((r) => (
+                    <option value={r.id}>{r.id} — GWP {r.gwp.toLocaleString('es-CL')} ({r.type})</option>
+                  ))}
+                </select>
+                <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+              </div>
+              <!-- Ficha del gas -->
+              <div class="grid grid-cols-3 gap-2 mt-3">
+                <div class="rounded-lg bg-[#0A0F1C]/60 border border-slate-800 p-2 text-center">
+                  <span class="font-mono text-[9px] uppercase text-slate-500 block">GWP AR5</span>
+                  <span id="gas-gwp" class="text-sm font-bold text-emerald-400">1.924</span>
+                </div>
+                <div class="rounded-lg bg-[#0A0F1C]/60 border border-slate-800 p-2 text-center">
+                  <span class="font-mono text-[9px] uppercase text-slate-500 block">Clase ASHRAE</span>
+                  <span id="gas-asn" class="text-sm font-bold text-white">A1</span>
+                </div>
+                <div class="rounded-lg bg-[#0A0F1C]/60 border border-slate-800 p-2 text-center">
+                  <span class="font-mono text-[9px] uppercase text-slate-500 block">Estado</span>
+                  <span id="gas-status" class="text-sm font-bold text-amber-400">Phase-down</span>
+                </div>
+              </div>
+              <div id="gas-note" class="hidden mt-2 rounded-lg bg-amber-500/5 border border-amber-500/20 p-2.5 text-[11px] text-amber-200/80 leading-snug"></div>
+            </div>
+
+            <!-- Selector gas alternativo (solo modo comparador) -->
+            <div id="alt-section" class="mb-5 hidden">
+              <label for="alt-select" class="font-mono text-[10px] uppercase tracking-widest text-emerald-400 font-bold block mb-2">Reemplazo low-GWP</label>
+              <div class="relative">
+                <select id="alt-select" class="w-full appearance-none bg-[#0A0F1C] border border-slate-700 hover:border-emerald-500/60 focus:border-emerald-500/80 focus:outline-none rounded-xl pl-4 pr-10 py-3.5 font-mono text-sm font-bold text-white tracking-wider cursor-pointer transition-colors">
+                  {refrigerantes.map((r) => (
+                    <option value={r.id}>{r.id} — GWP {r.gwp.toLocaleString('es-CL')}</option>
+                  ))}
+                </select>
+                <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+              </div>
+              <!-- Sugerencias rápidas -->
+              <div id="alt-suggestions" class="mt-3 hidden">
+                <p class="font-mono text-[9px] uppercase text-slate-500 mb-2">Recomendado para tu gas actual:</p>
+                <div id="alt-suggestion-chips" class="flex flex-wrap gap-2"></div>
+              </div>
+            </div>
+
+            <!-- Input masa -->
+            <div class="bg-[#0A0F1C]/50 p-4 sm:p-5 rounded-2xl border border-slate-800 mb-4">
+              <div class="flex justify-between items-end mb-4">
+                <div>
+                  <label for="slider-kg" class="font-mono text-[10px] uppercase tracking-widest text-emerald-400 font-bold block mb-1">Masa del refrigerante</label>
+                  <span class="text-[11px] text-slate-500">Carga total del equipo</span>
+                </div>
+                <div class="text-right flex items-baseline gap-1">
+                  <input id="input-kg-num" type="number" inputmode="decimal" class="font-display text-3xl sm:text-4xl font-black text-white tabular-nums w-24 text-right bg-transparent border-0 focus:outline-none focus:text-emerald-400 transition-colors" value="5" step="0.1" min="0">
+                  <span class="text-[10px] font-bold text-slate-500">kg</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <button class="step-btn w-10 h-10 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:bg-slate-700 hover:text-white active:scale-95 transition-all" data-step="-0.5" aria-label="Disminuir carga">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"/></svg>
+                </button>
+                <input type="range" id="slider-kg" min="0.1" max="500" value="5" step="0.1" class="flex-1 custom-range thumb-emerald">
+                <button class="step-btn w-10 h-10 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:bg-slate-700 hover:text-white active:scale-95 transition-all" data-step="0.5" aria-label="Aumentar carga">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                </button>
+              </div>
+              <!-- Presets de equipos -->
+              <div class="flex flex-wrap gap-1.5 mt-4">
+                <button class="preset-btn px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700 text-[10px] font-mono text-slate-400 hover:border-emerald-500/40 hover:text-emerald-400 transition-colors" data-kg="1.2">Split res. (1.2)</button>
+                <button class="preset-btn px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700 text-[10px] font-mono text-slate-400 hover:border-emerald-500/40 hover:text-emerald-400 transition-colors" data-kg="3.5">Multisplit (3.5)</button>
+                <button class="preset-btn px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700 text-[10px] font-mono text-slate-400 hover:border-emerald-500/40 hover:text-emerald-400 transition-colors" data-kg="12">VRF chico (12)</button>
+                <button class="preset-btn px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700 text-[10px] font-mono text-slate-400 hover:border-emerald-500/40 hover:text-emerald-400 transition-colors" data-kg="50">Chiller (50)</button>
+                <button class="preset-btn px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700 text-[10px] font-mono text-slate-400 hover:border-emerald-500/40 hover:text-emerald-400 transition-colors" data-kg="200">Industrial (200)</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- CTAs al pie -->
+          <div class="p-5 sm:p-6 border-t border-slate-800 bg-slate-900/60 space-y-2.5">
+            <button id="download-pdf" class="group w-full py-3.5 rounded-xl flex items-center justify-center gap-2 font-bold text-sm uppercase tracking-wider text-[#0A0F1C] bg-emerald-400 hover:bg-emerald-300 transition-all active:scale-[0.99]">
+              Descargar resumen PDF
+              <svg class="w-4 h-4 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </button>
+            <a href={SIGNUP_URL} class="group w-full py-3 rounded-xl flex items-center justify-center gap-2 font-semibold text-xs uppercase tracking-wider text-slate-300 border border-slate-700 hover:border-emerald-500/50 hover:text-white transition-all">
+              Adjuntar al historial del cliente con Lissi
+              <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .custom-range { -webkit-appearance: none; appearance: none; width: 100%; background: transparent; height: 30px; }
+  .custom-range:focus { outline: none; }
+  .custom-range::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #1e293b; border-radius: 999px; }
+  .custom-range::-moz-range-track { width: 100%; height: 4px; cursor: pointer; background: #1e293b; border-radius: 999px; }
+  .custom-range::-webkit-slider-thumb { height: 22px; width: 22px; border-radius: 50%; background: #ffffff; cursor: pointer; -webkit-appearance: none; margin-top: -9px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border: 4px solid #06b6d4; transition: transform 0.1s; }
+  .custom-range::-moz-range-thumb { height: 22px; width: 22px; border-radius: 50%; background: #ffffff; cursor: pointer; border: 4px solid #06b6d4; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+  .custom-range::-webkit-slider-thumb:active { transform: scale(1.1); }
+  .custom-range.thumb-emerald::-webkit-slider-thumb { border-color: #10b981; }
+  .custom-range.thumb-emerald::-moz-range-thumb { border-color: #10b981; }
+  input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type=number] { -moz-appearance: textfield; }
+  #gas-select option, #alt-select option { background: #0A0F1C; color: white; }
+</style>
+
+<!-- jsPDF para generar PDF real -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" is:inline></script>
+
+<script is:inline define:vars={{ refrigerantesData: refrigerantes, retrofitMapData: retrofitMap }}>
+  // ============================================
+  // EQUIVALENCIAS REALES (fuentes citadas)
+  // ============================================
+  // 1 auto promedio LATAM: 11.500 km/año × 200 g CO₂/km = 2.3 tCO₂e/año (IEA 2022)
+  // 1 hogar promedio Chile (electricidad): ~2.5 tCO₂e/año (Ministerio Energía CL)
+  // 1 árbol maduro absorbe: ~21 kg CO₂/año (US EPA / Arbor Day Foundation)
+  const EQ_CAR = 2.3;     // tCO₂e/año por auto
+  const EQ_HOME = 2.5;    // tCO₂e/año por hogar
+  const EQ_TREE = 0.021;  // tCO₂e/año por árbol
+
+  // ============================================
+  // STATE
+  // ============================================
+  let state = {
+    mode: 'huella',
+    gas: 'R-410A',
+    alt: 'R-32',
+    kg: 5,
+  };
+  try { state = { ...state, ...JSON.parse(localStorage.getItem('lissi-fgas-state') || '{}') }; } catch (e) {}
+  function save() { try { localStorage.setItem('lissi-fgas-state', JSON.stringify(state)); } catch (e) {} }
+
+  // ============================================
+  // REFS
+  // ============================================
+  const tabSlider = document.getElementById('tab-slider');
+  const modeBtns = document.querySelectorAll('.mode-btn');
+  const gasSelect = document.getElementById('gas-select');
+  const altSelect = document.getElementById('alt-select');
+  const gasLabel = document.getElementById('gas-label');
+  const gasGwp = document.getElementById('gas-gwp');
+  const gasAsn = document.getElementById('gas-asn');
+  const gasStatus = document.getElementById('gas-status');
+  const gasNote = document.getElementById('gas-note');
+  const sliderKg = document.getElementById('slider-kg');
+  const inputKgNum = document.getElementById('input-kg-num');
+  const resultValue = document.getElementById('result-value');
+  const resultPill = document.getElementById('result-pill');
+  const resultGlow = document.getElementById('result-glow');
+  const eqCars = document.getElementById('eq-cars');
+  const eqHomes = document.getElementById('eq-homes');
+  const eqTrees = document.getElementById('eq-trees');
+  const displayHuella = document.getElementById('display-huella');
+  const displayComparador = document.getElementById('display-comparador');
+  const altSection = document.getElementById('alt-section');
+  const altSuggestions = document.getElementById('alt-suggestions');
+  const altSuggestionChips = document.getElementById('alt-suggestion-chips');
+  const equivalencias = document.getElementById('equivalencias');
+  const resultSavingPct = document.getElementById('result-saving-pct');
+  const resultSavingAbs = document.getElementById('result-saving-abs');
+  const compareOld = document.getElementById('compare-old');
+  const compareNew = document.getElementById('compare-new');
+
+  function getGas(id) { return refrigerantesData.find((r) => r.id === id); }
+
+  // ============================================
+  // RENDER
+  // ============================================
+  function updateGasInfo() {
+    const g = getGas(state.gas);
+    if (!g) return;
+    gasGwp.textContent = g.gwp.toLocaleString('es-CL');
+    gasAsn.textContent = g.asn;
+    const statusMap = { 'ok': ['Vigente', 'text-emerald-400'], 'phase-down': ['Phase-down', 'text-amber-400'], 'phased-out': ['Phased-out', 'text-rose-400'] };
+    const [txt, cls] = statusMap[g.status] || statusMap.ok;
+    gasStatus.textContent = txt;
+    gasStatus.className = `text-sm font-bold ${cls}`;
+    if (g.note) { gasNote.textContent = g.note; gasNote.classList.remove('hidden'); }
+    else { gasNote.classList.add('hidden'); }
+
+    // Actualizar sugerencias en modo comparador
+    if (state.mode === 'comparador') {
+      const suggestions = retrofitMapData[state.gas] || [];
+      if (suggestions.length > 0) {
+        altSuggestions.classList.remove('hidden');
+        altSuggestionChips.innerHTML = '';
+        suggestions.forEach((id) => {
+          const sg = getGas(id);
+          if (!sg) return;
+          const chip = document.createElement('button');
+          chip.className = 'px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-mono text-emerald-400 hover:bg-emerald-500/20 transition-colors';
+          chip.textContent = `${sg.id} (GWP ${sg.gwp})`;
+          chip.addEventListener('click', () => { state.alt = sg.id; altSelect.value = sg.id; save(); calculate(); });
+          altSuggestionChips.appendChild(chip);
+        });
+      } else {
+        altSuggestions.classList.add('hidden');
+      }
+    } else {
+      altSuggestions.classList.add('hidden');
+    }
+  }
+
+  function renderUI() {
+    // Tabs
+    const idx = state.mode === 'huella' ? 0 : 1;
+    tabSlider.style.transform = `translateX(calc(${idx * 100}% + ${idx * 4}px))`;
+    modeBtns.forEach((b) => {
+      const on = b.dataset.mode === state.mode;
+      b.classList.toggle('text-white', on);
+      b.classList.toggle('text-slate-500', !on);
+    });
+
+    // Mostrar/ocultar bloques según modo
+    if (state.mode === 'huella') {
+      displayHuella.classList.remove('hidden');
+      displayComparador.classList.add('hidden');
+      altSection.classList.add('hidden');
+      equivalencias.classList.remove('hidden');
+      gasLabel.textContent = 'Refrigerante';
+    } else {
+      displayHuella.classList.add('hidden');
+      displayComparador.classList.remove('hidden');
+      altSection.classList.remove('hidden');
+      equivalencias.classList.add('hidden');
+      gasLabel.textContent = 'Refrigerante actual';
+    }
+    calculate();
+  }
+
+  // ============================================
+  // CÁLCULO
+  // ============================================
+  function calculate() {
+    const g = getGas(state.gas);
+    if (!g) return;
+    const tCO2e = (state.kg * g.gwp) / 1000;
+
+    if (state.mode === 'huella') {
+      resultValue.textContent = tCO2e.toFixed(2);
+
+      // Status contextual NO normativo
+      let statusText, statusClass, glowColor;
+      if (tCO2e < 1) { statusText = 'Impacto bajo'; statusClass = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'; glowColor = 'rgba(16,185,129,0.2)'; }
+      else if (tCO2e < 10) { statusText = 'Impacto moderado'; statusClass = 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30'; glowColor = 'rgba(6,182,212,0.2)'; }
+      else if (tCO2e < 100) { statusText = 'Impacto alto'; statusClass = 'text-amber-400 bg-amber-500/10 border-amber-500/30'; glowColor = 'rgba(245,158,11,0.2)'; }
+      else { statusText = 'Impacto muy alto'; statusClass = 'text-rose-400 bg-rose-500/10 border-rose-500/30'; glowColor = 'rgba(244,63,94,0.2)'; }
+      resultPill.textContent = statusText;
+      resultPill.className = `px-3 py-1.5 rounded-full border text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors ${statusClass}`;
+      resultGlow.style.background = `radial-gradient(circle at center, ${glowColor} 0%, transparent 70%)`;
+
+      // Equivalencias
+      eqCars.textContent = (tCO2e / EQ_CAR).toFixed(1);
+      eqHomes.textContent = (tCO2e / EQ_HOME).toFixed(1);
+      eqTrees.textContent = Math.round(tCO2e / EQ_TREE).toLocaleString('es-CL');
+    } else {
+      // Comparador
+      const ga = getGas(state.alt);
+      if (!ga) return;
+      const tCO2eOld = (state.kg * g.gwp) / 1000;
+      const tCO2eNew = (state.kg * ga.gwp) / 1000;
+      const saving = tCO2eOld - tCO2eNew;
+      const pct = tCO2eOld > 0 ? (saving / tCO2eOld) * 100 : 0;
+
+      compareOld.textContent = tCO2eOld.toFixed(2);
+      compareNew.textContent = tCO2eNew.toFixed(2);
+      resultSavingPct.textContent = Math.abs(pct).toFixed(0);
+      resultSavingAbs.textContent = `${Math.abs(saving).toFixed(2)} tCO₂e`;
+
+      // Color del glow según ahorro
+      if (pct > 0) resultGlow.style.background = 'radial-gradient(circle at center, rgba(16,185,129,0.25) 0%, transparent 70%)';
+      else resultGlow.style.background = 'radial-gradient(circle at center, rgba(244,63,94,0.2) 0%, transparent 70%)';
+    }
+  }
+
+  // ============================================
+  // EVENTS
+  // ============================================
+  modeBtns.forEach((b) => b.addEventListener('click', () => { state.mode = b.dataset.mode; save(); renderUI(); updateGasInfo(); }));
+  gasSelect.addEventListener('change', () => { state.gas = gasSelect.value; save(); updateGasInfo(); calculate(); });
+  altSelect.addEventListener('change', () => { state.alt = altSelect.value; save(); calculate(); });
+  sliderKg.addEventListener('input', () => { state.kg = parseFloat(sliderKg.value); inputKgNum.value = state.kg.toFixed(1); save(); calculate(); });
+  inputKgNum.addEventListener('input', () => { const v = parseFloat(inputKgNum.value); if (isNaN(v)) return; state.kg = v; sliderKg.value = v; save(); calculate(); });
+  document.querySelectorAll('.step-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const step = parseFloat(btn.dataset.step);
+      const nv = Math.min(parseFloat(sliderKg.max), Math.max(parseFloat(sliderKg.min), state.kg + step));
+      state.kg = nv; sliderKg.value = nv; inputKgNum.value = nv.toFixed(1); save(); calculate();
+    });
+  });
+  document.querySelectorAll('.preset-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const v = parseFloat(btn.dataset.kg);
+      state.kg = v; sliderKg.value = v; inputKgNum.value = v.toFixed(1); save(); calculate();
+    });
+  });
+
+  // ============================================
+  // PDF DOWNLOAD
+  // ============================================
+  document.getElementById('download-pdf').addEventListener('click', () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const g = getGas(state.gas);
+    const ga = state.mode === 'comparador' ? getGas(state.alt) : null;
+    const tCO2e = (state.kg * g.gwp) / 1000;
+    const today = new Date().toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' });
+
+    // Header
+    doc.setFontSize(22); doc.setTextColor(10, 37, 64); doc.setFont(undefined, 'bold');
+    doc.text('Lissi · Huella de refrigerante', 20, 25);
+    doc.setFontSize(10); doc.setTextColor(100, 116, 139); doc.setFont(undefined, 'normal');
+    doc.text(`Cálculo generado el ${today}`, 20, 32);
+    doc.setDrawColor(16, 185, 129); doc.setLineWidth(0.5); doc.line(20, 36, 190, 36);
+
+    // Datos
+    doc.setFontSize(11); doc.setTextColor(15, 23, 42); doc.setFont(undefined, 'bold');
+    doc.text('Datos del cálculo', 20, 48);
+    doc.setFont(undefined, 'normal'); doc.setFontSize(10);
+    doc.text(`Refrigerante: ${g.id} (${g.type})`, 20, 56);
+    doc.text(`GWP (IPCC AR5): ${g.gwp.toLocaleString('es-CL')}`, 20, 62);
+    doc.text(`Clase ASHRAE: ${g.asn}`, 20, 68);
+    doc.text(`Masa de carga: ${state.kg.toFixed(1)} kg`, 20, 74);
+
+    // Resultado
+    doc.setFillColor(16, 185, 129, 0.1); doc.rect(20, 82, 170, 32, 'F');
+    doc.setFontSize(9); doc.setTextColor(16, 185, 129); doc.setFont(undefined, 'bold');
+    doc.text('HUELLA EQUIVALENTE (DIRECTA)', 25, 90);
+    doc.setFontSize(28); doc.setTextColor(15, 23, 42);
+    doc.text(`${tCO2e.toFixed(2)} tCO₂e`, 25, 106);
+    doc.setFontSize(9); doc.setFont(undefined, 'normal'); doc.setTextColor(71, 85, 105);
+    doc.text(`Equivale a ${(tCO2e / EQ_CAR).toFixed(1)} autos/año o ${Math.round(tCO2e / EQ_TREE).toLocaleString('es-CL')} árboles/año`, 25, 112);
+
+    let yPos = 124;
+    // Comparador (si aplica)
+    if (ga) {
+      const tCO2eNew = (state.kg * ga.gwp) / 1000;
+      const saving = tCO2e - tCO2eNew;
+      const pct = tCO2e > 0 ? (saving / tCO2e) * 100 : 0;
+      doc.setFontSize(11); doc.setFont(undefined, 'bold'); doc.setTextColor(15, 23, 42);
+      doc.text(`Retrofit propuesto: ${g.id} → ${ga.id}`, 20, yPos); yPos += 8;
+      doc.setFont(undefined, 'normal'); doc.setFontSize(10);
+      doc.text(`Huella con ${ga.id}: ${tCO2eNew.toFixed(2)} tCO₂e (GWP ${ga.gwp})`, 20, yPos); yPos += 6;
+      doc.setTextColor(16, 185, 129); doc.setFont(undefined, 'bold');
+      doc.text(`Ahorro: ${saving.toFixed(2)} tCO₂e (-${pct.toFixed(0)}%)`, 20, yPos); yPos += 12;
+    }
+
+    // Disclaimer
+    doc.setTextColor(146, 64, 14); doc.setFontSize(9); doc.setFont(undefined, 'bold');
+    doc.text('Notas técnicas', 20, yPos); yPos += 6;
+    doc.setFont(undefined, 'normal'); doc.setTextColor(100, 116, 139);
+    const notes = [
+      'Cálculo de huella DIRECTA del refrigerante (asume liberación 100%).',
+      'No incluye huella indirecta por consumo eléctrico (TEWI).',
+      'Valores GWP según IPCC AR5 (Quinto Reporte de Evaluación, 2014).',
+      'Documento orientativo. No constituye certificación ambiental oficial.',
+      'Contexto: Enmienda de Kigali / Protocolo de Montreal.',
+    ];
+    notes.forEach((n) => { doc.text(`• ${n}`, 20, yPos); yPos += 5; });
+
+    // Footer
+    doc.setFontSize(8); doc.setTextColor(148, 163, 184);
+    doc.text('Generado con Lissi · lissi.app', 20, 285);
+
+    doc.save(`lissi-huella-${g.id}-${state.kg}kg.pdf`);
+  });
+
+  // ============================================
+  // INIT
+  // ============================================
+  gasSelect.value = state.gas;
+  altSelect.value = state.alt;
+  sliderKg.value = state.kg;
+  inputKgNum.value = state.kg.toFixed(1);
+  updateGasInfo();
+  renderUI();
+</script>

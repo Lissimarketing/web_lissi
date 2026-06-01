@@ -1,137 +1,274 @@
 ---
 // src/components/Ecosystem.astro
 ---
-<section class="py-24 bg-white relative overflow-hidden">
+<section id="ecosistema" class="relative bg-[#0A0F1C] py-24 md:py-32 overflow-hidden border-t border-slate-800/50">
+  
+  <div class="absolute inset-0 pointer-events-none opacity-[0.15]"
+       style="background-image: linear-gradient(rgba(0,229,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.2) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse 90% 70% at 50% 50%, black 20%, transparent 100%);"></div>
+
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    
-    <div class="text-center mb-20">
-      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
-        Un ecosistema, <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500">dos realidades.</span>
-      </h2>
-      <p class="text-lg text-slate-500 max-w-2xl mx-auto font-medium">
-        Conectamos la oficina con el terreno en tiempo real. Sin cables, sin papeles, sin dramas.
-      </p>
-    </div>
+    <div class="grid lg:grid-cols-2 gap-12 md:gap-16 items-center">
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      
-      <div class="bg-slate-50 rounded-[2.5rem] p-8 md:p-12 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500">
-        
-        <div class="relative z-10 mb-12">
-          <span class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-slate-200 text-slate-600 text-xs font-bold rounded-full uppercase tracking-wider mb-6 shadow-sm">
-            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
-            Para la Oficina
+      <div>
+        <div class="flex items-center gap-2 mb-6">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
           </span>
-          <h3 class="text-3xl font-bold text-slate-900 mb-3">Control Centralizado</h3>
-          <p class="text-slate-500 text-base leading-relaxed">
-            Tu torre de control. Gestiona OTs, clientes y el historial completo de tus activos desde cualquier navegador web.
-          </p>
+          <p class="font-mono text-xs uppercase tracking-[0.2em] text-cyan-400">Oficina + Terreno</p>
         </div>
         
-        <div class="relative rounded-t-xl bg-white border border-slate-200 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] h-72 translate-y-6 group-hover:translate-y-4 transition-transform duration-500 overflow-hidden flex">
-             
-             <div class="w-16 bg-slate-900 flex flex-col items-center py-4 gap-4 border-r border-slate-800">
-                <div class="w-8 h-8 rounded-lg bg-blue-600 mb-4"></div>
-                <div class="w-8 h-8 rounded-lg bg-slate-800/50"></div>
-                <div class="w-8 h-8 rounded-lg bg-slate-800/50"></div>
-                <div class="w-8 h-8 rounded-lg bg-slate-800/50"></div>
-             </div>
-
-             <div class="flex-1 bg-slate-50 flex flex-col">
-                <div class="h-12 bg-white border-b border-slate-200 flex items-center justify-between px-6">
-                    <div class="h-3 w-24 bg-slate-200 rounded-full"></div>
-                    <div class="flex gap-2">
-                        <div class="h-8 w-24 bg-blue-600 rounded-lg shadow-sm shadow-blue-200"></div>
-                    </div>
-                </div>
-
-                <div class="p-6">
-                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div class="h-10 border-b border-slate-100 bg-slate-50/50 flex items-center px-4 gap-4">
-                            <div class="w-4 h-4 rounded border border-slate-300"></div>
-                            <div class="h-2 w-20 bg-slate-200 rounded"></div>
-                            <div class="h-2 w-32 bg-slate-200 rounded"></div>
-                            <div class="h-2 w-16 bg-slate-200 rounded ml-auto"></div>
-                        </div>
-                        <div class="h-12 border-b border-slate-50 flex items-center px-4 gap-4 hover:bg-blue-50/50 transition-colors">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-bold">JD</div>
-                            <div class="flex-1">
-                                <div class="h-2.5 w-32 bg-slate-800 rounded mb-1.5"></div>
-                                <div class="h-2 w-20 bg-slate-300 rounded"></div>
-                            </div>
-                            <div class="px-2 py-1 rounded-md bg-green-100 text-green-700 text-[10px] font-bold">AL DÍA</div>
-                        </div>
-                        <div class="h-12 border-b border-slate-50 flex items-center px-4 gap-4 hover:bg-blue-50/50 transition-colors">
-                            <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-[10px] font-bold">MT</div>
-                            <div class="flex-1">
-                                <div class="h-2.5 w-24 bg-slate-800 rounded mb-1.5"></div>
-                                <div class="h-2 w-16 bg-slate-300 rounded"></div>
-                            </div>
-                            <div class="px-2 py-1 rounded-md bg-blue-100 text-blue-700 text-[10px] font-bold">EN RUTA</div>
-                        </div>
-                        <div class="h-12 flex items-center px-4 gap-4 hover:bg-blue-50/50 transition-colors">
-                            <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-[10px] font-bold">AS</div>
-                            <div class="flex-1">
-                                <div class="h-2.5 w-28 bg-slate-800 rounded mb-1.5"></div>
-                                <div class="h-2 w-24 bg-slate-300 rounded"></div>
-                            </div>
-                            <div class="px-2 py-1 rounded-md bg-slate-100 text-slate-500 text-[10px] font-bold">PENDIENTE</div>
-                        </div>
-                    </div>
-                </div>
-             </div>
-        </div>
+        <h2 class="font-display text-4xl md:text-[3.75rem] font-black text-white tracking-tight mb-8 leading-[1.05]">
+          Dos realidades.<br/>
+          <span class="bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-500 bg-clip-text text-transparent drop-shadow-md">Un solo ecosistema.</span>
+        </h2>
+        
+        <p class="text-xl text-slate-300 leading-relaxed mb-12 max-w-lg font-light">
+          Conectamos la oficina con el terreno en tiempo real. Cero fricción, cero papel.
+        </p>
+        
+        <ul class="space-y-5">
+          {[
+            { t: "Administrador / Mesa de Despacho", d: "Asigna órdenes masivas, visualiza métricas de rendimiento y despacha desde una vista gerencial.", icon: "M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" },
+            { t: "Técnico en Terreno", d: "Revisa su agenda del día, inicia el trabajo con un clic y reporta hallazgos desde una app nativa.", icon: "M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" }
+          ].map((item) => (
+            <li class="flex items-start gap-4 p-5 rounded-2xl bg-slate-900/40 border border-slate-800/50 hover:bg-slate-800/60 transition-colors">
+              <div class="mt-0.5 w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700 text-cyan-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d={item.icon}/></svg>
+              </div>
+              <div>
+                <p class="text-base font-bold text-white tracking-tight mb-1">{item.t}</p>
+                <p class="text-xs text-slate-400 leading-relaxed">{item.d}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div class="bg-[#0f172a] rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden group hover:shadow-blue-500/20 transition-all duration-500">
-         <div class="absolute top-0 right-0 w-80 h-80 bg-blue-600/20 rounded-full blur-[100px] -mr-20 -mt-20 pointer-events-none"></div>
+      <div data-reveal class="relative group mt-16 lg:mt-0" style="perspective: 2000px;">
         
-        <div class="relative z-10 mb-12">
-          <span class="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-bold rounded-full uppercase tracking-wider mb-6">
-            <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-            Para el Técnico
-          </span>
-          <h3 class="text-3xl font-bold text-white mb-3">App Móvil Nativa</h3>
-          <p class="text-slate-400 text-base leading-relaxed">
-            La herramienta de bolsillo definitiva. Funciona offline, escanea códigos QR, permite subir fotos y firma digital en pantalla.
-          </p>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-cyan-600/10 rounded-full blur-[140px] pointer-events-none eco-aurora mix-blend-screen z-0"></div>
+
+        <div class="relative w-full rounded-3xl bg-slate-900 border border-slate-700/80 shadow-[0_30px_60px_rgba(0,0,0,0.6)] overflow-hidden transform group-hover:rotate-y-[-1deg] group-hover:rotate-x-[1deg] transition-transform duration-700 ease-out z-10">
+          
+          <div class="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"></div>
+
+          <div class="flex items-center gap-4 px-4 h-10 border-b border-slate-800 bg-slate-900/80">
+            <div class="flex gap-1.5">
+              <span class="w-3 h-3 rounded-full bg-slate-700/50"></span>
+              <span class="w-3 h-3 rounded-full bg-slate-700/50"></span>
+              <span class="w-3 h-3 rounded-full bg-slate-700/50"></span>
+            </div>
+            <div class="flex-1 max-w-sm h-6 rounded-md bg-slate-950 border border-slate-800 flex items-center px-3 gap-2">
+              <svg class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <span class="font-mono text-[9px] text-slate-500">app.lissi.cl/dashboard</span>
+            </div>
+          </div>
+          
+          <div class="flex h-[420px] bg-[#0A0F1C]">
+            <div class="w-16 bg-slate-900 border-r border-slate-800 flex flex-col items-center py-5 gap-5 flex-shrink-0">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(0,229,255,0.3)]">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div class="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+              <div class="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+              <div class="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500 mt-auto"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+            </div>
+            
+            <div class="flex-1 p-6 flex flex-col gap-4 overflow-hidden">
+              <div class="flex justify-between items-end mb-2">
+                <div>
+                  <p class="font-mono text-[10px] uppercase text-slate-500 mb-1">Métricas Generales</p>
+                  <p class="font-display text-2xl font-bold text-white leading-none">Rendimiento Mensual</p>
+                </div>
+                <div class="flex gap-2">
+                  <span class="font-mono text-[9px] text-slate-400 bg-slate-800 px-2 py-1 rounded border border-slate-700">Exportar CSV</span>
+                </div>
+              </div>
+              
+              <div class="w-full h-28 bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col relative overflow-hidden">
+                 <div class="flex justify-between items-start z-10 relative">
+                   <div>
+                     <p class="text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-1">Órdenes Completadas</p>
+                     <p class="text-2xl font-black text-white">284 <span class="text-[10px] text-emerald-400 font-medium">↑ 12%</span></p>
+                   </div>
+                 </div>
+                 <div class="absolute inset-x-0 bottom-0 h-16">
+                   <svg viewBox="0 0 400 60" class="w-full h-full" preserveAspectRatio="none">
+                     <defs>
+                       <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                         <stop offset="0%" stop-color="rgba(0,229,255,0.4)"/>
+                         <stop offset="100%" stop-color="rgba(0,229,255,0)"/>
+                       </linearGradient>
+                     </defs>
+                     <path d="M0,60 L0,40 C40,40 60,10 100,15 C140,20 160,50 200,45 C240,40 260,15 300,20 C340,25 360,5 400,10 L400,60 Z" fill="url(#chartGrad)"/>
+                     <path d="M0,40 C40,40 60,10 100,15 C140,20 160,50 200,45 C240,40 260,15 300,20 C340,25 360,5 400,10" fill="none" stroke="#00E5FF" stroke-width="2.5" class="eco-chart-line"/>
+                   </svg>
+                 </div>
+              </div>
+              
+              <div class="flex-1 bg-slate-900/80 border border-slate-800 rounded-xl flex flex-col overflow-hidden">
+                <div class="grid grid-cols-12 gap-2 px-4 py-3 border-b border-slate-800 bg-slate-950/50 text-[9px] uppercase font-bold text-slate-500 tracking-wider">
+                  <div class="col-span-2">OT</div>
+                  <div class="col-span-4">Cliente</div>
+                  <div class="col-span-3">Técnico</div>
+                  <div class="col-span-3 text-right">Estado</div>
+                </div>
+                <div class="flex flex-col p-2 gap-1.5 overflow-hidden">
+                  {[
+                    {ot: 'OT-8492', c: 'Clínica Bascur - Sede...', t: 'C. Silva', e: 'EN RUTA', ec: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20'},
+                    {ot: 'OT-8491', c: 'Mall Plaza Trébol', t: 'J. Ruiz', e: 'TRABAJANDO', ec: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'},
+                    {ot: 'OT-8490', c: 'Edificio Costanera', t: 'D. Vega', e: 'COMPLETADO', ec: 'text-slate-400 bg-slate-800 border-slate-700'},
+                    {ot: 'OT-8489', c: 'Supermercado Lider', t: 'M. Soto', e: 'COMPLETADO', ec: 'text-slate-400 bg-slate-800 border-slate-700'}
+                  ].map((row) => (
+                    <div class="grid grid-cols-12 gap-2 px-2 py-2 items-center rounded-lg hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700/50 cursor-default">
+                      <div class="col-span-2 font-mono text-[10px] text-white font-medium">{row.ot}</div>
+                      <div class="col-span-4 text-[11px] text-slate-300 truncate pr-2">{row.c}</div>
+                      <div class="col-span-3 flex items-center gap-1.5">
+                        <div class="w-4 h-4 rounded-full bg-slate-800 flex items-center justify-center text-[7px] text-slate-400 font-bold border border-slate-700">{row.t.substring(0,1)}</div>
+                        <span class="text-[10px] text-slate-400">{row.t}</span>
+                      </div>
+                      <div class="col-span-3 flex justify-end">
+                        <span class={`font-mono text-[8px] font-bold px-1.5 py-0.5 rounded border ${row.ec}`}>{row.e}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
 
-        <div class="relative mx-auto w-64 rounded-t-[2.5rem] bg-slate-900 border-[6px] border-slate-800 shadow-2xl h-72 translate-y-6 group-hover:translate-y-4 transition-transform duration-500 overflow-hidden flex flex-col">
-             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-5 bg-slate-800 rounded-b-xl z-20"></div>
-             
-             <div class="flex-1 bg-slate-950 p-5 pt-10 flex flex-col">
-                <div class="flex justify-between items-center mb-6">
-                    <div>
-                        <div class="h-2 w-16 bg-slate-700 rounded mb-1"></div>
-                        <div class="h-3 w-24 bg-white rounded"></div>
-                    </div>
-                    <div class="w-8 h-8 rounded-full bg-blue-600 border-2 border-slate-800"></div>
-                </div>
+        <div class="absolute -bottom-10 -right-4 md:-right-8 z-20 transform-gpu rotate-y-[-4deg] rotate-x-[2deg] group-hover:rotate-y-0 group-hover:rotate-x-0 group-hover:translate-x-2 transition-transform duration-700 ease-out shadow-[0_30px_70px_rgba(0,0,0,0.9)]">
+          
+          <div class="absolute top-24 -left-[2px] w-[2px] h-10 bg-slate-700 rounded-l-md z-0 shadow-[-2px_0_5px_rgba(0,0,0,0.5)]"></div>
+          <div class="absolute top-44 -left-[2px] w-[2px] h-14 bg-slate-700 rounded-l-md z-0 shadow-[-2px_0_5px_rgba(0,0,0,0.5)]"></div>
+          <div class="absolute top-36 -right-[2px] w-[2px] h-16 bg-slate-700 rounded-r-md z-0 shadow-[2px_0_5px_rgba(0,0,0,0.5)]"></div>
 
-                <div class="w-full h-12 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl flex items-center justify-center gap-2 mb-6 shadow-lg shadow-blue-900/50">
-                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" /></svg>
-                    <span class="text-xs font-bold text-white">Escanear Equipo</span>
-                </div>
+          <div class="relative w-[210px] h-[440px] rounded-[3rem] bg-[#0A0F1C] border-[8px] border-slate-800 shadow-inner overflow-hidden flex flex-col">
+            
+            <div class="absolute top-0 right-0 w-24 h-48 bg-white/5 skew-x-12 blur-xl z-0 pointer-events-none"></div>
 
-                <div class="bg-slate-900 rounded-xl p-3 border border-slate-800">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-[10px] font-bold text-orange-400 bg-orange-400/10 px-2 py-0.5 rounded">URGENTE</span>
-                        <span class="text-[10px] text-slate-500">10:30 AM</span>
-                    </div>
-                    <div class="h-3 w-3/4 bg-slate-200 rounded mb-2"></div>
-                    <div class="h-2 w-1/2 bg-slate-600 rounded"></div>
+            <div class="absolute top-3 left-1/2 -translate-x-1/2 w-[88px] h-7 bg-black rounded-full z-40 shadow-md flex justify-between items-center px-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#111] border border-slate-800/80 shadow-inner"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-500/80 shadow-[0_0_8px_rgba(0,229,255,0.8)] animate-pulse"></span>
+            </div>
+
+            <div class="relative px-5 pt-12 pb-3 z-10">
+              <div class="absolute top-12 inset-x-3 bg-cyan-500 text-slate-950 rounded-xl px-3 py-2.5 flex items-center gap-2 text-[9px] font-bold tracking-tight shadow-xl z-50 opacity-0 translate-y-[-10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                <div class="flex flex-col">
+                  <span class="uppercase tracking-wider opacity-80 text-[7px]">Despacho Automático</span>
+                  <span>Nueva OT Asignada</span>
                 </div>
-             </div>
-             
-             <div class="h-12 bg-slate-900 border-t border-slate-800 flex justify-around items-center px-2">
-                 <div class="w-6 h-6 rounded bg-blue-500"></div>
-                 <div class="w-6 h-6 rounded bg-slate-800"></div>
-                 <div class="w-6 h-6 rounded bg-slate-800"></div>
-             </div>
+              </div>
+
+              <div class="flex justify-between items-center mb-1">
+                <div>
+                  <p class="text-[9px] text-slate-400 font-medium">Hoy, 30 May</p>
+                  <p class="text-lg text-white font-bold leading-tight tracking-tight">Hola, César</p>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">CS</div>
+              </div>
+            </div>
+
+            <div class="flex-1 px-4 flex flex-col gap-3 overflow-hidden z-10 pb-4 relative">
+              
+              <div class="flex items-center justify-between">
+                <p class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Mis Órdenes (3)</p>
+              </div>
+
+              <div class="bg-slate-900 border border-cyan-500/30 rounded-2xl p-3 shadow-[0_0_20px_rgba(0,229,255,0.1)] relative overflow-hidden flex flex-col">
+                <div class="absolute top-0 right-0 w-16 h-16 bg-cyan-500/10 rounded-bl-full pointer-events-none"></div>
+                
+                <div class="flex justify-between items-start mb-2 relative z-10">
+                  <span class="font-mono text-[8px] font-bold text-cyan-400 bg-cyan-500/10 px-1.5 py-0.5 rounded">10:30 AM · EMERGENCIA</span>
+                </div>
+                
+                <p class="text-base font-bold text-white leading-tight mb-1 relative z-10">Clínica Bascur</p>
+                <p class="text-[10px] text-slate-400 mb-4 line-clamp-1 relative z-10">Alarma alta presión Chiller-04-A.</p>
+                
+                <div class="mt-auto w-full py-2.5 bg-gradient-to-r from-cyan-500 to-cyan-400 rounded-xl flex items-center justify-center gap-1.5 shadow-md active:scale-[0.98] transition-transform cursor-pointer relative z-10">
+                  <svg class="w-3.5 h-3.5 text-[#0A0F1C]" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  <span class="text-[10px] font-bold text-[#0A0F1C] uppercase tracking-wider">Comenzar Ruta</span>
+                </div>
+              </div>
+
+              <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-3 opacity-80 flex flex-col">
+                <span class="font-mono text-[8px] font-bold text-slate-500 mb-1">14:00 PM · PREVENTIVA</span>
+                <p class="text-[13px] font-bold text-slate-200 leading-tight">Mall Plaza Trébol</p>
+                <p class="text-[9px] text-slate-500 mt-1">Mantenimiento trimestral HVAC.</p>
+              </div>
+
+            </div>
+
+            <div class="relative h-16 bg-slate-950/90 backdrop-blur-md border-t border-slate-800 z-30 flex justify-around items-center px-2 pb-2">
+               <div class="flex flex-col items-center gap-1 cursor-pointer">
+                 <svg class="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+                 <span class="w-1 h-1 rounded-full bg-cyan-400"></span>
+               </div>
+               <div class="flex flex-col items-center gap-1 opacity-50 hover:opacity-100 cursor-pointer transition-opacity">
+                 <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+               </div>
+               <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center -translate-y-2 border-2 border-[#0A0F1C] cursor-pointer hover:bg-slate-700 transition-colors">
+                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+               </div>
+               <div class="flex flex-col items-center gap-1 opacity-50 hover:opacity-100 cursor-pointer transition-opacity relative">
+                 <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                 <span class="absolute top-0 right-0 w-2 h-2 rounded-full bg-cyan-500 border border-[#0A0F1C]"></span>
+               </div>
+               <div class="flex flex-col items-center gap-1 opacity-50 hover:opacity-100 cursor-pointer transition-opacity">
+                 <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+               </div>
+            </div>
+
+            <div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-20 h-1 bg-slate-500 rounded-full z-40"></div>
+
+          </div>
+            
+          <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-cyan-900/40 rounded-full blur-2xl z-0 pointer-events-none group-hover:-translate-y-4 transition-transform duration-700"></div>
+
         </div>
       </div>
 
     </div>
   </div>
 </section>
+
+<style>
+  .perspective-2000 { perspective: 2000px; }
+  .eco-aurora { animation: eco-aurora 20s ease-in-out infinite alternate; }
+  @keyframes eco-aurora { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.8; transform: translate(-45%, -48%) scale(1.1); } }
+  
+  /* Animación del gráfico de líneas en el Dashboard */
+  .eco-chart-line { stroke-dasharray: 500; stroke-dashoffset: 500; }
+  #ecosistema.is-visible .eco-chart-line { animation: draw-chart 2s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.5s; }
+  @keyframes draw-chart { to { stroke-dashoffset: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eco-aurora, #ecosistema.is-visible .eco-chart-line { animation: none; }
+    .eco-chart-line { stroke-dashoffset: 0; }
+  }
+</style>
+
+<script>
+  function initEcosystem() {
+    const section = document.getElementById('ecosistema');
+    if (!section) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          section.classList.add('is-visible');
+          observer.unobserve(section);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(section);
+  }
+  
+  initEcosystem();
+  document.addEventListener('astro:page-load', initEcosystem);
+</script>

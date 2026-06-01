@@ -1,0 +1,470 @@
+---
+// src/pages/recursos/roi.astro
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const SIGNUP_URL = "https://app.lissi.app/signup";
+
+const capacidades = [
+  { btu: 9000, label: "9.000 BTU/h (≈1 HP)" },
+  { btu: 12000, label: "12.000 BTU/h (≈1.5 HP)" },
+  { btu: 18000, label: "18.000 BTU/h (≈2 HP)" },
+  { btu: 24000, label: "24.000 BTU/h (≈3 HP)" },
+  { btu: 36000, label: "36.000 BTU/h (≈4 HP)" },
+  { btu: 48000, label: "48.000 BTU/h (≈5 HP)" },
+  { btu: 60000, label: "60.000 BTU/h (≈6 HP)" },
+];
+
+// Tarifas residenciales referenciales 2026 (CLP/kWh, IVA incl.). Editable por el usuario.
+const zonasTarifarias = [
+  { id: "rm", name: "Metropolitana", kwh: 160 },
+  { id: "nortegrande", name: "Norte Grande (Arica–Antofagasta)", kwh: 170 },
+  { id: "nortechico", name: "Norte Chico (Atacama–Coquimbo)", kwh: 165 },
+  { id: "valpo", name: "Valparaíso", kwh: 175 },
+  { id: "centro", name: "Centro (O'Higgins–Maule)", kwh: 180 },
+  { id: "biobio", name: "Biobío / Ñuble", kwh: 185 },
+  { id: "sur", name: "Sur (Araucanía–Los Lagos)", kwh: 205 },
+  { id: "austral", name: "Austral (Aysén)", kwh: 215 },
+];
+---
+<Layout title="Calculadora de Ahorro Inverter (Payback) | Lissi">
+  <Navbar />
+
+  <main class="relative bg-[#0A0F1C] min-h-screen pt-28 pb-24 font-sans selection:bg-rose-500/30 overflow-hidden">
+
+    <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-rose-900/15 to-transparent pointer-events-none"></div>
+    <div class="absolute top-1/3 -right-40 w-[500px] h-[500px] bg-rose-600/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <a href="/recursos" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-rose-400 transition-colors group mb-8">
+        <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Volver a Recursos
+      </a>
+
+      <div class="grid lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12 items-start">
+
+        <!-- IZQUIERDA -->
+        <div class="lg:sticky lg:top-28">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 mb-6">
+            <span class="w-2 h-2 rounded-full bg-rose-400 animate-pulse"></span>
+            <span class="font-mono text-[10px] font-bold uppercase tracking-widest text-rose-300">Argumento de venta</span>
+          </div>
+
+          <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.05] mb-5">
+            ¿En cuánto se paga<br/>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-500">un equipo Inverter?</span>
+          </h1>
+
+          <p class="text-slate-400 text-base leading-relaxed mb-8 max-w-md">
+            Muéstrale a tu cliente, con números reales, en cuántos meses el ahorro eléctrico paga el cambio a tecnología Inverter.
+          </p>
+
+          <div class="rounded-2xl bg-slate-900/60 border border-slate-800 p-5 mb-5">
+            <p class="font-mono text-[10px] uppercase tracking-widest text-rose-400 font-bold mb-3">// Cómo funciona el cálculo</p>
+            <ul class="space-y-3 text-sm text-slate-400">
+              <li class="flex gap-3"><span class="text-rose-400">→</span><span>Estimamos el consumo del equipo ON/OFF con su capacidad y eficiencia EER.</span></li>
+              <li class="flex gap-3"><span class="text-rose-400">→</span><span>Aplicamos el ahorro del Inverter según estudios técnicos (30–45%).</span></li>
+              <li class="flex gap-3"><span class="text-rose-400">→</span><span>Cruzamos el ahorro mensual contra lo que cuesta el cambio.</span></li>
+            </ul>
+          </div>
+
+          <div class="rounded-2xl bg-amber-500/5 border border-amber-500/20 p-4">
+            <div class="flex gap-3">
+              <svg class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M12 3l9 16H3l9-16z"/></svg>
+              <p class="text-xs text-amber-200/80 leading-relaxed">
+                <strong class="text-amber-200">Estimación referencial.</strong> El ahorro real depende del uso, clima, aislación y hábitos. Factor de ahorro basado en estudios peer-reviewed (35% promedio). Tarifas 2026 editables.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DERECHA -->
+        <div class="bg-slate-900/80 rounded-3xl border border-slate-700/70 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl overflow-hidden">
+
+          <div class="p-5 sm:p-7 md:p-8">
+
+            <!-- DISPLAY HERO -->
+            <div class="relative rounded-2xl bg-[#030508] border border-slate-800 p-6 md:p-7 mb-6 overflow-hidden">
+              <div id="result-glow" class="absolute inset-0 transition-all duration-500 opacity-20 pointer-events-none" style="background: radial-gradient(circle at center, rgba(244,63,94,0.4) 0%, transparent 70%);"></div>
+
+              <div class="relative text-center">
+                <p class="font-mono text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">La inversión se recupera en</p>
+                <div class="flex items-baseline justify-center gap-3 mb-5" aria-live="polite">
+                  <span id="display-meses" class="font-display text-6xl md:text-7xl font-black text-rose-500 tracking-tighter tabular-nums leading-none">0</span>
+                  <span id="meses-label" class="text-2xl font-bold text-slate-600">meses</span>
+                </div>
+
+                <div class="inline-flex items-center gap-3 bg-[#0A0F1C] border border-slate-800 rounded-2xl p-3.5 px-5">
+                  <div class="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/></svg>
+                  </div>
+                  <div class="text-left">
+                    <p class="font-mono text-[9px] uppercase tracking-widest text-slate-400 font-bold">Ahorro eléctrico anual</p>
+                    <p id="display-ahorro" class="font-display text-2xl font-black text-white tabular-nums">$ 0</p>
+                  </div>
+                </div>
+
+                <!-- Advertencia uso bajo -->
+                <div id="warn-uso" class="hidden mt-4 mx-auto max-w-sm rounded-xl bg-amber-500/10 border border-amber-500/30 p-3">
+                  <p class="text-[11px] text-amber-300 leading-snug">⚠ Con pocas horas de uso al día, el ahorro del Inverter es bajo y el payback se alarga. El Inverter conviene en uso intensivo.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- CONTROLES -->
+            <div class="space-y-5">
+
+              <!-- Capacidad + EER -->
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="select-btu" class="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-bold block mb-2">Capacidad del equipo</label>
+                  <div class="relative">
+                    <select id="select-btu" class="w-full appearance-none bg-[#0A0F1C] border border-slate-700 hover:border-rose-500/50 focus:border-rose-500 focus:outline-none rounded-xl pl-4 pr-10 py-3.5 text-sm font-bold text-white cursor-pointer transition-colors">
+                      {capacidades.map((cap) => (
+                        <option value={cap.btu} selected={cap.btu === 12000}>{cap.label}</option>
+                      ))}
+                    </select>
+                    <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                  </div>
+                </div>
+                <div>
+                  <label for="input-eer" class="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-bold block mb-2">Eficiencia equipo actual (EER)</label>
+                  <input type="number" id="input-eer" value="2.8" step="0.1" min="1.5" max="5" class="w-full bg-[#0A0F1C] border border-slate-700 hover:border-rose-500/50 focus:border-rose-500 focus:outline-none rounded-xl px-4 py-3.5 text-sm font-bold text-white tabular-nums transition-colors">
+                </div>
+              </div>
+
+              <!-- Zona + kWh -->
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="select-zona" class="font-mono text-[10px] uppercase tracking-widest text-rose-400 font-bold block mb-2">Zona tarifaria</label>
+                  <div class="relative">
+                    <select id="select-zona" class="w-full appearance-none bg-[#0A0F1C] border border-slate-700 hover:border-rose-500/50 focus:border-rose-500 focus:outline-none rounded-xl pl-4 pr-10 py-3.5 text-sm font-bold text-white cursor-pointer transition-colors">
+                      {zonasTarifarias.map((zona) => (
+                        <option value={zona.kwh} selected={zona.id === 'rm'}>{zona.name}</option>
+                      ))}
+                    </select>
+                    <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                  </div>
+                </div>
+                <div>
+                  <label for="input-kwh" class="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-bold block mb-2">Costo exacto kWh ($)</label>
+                  <div class="relative flex items-center">
+                    <span class="absolute left-4 text-slate-400 font-bold">$</span>
+                    <input type="number" id="input-kwh" value="160" class="w-full bg-[#0A0F1C] border border-slate-700 hover:border-rose-500/50 focus:border-rose-500 focus:outline-none rounded-xl pl-8 pr-4 py-3.5 text-sm font-bold text-white tabular-nums transition-colors">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Inversión a recuperar -->
+              <div>
+                <label for="input-costo" class="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-bold block mb-2">Inversión a recuperar ($)</label>
+                <div class="relative flex items-center">
+                  <span class="absolute left-4 text-slate-400 font-bold text-lg">$</span>
+                  <input type="text" id="input-costo" value="300.000" inputmode="numeric" class="w-full bg-[#0A0F1C] border border-slate-700 hover:border-rose-500/50 focus:border-rose-500 focus:outline-none rounded-xl pl-8 pr-4 py-3.5 text-sm font-bold text-white tabular-nums transition-colors">
+                </div>
+                <p class="text-[11px] text-slate-500 mt-2 leading-snug">
+                  Para evaluar <strong class="text-slate-400">si conviene el Inverter</strong>, ingresa el <strong class="text-slate-400">sobrecosto</strong> vs un ON/OFF equivalente (~$150–300 mil). Para evaluar el <strong class="text-slate-400">equipo completo</strong>, ingresa el precio total instalado.
+                </p>
+              </div>
+
+              <!-- Factor de ahorro -->
+              <div class="bg-[#0A0F1C]/50 p-4 sm:p-5 rounded-2xl border border-slate-800">
+                <div class="flex justify-between items-end mb-4">
+                  <div>
+                    <label for="slider-ahorro" class="font-mono text-[10px] uppercase tracking-widest text-rose-400 font-bold block mb-1">Factor de ahorro Inverter</label>
+                    <span class="text-[11px] text-slate-500">Estudios: 30–45% · típico 35%</span>
+                  </div>
+                  <div class="text-right flex items-baseline gap-1">
+                    <span id="val-ahorro" class="font-display text-3xl font-black text-white tabular-nums">35</span>
+                    <span class="text-xs font-bold text-slate-500">%</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <button class="step-btn w-10 h-10 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:bg-slate-700 active:scale-95 transition-all" data-target="slider-ahorro" data-step="-1" aria-label="Disminuir">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"/></svg>
+                  </button>
+                  <input type="range" id="slider-ahorro" min="20" max="50" value="35" step="1" class="flex-1 custom-range">
+                  <button class="step-btn w-10 h-10 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:bg-slate-700 active:scale-95 transition-all" data-target="slider-ahorro" data-step="1" aria-label="Aumentar">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Uso diario -->
+              <div class="bg-[#0A0F1C]/50 p-4 sm:p-5 rounded-2xl border border-slate-800">
+                <div class="flex justify-between items-end mb-4">
+                  <div>
+                    <label for="slider-horas" class="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-bold block mb-1">Uso operativo</label>
+                    <span class="text-[11px] text-slate-500">Horas de encendido al día</span>
+                  </div>
+                  <div class="text-right flex items-baseline gap-1">
+                    <span id="val-horas" class="font-display text-3xl font-black text-white tabular-nums">8</span>
+                    <span class="text-xs font-bold text-slate-500">h/día</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <button class="step-btn w-10 h-10 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:bg-slate-700 active:scale-95 transition-all" data-target="slider-horas" data-step="-1" aria-label="Disminuir">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"/></svg>
+                  </button>
+                  <input type="range" id="slider-horas" min="1" max="24" value="8" step="1" class="flex-1 custom-range">
+                  <button class="step-btn w-10 h-10 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:bg-slate-700 active:scale-95 transition-all" data-target="slider-horas" data-step="1" aria-label="Aumentar">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                  </button>
+                </div>
+                <!-- Presets de uso -->
+                <div class="flex flex-wrap gap-1.5 mt-4">
+                  <button class="preset-btn px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700 text-[10px] font-mono text-slate-400 hover:border-rose-500/40 hover:text-rose-400 transition-colors" data-horas="4">Hogar tarde (4h)</button>
+                  <button class="preset-btn px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700 text-[10px] font-mono text-slate-400 hover:border-rose-500/40 hover:text-rose-400 transition-colors" data-horas="9">Oficina (9h)</button>
+                  <button class="preset-btn px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700 text-[10px] font-mono text-slate-400 hover:border-rose-500/40 hover:text-rose-400 transition-colors" data-horas="16">Comercio (16h)</button>
+                  <button class="preset-btn px-2.5 py-1 rounded-md bg-slate-800/50 border border-slate-700 text-[10px] font-mono text-slate-400 hover:border-rose-500/40 hover:text-rose-400 transition-colors" data-horas="24">24/7 (datacenter)</button>
+                </div>
+              </div>
+
+              <!-- Desglose -->
+              <div class="grid grid-cols-2 gap-3">
+                <div class="rounded-xl bg-slate-900/60 border border-slate-800 p-3">
+                  <p class="font-mono text-[9px] uppercase text-slate-500 mb-1">Gasto anual ON/OFF</p>
+                  <p id="gasto-onoff" class="font-display text-lg font-black text-white tabular-nums">$ 0</p>
+                </div>
+                <div class="rounded-xl bg-rose-500/10 border border-rose-500/30 p-3">
+                  <p class="font-mono text-[9px] uppercase text-rose-400 mb-1">Gasto anual Inverter</p>
+                  <p id="gasto-inverter" class="font-display text-lg font-black text-rose-400 tabular-nums">$ 0</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="p-5 sm:p-6 border-t border-slate-800 bg-slate-900/60 space-y-2.5">
+            <button id="download-pdf" class="group w-full py-3.5 rounded-xl flex items-center justify-center gap-2 font-bold text-sm uppercase tracking-wider text-[#0A0F1C] bg-rose-400 hover:bg-rose-300 transition-all active:scale-[0.99]">
+              Descargar resumen PDF
+              <svg class="w-4 h-4 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </button>
+            <a href={SIGNUP_URL} class="group w-full py-3 rounded-xl flex items-center justify-center gap-2 font-semibold text-xs uppercase tracking-wider text-slate-300 border border-slate-700 hover:border-rose-500/50 hover:text-white transition-all">
+              Enviar como cotización formal con Lissi
+              <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type=number] { -moz-appearance: textfield; }
+  button, input[type="range"] { touch-action: manipulation; }
+  .custom-range { -webkit-appearance: none; appearance: none; width: 100%; background: transparent; height: 30px; }
+  .custom-range:focus { outline: none; }
+  .custom-range::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #1e293b; border-radius: 999px; }
+  .custom-range::-moz-range-track { width: 100%; height: 4px; cursor: pointer; background: #1e293b; border-radius: 999px; }
+  .custom-range::-webkit-slider-thumb { height: 24px; width: 24px; border-radius: 50%; background: #fff; cursor: pointer; -webkit-appearance: none; margin-top: -10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border: 5px solid #f43f5e; transition: transform 0.1s; }
+  .custom-range::-moz-range-thumb { height: 24px; width: 24px; border-radius: 50%; background: #fff; cursor: pointer; border: 5px solid #f43f5e; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+  .custom-range::-webkit-slider-thumb:active { transform: scale(1.1); }
+  #select-btu option, #select-zona option { background: #0A0F1C; color: white; }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" is:inline></script>
+
+<script is:inline define:vars={{ zonasData: zonasTarifarias, capacidadesData: capacidades }}>
+  // ============================================
+  // CONSTANTES FÍSICAS
+  // ============================================
+  const BTU_TO_KW = 0.000293071; // 1 BTU/h = 0.000293071 kW térmicos
+  const DIAS_MES = 30;           // residencial; el factor horas/día ya ajusta intensidad
+
+  let state = {
+    btu: 12000,
+    eer: 2.8,        // EER equipo ON/OFF actual (editable)
+    kwh: 160,        // $/kWh
+    costo: 300000,   // inversión a recuperar
+    ahorro: 35,      // % factor de ahorro inverter
+    horas: 8,        // h/día
+  };
+  try { state = { ...state, ...JSON.parse(localStorage.getItem('lissi-roi-state') || '{}') }; } catch (e) {}
+  function save() { try { localStorage.setItem('lissi-roi-state', JSON.stringify(state)); } catch (e) {} }
+
+  const selectBtu = document.getElementById('select-btu');
+  const inputEer = document.getElementById('input-eer');
+  const selectZona = document.getElementById('select-zona');
+  const inputKwh = document.getElementById('input-kwh');
+  const inputCosto = document.getElementById('input-costo');
+  const sliderAhorro = document.getElementById('slider-ahorro');
+  const valAhorro = document.getElementById('val-ahorro');
+  const sliderHoras = document.getElementById('slider-horas');
+  const valHoras = document.getElementById('val-horas');
+  const displayAhorro = document.getElementById('display-ahorro');
+  const displayMeses = document.getElementById('display-meses');
+  const mesesLabel = document.getElementById('meses-label');
+  const resultGlow = document.getElementById('result-glow');
+  const gastoOnoff = document.getElementById('gasto-onoff');
+  const gastoInverter = document.getElementById('gasto-inverter');
+  const warnUso = document.getElementById('warn-uso');
+
+  const formatCLP = (n) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(n);
+  const parseMonto = (s) => parseFloat(String(s).replace(/[^0-9]/g, '')) || 0;
+
+  // ============================================
+  // MOTOR DE CÁLCULO (metodológicamente correcto)
+  // ============================================
+  function calculate() {
+    // Consumo eléctrico del equipo ON/OFF a plena carga:
+    // kW_elec = (BTU * BTU_TO_KW) / EER
+    const capKwTermico = state.btu * BTU_TO_KW;
+    const kwElecOnOff = capKwTermico / state.eer;
+
+    // Gasto anual ON/OFF
+    const gastoAnualOnOff = kwElecOnOff * state.horas * DIAS_MES * 12 * state.kwh;
+
+    // Ahorro Inverter: aplicamos factor documentado sobre el consumo ON/OFF
+    const factor = state.ahorro / 100;
+    const gastoAnualInverter = gastoAnualOnOff * (1 - factor);
+    const ahorroAnual = gastoAnualOnOff - gastoAnualInverter;
+    const ahorroMensual = ahorroAnual / 12;
+
+    // Payback en meses
+    let meses = 0;
+    if (ahorroMensual > 0 && state.costo > 0) {
+      meses = Math.ceil(state.costo / ahorroMensual);
+    }
+
+    // UI
+    displayAhorro.textContent = formatCLP(ahorroAnual);
+    gastoOnoff.textContent = formatCLP(gastoAnualOnOff);
+    gastoInverter.textContent = formatCLP(gastoAnualInverter);
+
+    if (meses > 0 && meses <= 120) {
+      displayMeses.textContent = meses.toString();
+      displayMeses.classList.add('text-rose-500'); displayMeses.classList.remove('text-slate-600');
+      mesesLabel.textContent = meses === 1 ? 'mes' : 'meses';
+      // glow según rapidez de retorno
+      if (meses <= 24) resultGlow.style.background = 'radial-gradient(circle at center, rgba(16,185,129,0.3) 0%, transparent 70%)';
+      else if (meses <= 48) resultGlow.style.background = 'radial-gradient(circle at center, rgba(245,158,11,0.3) 0%, transparent 70%)';
+      else resultGlow.style.background = 'radial-gradient(circle at center, rgba(244,63,94,0.3) 0%, transparent 70%)';
+    } else {
+      displayMeses.textContent = '∞';
+      displayMeses.classList.remove('text-rose-500'); displayMeses.classList.add('text-slate-600');
+      mesesLabel.textContent = '';
+      resultGlow.style.background = 'radial-gradient(circle at center, rgba(100,116,139,0.2) 0%, transparent 70%)';
+    }
+
+    // Advertencia honesta uso bajo
+    if (state.horas < 4) warnUso.classList.remove('hidden');
+    else warnUso.classList.add('hidden');
+  }
+
+  // ============================================
+  // EVENTS
+  // ============================================
+  selectBtu.addEventListener('change', () => { state.btu = parseFloat(selectBtu.value); save(); calculate(); });
+  inputEer.addEventListener('input', () => { const v = parseFloat(inputEer.value); if (!isNaN(v) && v > 0) { state.eer = v; save(); calculate(); } });
+  selectZona.addEventListener('change', () => { state.kwh = parseFloat(selectZona.value); inputKwh.value = state.kwh; save(); calculate(); });
+  inputKwh.addEventListener('input', () => { const v = parseFloat(inputKwh.value); if (!isNaN(v)) { state.kwh = v; save(); calculate(); } });
+  inputCosto.addEventListener('input', (e) => {
+    let raw = parseMonto(e.target.value);
+    state.costo = raw;
+    e.target.value = raw === 0 ? '' : new Intl.NumberFormat('es-CL').format(raw);
+    save(); calculate();
+  });
+  sliderAhorro.addEventListener('input', () => { state.ahorro = parseFloat(sliderAhorro.value); valAhorro.textContent = state.ahorro; save(); calculate(); });
+  sliderHoras.addEventListener('input', () => { state.horas = parseFloat(sliderHoras.value); valHoras.textContent = state.horas; save(); calculate(); });
+
+  document.querySelectorAll('.step-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      const step = parseFloat(btn.dataset.step);
+      const nv = Math.min(parseFloat(target.max), Math.max(parseFloat(target.min), parseFloat(target.value) + step));
+      target.value = nv; target.dispatchEvent(new Event('input'));
+    });
+  });
+  document.querySelectorAll('.preset-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      state.horas = parseFloat(btn.dataset.horas);
+      sliderHoras.value = state.horas; valHoras.textContent = state.horas; save(); calculate();
+    });
+  });
+
+  // ============================================
+  // PDF
+  // ============================================
+  document.getElementById('download-pdf').addEventListener('click', () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const capKwTermico = state.btu * BTU_TO_KW;
+    const kwElecOnOff = capKwTermico / state.eer;
+    const gastoAnualOnOff = kwElecOnOff * state.horas * DIAS_MES * 12 * state.kwh;
+    const factor = state.ahorro / 100;
+    const gastoAnualInverter = gastoAnualOnOff * (1 - factor);
+    const ahorroAnual = gastoAnualOnOff - gastoAnualInverter;
+    const ahorroMensual = ahorroAnual / 12;
+    const meses = (ahorroMensual > 0 && state.costo > 0) ? Math.ceil(state.costo / ahorroMensual) : 0;
+    const today = new Date().toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' });
+    const btuLabel = (capacidadesData.find((c) => c.btu === state.btu) || {}).label || `${state.btu} BTU/h`;
+
+    doc.setFontSize(22); doc.setTextColor(10, 37, 64); doc.setFont(undefined, 'bold');
+    doc.text('Lissi · Ahorro Inverter', 20, 25);
+    doc.setFontSize(10); doc.setTextColor(100, 116, 139); doc.setFont(undefined, 'normal');
+    doc.text(`Estimación generada el ${today}`, 20, 32);
+    doc.setDrawColor(244, 63, 94); doc.setLineWidth(0.5); doc.line(20, 36, 190, 36);
+
+    doc.setFontSize(11); doc.setTextColor(15, 23, 42); doc.setFont(undefined, 'bold');
+    doc.text('Parámetros', 20, 48);
+    doc.setFont(undefined, 'normal'); doc.setFontSize(10);
+    doc.text(`Equipo: ${btuLabel}`, 20, 56);
+    doc.text(`Eficiencia equipo actual (EER): ${state.eer}`, 20, 62);
+    doc.text(`Tarifa eléctrica: $${state.kwh}/kWh`, 20, 68);
+    doc.text(`Uso: ${state.horas} h/día`, 20, 74);
+    doc.text(`Factor de ahorro Inverter: ${state.ahorro}%`, 20, 80);
+    doc.text(`Inversión a recuperar: ${formatCLP(state.costo)}`, 20, 86);
+
+    doc.setFillColor(254, 226, 226); doc.rect(20, 94, 170, 30, 'F');
+    doc.setFontSize(9); doc.setTextColor(190, 18, 60); doc.setFont(undefined, 'bold');
+    doc.text('RECUPERACIÓN DE LA INVERSIÓN', 25, 102);
+    doc.setFontSize(26); doc.setTextColor(15, 23, 42);
+    doc.text(meses > 0 && meses <= 120 ? `${meses} meses` : 'No se recupera en 10 años', 25, 116);
+
+    let y = 134;
+    doc.setFontSize(11); doc.setFont(undefined, 'bold'); doc.setTextColor(15, 23, 42);
+    doc.text('Resultado', 20, y); y += 8;
+    doc.setFont(undefined, 'normal'); doc.setFontSize(10);
+    doc.text(`Gasto anual estimado ON/OFF: ${formatCLP(gastoAnualOnOff)}`, 20, y); y += 6;
+    doc.text(`Gasto anual estimado Inverter: ${formatCLP(gastoAnualInverter)}`, 20, y); y += 6;
+    doc.setTextColor(5, 150, 105); doc.setFont(undefined, 'bold');
+    doc.text(`Ahorro anual: ${formatCLP(ahorroAnual)}`, 20, y); y += 12;
+
+    doc.setTextColor(146, 64, 14); doc.setFontSize(9); doc.setFont(undefined, 'bold');
+    doc.text('Notas técnicas', 20, y); y += 6;
+    doc.setFont(undefined, 'normal'); doc.setTextColor(100, 116, 139);
+    [
+      'Estimación referencial. El ahorro real depende de uso, clima, aislación y hábitos.',
+      'Factor de ahorro basado en estudios peer-reviewed (rango 30-45%, típico 35%).',
+      'Consumo ON/OFF calculado con EER nominal del equipo a plena carga.',
+      'Con uso bajo (menos de 4 h/día) el ahorro del Inverter es marginal.',
+      'Tarifas eléctricas referenciales 2026, editables por el usuario.',
+    ].forEach((n) => { doc.text(`• ${n}`, 20, y); y += 5; });
+
+    doc.setFontSize(8); doc.setTextColor(148, 163, 184);
+    doc.text('Generado con Lissi · lissi.app', 20, 285);
+
+    doc.save(`lissi-roi-inverter-${state.btu}btu.pdf`);
+  });
+
+  // ============================================
+  // INIT
+  // ============================================
+  selectBtu.value = state.btu;
+  inputEer.value = state.eer;
+  inputKwh.value = state.kwh;
+  inputCosto.value = new Intl.NumberFormat('es-CL').format(state.costo);
+  sliderAhorro.value = state.ahorro; valAhorro.textContent = state.ahorro;
+  sliderHoras.value = state.horas; valHoras.textContent = state.horas;
+  // sincronizar select zona si coincide con kwh guardado
+  const zonaMatch = zonasData.find((z) => z.kwh === state.kwh);
+  if (zonaMatch) selectZona.value = state.kwh;
+  calculate();
+</script>

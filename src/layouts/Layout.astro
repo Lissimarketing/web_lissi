@@ -1,96 +1,133 @@
 ---
+import '../styles/global.css';
+import CookieBanner from '../components/CookieBanner.astro';
+import WhatsappFloat from '../components/WhatsappFloat.astro';
+
 interface Props {
 	title: string;
+	description?: string;
+	image?: string;
 }
 
-const { title } = Astro.props;
+const {
+	title,
+	description = "Software HVAC-R para gestión de servicios técnicos: órdenes de trabajo, trazabilidad de equipos e informes automáticos.",
+	image = "/dashboard.png",
+} = Astro.props;
+
+const siteUrl = "https://lissi-landing-2026.vercel.app";
+const canonical = new URL(Astro.url.pathname, siteUrl).href;
+const ogImage = new URL(image, siteUrl).href;
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Software HVAC-R para gestión de servicios técnicos." />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		
-		<link rel="preconnect" href="https://assets.calendly.com">
-		<link rel="dns-prefetch" href="https://assets.calendly.com">
-		
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-		
-		<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-		<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+		<link rel="canonical" href={canonical} />
 
+		<!-- SEO -->
 		<title>{title} | Lissi HVAC-R</title>
+		<meta name="description" content={description} />
+
+		<!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={`${title} | Lissi HVAC-R`} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:locale" content="es_CL" />
+		<meta property="og:site_name" content="Lissi" />
+
+		<!-- Twitter/X -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={`${title} | Lissi HVAC-R`} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+
+		<!-- Habilita modo reveal antes del primer pintado -->
+		<script is:inline>
+			(function () {
+				try {
+					var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+					if (!reduce) document.documentElement.classList.add('js-reveal');
+				} catch (e) {}
+			})();
+		</script>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+
+		<link rel="preconnect" href="https://assets.calendly.com" />
+		<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+		<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+	</head>
+
+	<body class="bg-navy-950 text-white font-sans antialiased overflow-x-hidden">
+		<slot />
+		<WhatsappFloat />
+		<CookieBanner />
 
 		<script is:inline>
-			window.openCalendly = function() {
+			window.openCalendly = function () {
 				if (typeof Calendly !== 'undefined') {
-					Calendly.initPopupWidget({url: 'https://calendly.com/lissi_2026/estas-a-un-paso'});
+					Calendly.initPopupWidget({ url: 'https://calendly.com/lissi_2026/estas-a-un-paso' });
 				} else {
 					window.open('https://calendly.com/lissi_2026/estas-a-un-paso', '_blank');
 				}
 				return false;
-			}
+			};
 		</script>
-	</head>
-	<body class="bg-white text-slate-800 font-sans antialiased overflow-x-hidden">
-		<slot />
 
 		<script>
-			const observerOptions = {
-				root: null,
-				rootMargin: '0px',
-				threshold: 0.1
-			};
-
-			const observer = new IntersectionObserver((entries) => {
-				entries.forEach(entry => {
-					if (entry.isIntersecting) {
-						entry.target.classList.add('active');
-						observer.unobserve(entry.target);
-					}
+			function setupReveal() {
+				if (!document.documentElement.classList.contains('js-reveal')) return;
+				document.querySelectorAll('[data-reveal-stagger]').forEach((group) => {
+					Array.from(group.children).forEach((child, i) => {
+						if (child.hasAttribute('data-reveal')) {
+							child.style.setProperty('--reveal-delay', `${i * 90}ms`);
+						}
+					});
 				});
-			}, observerOptions);
-
-			function runAnimations() {
-				const elements = document.querySelectorAll('h1, h2, h3, p, .group, a, li, img, svg, span, button');
-				
-				elements.forEach((el) => {
-					if (!el.classList.contains('reveal')) {
-						el.classList.add('reveal');
-						observer.observe(el);
-					}
-				});
+				const io = new IntersectionObserver(
+					(entries) => {
+						entries.forEach((entry) => {
+							if (entry.isIntersecting) {
+								entry.target.classList.add('is-visible');
+								io.unobserve(entry.target);
+							}
+						});
+					},
+					{ rootMargin: '0px 0px -10% 0px', threshold: 0.15 }
+				);
+				document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
 			}
-
-			runAnimations();
-			document.addEventListener('astro:page-load', runAnimations);
+			setupReveal();
+			document.addEventListener('astro:page-load', setupReveal);
 		</script>
 	</body>
 </html>
 
 <style is:global>
-	html {
-		scroll-behavior: smooth;
-	}
+	html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
 
-	.reveal {
+	.js-reveal [data-reveal] {
 		opacity: 0;
-		transform: translateY(30px);
-		transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-		will-change: opacity, transform;
+		transform: translateY(24px);
+		transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+		transition-delay: var(--reveal-delay, 0ms);
 	}
+	.js-reveal [data-reveal].is-visible { opacity: 1; transform: none; }
 
-	.reveal.active {
-		opacity: 1;
-		transform: translateY(0);
+	@media (prefers-reduced-motion: reduce) {
+		html { scroll-behavior: auto; }
+		.js-reveal [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
 	}
-
-	.reveal:nth-child(2) { transition-delay: 100ms; }
-	.reveal:nth-child(3) { transition-delay: 200ms; }
 </style>

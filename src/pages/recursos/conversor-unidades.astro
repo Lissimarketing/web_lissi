@@ -1,0 +1,180 @@
+---
+// src/pages/recursos/conversor-unidades.astro
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+const SIGNUP_URL = "https://app.lissi.app/signup";
+---
+<Layout title="Conversor de Unidades HVAC-R">
+  <Navbar />
+  <main class="pt-28 md:pt-32 pb-24 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-10">
+        <a href="/recursos" class="text-sm text-navy-400 hover:text-cyan-600 transition-colors">← Recursos</a>
+        <h1 class="font-display text-3xl md:text-4xl font-extrabold text-navy-900 tracking-tight mt-3 mb-3 text-balance">
+          Conversor de unidades HVAC-R
+        </h1>
+        <p class="text-lg text-navy-500 text-balance">
+          Convierte presión, temperatura, capacidad y caudal al instante. Gratis, sin tablas.
+        </p>
+      </div>
+
+      <div id="conv-grid" class="grid sm:grid-cols-2 gap-6"></div>
+
+      <p class="text-xs text-navy-400 mt-8 leading-relaxed">
+        Conversiones de presión expresadas en presión manométrica (gauge) para PSI ↔ bar ↔ kPa. La temperatura usa las fórmulas estándar de conversión. 1 TR (tonelada de refrigeración) = 12.000 BTU/h = 3,517 kW.
+      </p>
+
+      <div class="mt-12 bg-navy-900 rounded-2xl p-8 text-center">
+        <h3 class="font-display text-2xl font-bold text-white mb-2 text-balance">Tus cálculos, siempre a mano en terreno</h3>
+        <p class="text-navy-300 mb-6 max-w-xl mx-auto text-balance">Con la app de Lissi tus técnicos tienen todo lo que necesitan, incluso sin señal.</p>
+        <a href={SIGNUP_URL} class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-navy-900 rounded-xl font-semibold hover:bg-cyan-50 transition-all">
+          Empieza gratis
+          <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  function initConversor() {
+    const grid = document.getElementById('conv-grid');
+    if (!grid || grid.dataset.init) return;
+    grid.dataset.init = '1';
+
+    // Cada conversor: lista de unidades con factor relativo a una unidad base.
+    // Temperatura es especial (no es factor lineal simple), se maneja aparte.
+    const conversores = [
+      {
+        id: 'presion', titulo: 'Presión', icon: 'gauge',
+        base: 'kPa',
+        unidades: [
+          { k: 'psi', label: 'PSI', factor: 6.89476 },
+          { k: 'bar', label: 'bar', factor: 100 },
+          { k: 'kPa', label: 'kPa', factor: 1 },
+          { k: 'mbar', label: 'mbar', factor: 0.1 },
+        ],
+      },
+      {
+        id: 'potencia', titulo: 'Capacidad / Potencia', icon: 'bolt',
+        base: 'W',
+        unidades: [
+          { k: 'btu', label: 'BTU/h', factor: 0.293071 },
+          { k: 'tr', label: 'TR (ton refrig.)', factor: 3516.85 },
+          { k: 'kw', label: 'kW', factor: 1000 },
+          { k: 'frig', label: 'frig/h', factor: 1.16222 },
+        ],
+      },
+      {
+        id: 'caudal', titulo: 'Caudal de aire', icon: 'wind',
+        base: 'm3h',
+        unidades: [
+          { k: 'cfm', label: 'CFM', factor: 1.69901 },
+          { k: 'm3h', label: 'm³/h', factor: 1 },
+          { k: 'm3s', label: 'm³/s', factor: 3600 },
+          { k: 'ls', label: 'L/s', factor: 3.6 },
+        ],
+      },
+    ];
+
+    const icons = {
+      gauge: '<path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>',
+      bolt: '<path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>',
+      wind: '<path stroke-linecap="round" stroke-linejoin="round" d="M3 8h13a3 3 0 100-6M3 16h9a3 3 0 110 6"/>',
+      temp: '<path stroke-linecap="round" stroke-linejoin="round" d="M10 3a2 2 0 012 2v8.5a4 4 0 11-4 0V5a2 2 0 012-2z"/>',
+    };
+
+    function card(inner) {
+      return `<div class="border border-navy-200 rounded-2xl p-6">${inner}</div>`;
+    }
+    function head(titulo, icon) {
+      return `<div class="flex items-center gap-3 mb-5">
+        <div class="w-9 h-9 rounded-lg bg-cyan-50 flex items-center justify-center">
+          <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">${icons[icon]}</svg>
+        </div>
+        <h2 class="font-display text-lg font-bold text-navy-900">${titulo}</h2>
+      </div>`;
+    }
+
+    let html = '';
+
+    // Conversores por factor
+    conversores.forEach((c) => {
+      const opts = c.unidades.map((u) => `<option value="${u.k}">${u.label}</option>`).join('');
+      html += card(head(c.titulo, c.icon) + `
+        <div class="flex items-center gap-2">
+          <input type="number" step="any" class="conv-in flex-1 min-w-0 px-3 py-2.5 border border-navy-200 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none" data-conv="${c.id}" data-side="from" placeholder="0" />
+          <select class="conv-unit border border-navy-200 rounded-lg px-2 py-2.5 bg-white text-sm font-medium" data-conv="${c.id}" data-side="from">${opts}</select>
+        </div>
+        <div class="flex justify-center my-2"><svg class="w-5 h-5 text-navy-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/></svg></div>
+        <div class="flex items-center gap-2">
+          <input type="number" step="any" class="conv-in flex-1 min-w-0 px-3 py-2.5 border border-navy-200 rounded-lg bg-navy-50 focus:ring-2 focus:ring-cyan-500 outline-none" data-conv="${c.id}" data-side="to" placeholder="0" />
+          <select class="conv-unit border border-navy-200 rounded-lg px-2 py-2.5 bg-white text-sm font-medium" data-conv="${c.id}" data-side="to">${opts}</select>
+        </div>`);
+    });
+
+    // Temperatura (aparte por no ser factor lineal)
+    const tOpts = '<option value="C">°C</option><option value="F">°F</option><option value="K">K</option>';
+    html += card(head('Temperatura', 'temp') + `
+      <div class="flex items-center gap-2">
+        <input type="number" step="any" id="temp-from" class="flex-1 min-w-0 px-3 py-2.5 border border-navy-200 rounded-lg focus:ring-2 focus:ring-cyan-500 outline-none" placeholder="0" />
+        <select id="temp-from-u" class="border border-navy-200 rounded-lg px-2 py-2.5 bg-white text-sm font-medium">${tOpts}</select>
+      </div>
+      <div class="flex justify-center my-2"><svg class="w-5 h-5 text-navy-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/></svg></div>
+      <div class="flex items-center gap-2">
+        <input type="number" step="any" id="temp-to" class="flex-1 min-w-0 px-3 py-2.5 border border-navy-200 rounded-lg bg-navy-50 focus:ring-2 focus:ring-cyan-500 outline-none" placeholder="0" />
+        <select id="temp-to-u" class="border border-navy-200 rounded-lg px-2 py-2.5 bg-white text-sm font-medium"><option value="F">°F</option><option value="C">°C</option><option value="K">K</option></select>
+      </div>`);
+
+    grid.innerHTML = html;
+
+    // Lógica factores
+    const round = (n) => Math.round(n * 10000) / 10000;
+    function recalcFactor(convId, source) {
+      const c = conversores.find((x) => x.id === convId);
+      const fromIn = grid.querySelector(`.conv-in[data-conv="${convId}"][data-side="from"]`);
+      const toIn = grid.querySelector(`.conv-in[data-conv="${convId}"][data-side="to"]`);
+      const fromU = grid.querySelector(`.conv-unit[data-conv="${convId}"][data-side="from"]`);
+      const toU = grid.querySelector(`.conv-unit[data-conv="${convId}"][data-side="to"]`);
+      const f = (k) => c.unidades.find((u) => u.k === k).factor;
+      if (source === 'from') {
+        const v = parseFloat(fromIn.value);
+        if (isNaN(v)) { toIn.value = ''; return; }
+        toIn.value = round(v * f(fromU.value) / f(toU.value));
+      } else {
+        const v = parseFloat(toIn.value);
+        if (isNaN(v)) { fromIn.value = ''; return; }
+        fromIn.value = round(v * f(toU.value) / f(fromU.value));
+      }
+    }
+    grid.querySelectorAll('.conv-in').forEach((el) => el.addEventListener('input', () => recalcFactor(el.dataset.conv, el.dataset.side)));
+    grid.querySelectorAll('.conv-unit').forEach((el) => el.addEventListener('change', () => recalcFactor(el.dataset.conv, 'from')));
+
+    // Temperatura
+    const toK = (v, u) => u === 'C' ? v + 273.15 : u === 'F' ? (v - 32) * 5 / 9 + 273.15 : v;
+    const fromK = (k, u) => u === 'C' ? k - 273.15 : u === 'F' ? (k - 273.15) * 9 / 5 + 32 : k;
+    const tF = document.getElementById('temp-from'), tT = document.getElementById('temp-to');
+    const tFU = document.getElementById('temp-from-u'), tTU = document.getElementById('temp-to-u');
+    function recalcTemp(source) {
+      if (source === 'from') {
+        const v = parseFloat(tF.value);
+        if (isNaN(v)) { tT.value = ''; return; }
+        tT.value = round(fromK(toK(v, tFU.value), tTU.value));
+      } else {
+        const v = parseFloat(tT.value);
+        if (isNaN(v)) { tF.value = ''; return; }
+        tF.value = round(fromK(toK(v, tTU.value), tFU.value));
+      }
+    }
+    tF.addEventListener('input', () => recalcTemp('from'));
+    tT.addEventListener('input', () => recalcTemp('to'));
+    tFU.addEventListener('change', () => recalcTemp('from'));
+    tTU.addEventListener('change', () => recalcTemp('from'));
+  }
+  initConversor();
+  document.addEventListener('astro:page-load', initConversor);
+</script>

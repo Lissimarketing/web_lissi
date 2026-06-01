@@ -1,52 +1,223 @@
 ---
 // src/components/Navbar.astro
+const LOGIN_URL = "https://app.lissi.app/login";
+const SIGNUP_URL = "https://app.lissi.app/signup";
 ---
-<nav class="fixed top-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-xl border-b border-slate-100">
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-[90] transition-transform duration-300 bg-transparent border-b border-transparent">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-20">
-      
+
+      <!-- LOGO -->
       <div class="flex-shrink-0 flex items-center">
-        <a href="/" class="group">
-          <img 
-            src="/logo_lissi.png" 
-            alt="Lissi Logo" 
-            class="h-10 md:h-12 w-auto transition-transform duration-300 group-hover:scale-105"
-          />
+        <a href="/" class="group inline-flex items-center">
+          <img src="/logo_lissi.png" alt="Lissi" class="h-9 md:h-10 w-auto brightness-0 invert transition-transform duration-300 group-hover:scale-105" />
         </a>
       </div>
 
-      <div class="hidden md:flex items-center gap-10">
-        <div class="flex gap-8 text-sm font-bold text-slate-500">
-          <a href="#soluciones" class="hover:text-blue-600 transition-colors">Plataforma</a>
-          <a href="#testimonios" class="hover:text-blue-600 transition-colors">Clientes</a>
-          <a href="#precios" class="hover:text-blue-600 transition-colors">Precios</a>
+      <!-- DESKTOP NAV -->
+      <div class="hidden md:flex items-center gap-8">
+        <div class="flex items-center gap-7 text-sm font-medium">
+          <a href="/#soluciones" class="text-navy-200 hover:text-cyan-400 transition-colors py-4">Plataforma</a>
+          <a href="/#precios" class="text-navy-200 hover:text-cyan-400 transition-colors py-4">Precios</a>
+          
+          <!-- MEGA MENÚ: RECURSOS -->
+          <div class="relative group">
+            <a href="/recursos" class="text-navy-200 hover:text-cyan-400 transition-colors flex items-center gap-1.5 py-4">
+              Recursos
+              <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </a>
+            
+            <!-- Dropdown Card -->
+            <div class="absolute top-[85%] left-1/2 -translate-x-1/2 w-[340px] pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out z-50">
+              <div class="bg-[#0A0F1C]/95 backdrop-blur-xl border border-slate-700/80 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.6)] overflow-hidden p-2 flex flex-col gap-1 relative before:content-[''] before:absolute before:-top-2 before:left-1/2 before:-translate-x-1/2 before:border-8 before:border-transparent before:border-b-slate-700/80">
+                
+                <!-- Decodificador IA -->
+                <a href="/recursos/decodificador" class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-800/80 transition-colors group/item">
+                  <div class="w-9 h-9 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-white group-hover/item:text-violet-400 transition-colors leading-none mb-1">Decodificador IA</p>
+                    <p class="text-[11px] text-slate-400 leading-snug font-light">Diagnóstico de códigos de error.</p>
+                  </div>
+                </a>
+
+                <!-- Calculadora ROI -->
+                <a href="/recursos/roi" class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-800/80 transition-colors group/item">
+                  <div class="w-9 h-9 rounded-lg bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-white group-hover/item:text-rose-400 transition-colors leading-none mb-1">Calculadora ROI</p>
+                    <p class="text-[11px] text-slate-400 leading-snug font-light">Cierre de ventas para Inverter.</p>
+                  </div>
+                </a>
+
+                <!-- Generador de Pautas -->
+                <a href="/recursos/pautas" class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-800/80 transition-colors group/item">
+                  <div class="w-9 h-9 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-white group-hover/item:text-amber-400 transition-colors leading-none mb-1">Generador Pautas</p>
+                    <p class="text-[11px] text-slate-400 leading-snug font-light">Checklists técnicos al instante.</p>
+                  </div>
+                </a>
+
+                <!-- Calculadora F-Gas -->
+                <a href="/recursos/f-gas" class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-800/80 transition-colors group/item">
+                  <div class="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-bold text-white group-hover/item:text-emerald-400 transition-colors leading-none mb-1">Normativa F-Gas</p>
+                    <p class="text-[11px] text-slate-400 leading-snug font-light">Calculadora de Huella tCO₂e.</p>
+                  </div>
+                </a>
+
+                <div class="h-px bg-slate-800/60 my-1 mx-2"></div>
+                
+                <!-- Ver Todo -->
+                <a href="/recursos" class="p-3 text-center text-[11px] font-bold uppercase tracking-wider text-cyan-400 hover:text-cyan-300 transition-colors">
+                  Ver todas las herramientas &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="h-6 w-px bg-slate-200"></div>
+        <div class="h-5 w-px bg-navy-700"></div>
 
-        <div class="flex items-center gap-6">
-          <button 
-            onclick="window.openCalendly()"
-            class="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors cursor-pointer"
-          >
-            Agendar Reunión
-          </button>
-          
-          <a 
-            href="https://wa.me/56963192849?text=Hola,%20vi%20la%20web%20y%20quiero%20hablar%20con%20un%20ingeniero." 
-            target="_blank"
-            class="px-6 py-3 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all active:scale-95 flex items-center gap-2"
-          >
-            Hablemos por WhatsApp
+        <div class="flex items-center gap-4">
+          <a href={LOGIN_URL} class="text-sm font-medium text-navy-200 hover:text-white transition-colors">Iniciar sesión</a>
+          <a href={SIGNUP_URL} class="group relative inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-slate-800 text-white rounded-xl font-bold text-sm transition-all duration-200 border border-slate-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_4px_rgba(0,0,0,0.4)] hover:bg-slate-700 hover:border-slate-500 active:scale-[0.98]">
+            Empieza gratis
+            <svg class="w-4 h-4 text-cyan-400 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
           </a>
         </div>
       </div>
 
+      <!-- MOBILE TOGGLE BUTTON -->
       <div class="md:hidden">
-        <button class="text-slate-600 p-2">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+        <button id="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu" class="text-white p-2 -mr-2 cursor-pointer focus:outline-none">
+          <svg id="nav-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+          <svg id="nav-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
+
+    </div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div id="nav-menu" class="md:hidden hidden border-t border-navy-800 bg-navy-950 shadow-2xl">
+    <div class="px-4 sm:px-6 py-6 flex flex-col gap-1">
+      <a href="/#soluciones" data-nav-link class="px-3 py-3 rounded-lg text-base font-medium text-navy-200 hover:bg-navy-800 transition-colors">Plataforma</a>
+      <a href="/#precios" data-nav-link class="px-3 py-3 rounded-lg text-base font-medium text-navy-200 hover:bg-navy-800 transition-colors">Precios</a>
+      
+      <!-- Acordeón Recursos Mobile -->
+      <div class="flex flex-col">
+        <button id="mobile-recursos-btn" class="flex items-center justify-between px-3 py-3 rounded-lg text-base font-medium text-navy-200 hover:bg-navy-800 transition-colors w-full focus:outline-none">
+          Recursos
+          <svg id="mobile-recursos-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div id="mobile-recursos-menu" class="hidden flex-col pl-4 pr-2 py-2 gap-1 border-l-2 border-slate-800/60 ml-4 mt-1 mb-2">
+          <a href="/recursos/decodificador" data-nav-link class="text-sm font-medium text-slate-400 hover:text-white py-2.5 flex items-center gap-3">
+            <span class="w-1.5 h-1.5 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.8)] shrink-0"></span> Decodificador IA
+          </a>
+          <a href="/recursos/roi" data-nav-link class="text-sm font-medium text-slate-400 hover:text-white py-2.5 flex items-center gap-3">
+             <span class="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)] shrink-0"></span> Calculadora ROI
+          </a>
+          <a href="/recursos/pautas" data-nav-link class="text-sm font-medium text-slate-400 hover:text-white py-2.5 flex items-center gap-3">
+             <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)] shrink-0"></span> Generador de Pautas
+          </a>
+          <a href="/recursos/f-gas" data-nav-link class="text-sm font-medium text-slate-400 hover:text-white py-2.5 flex items-center gap-3">
+             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] shrink-0"></span> Normativa F-Gas
+          </a>
+          <a href="/recursos" data-nav-link class="text-xs font-bold uppercase tracking-wider text-cyan-400 hover:text-cyan-300 py-3 mt-1 inline-flex items-center gap-1">
+             Ver todo el Hub &rarr;
+          </a>
+        </div>
+      </div>
+
+      <div class="h-px bg-navy-800 my-3"></div>
+      
+      <a href={LOGIN_URL} class="px-3 py-3 rounded-lg text-base font-medium text-navy-300 hover:bg-navy-800 transition-colors">Iniciar sesión</a>
+      <a href={SIGNUP_URL} class="w-full mt-2 text-center text-base font-bold text-navy-950 px-4 py-3.5 rounded-xl bg-white hover:bg-cyan-50 transition-all">Empieza gratis</a>
     </div>
   </div>
 </nav>
+
+<script>
+  function initNavbar() {
+    const navbar = document.getElementById('navbar');
+    const toggle = document.getElementById('nav-toggle');
+    const menu = document.getElementById('nav-menu');
+    const iconOpen = document.getElementById('nav-icon-open');
+    const iconClose = document.getElementById('nav-icon-close');
+    
+    // Lógica Acordeón Móvil
+    const mobileRecursosBtn = document.getElementById('mobile-recursos-btn');
+    const mobileRecursosMenu = document.getElementById('mobile-recursos-menu');
+    const mobileRecursosIcon = document.getElementById('mobile-recursos-icon');
+
+    if (!navbar || !toggle || !menu) return;
+    if (navbar.dataset.init) return;
+    navbar.dataset.init = '1';
+
+    function setMenu(open) {
+      menu.classList.toggle('hidden', !open);
+      iconOpen?.classList.toggle('hidden', open);
+      iconClose?.classList.toggle('hidden', !open);
+      toggle.setAttribute('aria-expanded', String(open));
+      
+      // Reiniciar el acordeón al cerrar el menú principal
+      if (!open && mobileRecursosMenu) {
+        mobileRecursosMenu.classList.add('hidden');
+        mobileRecursosMenu.classList.remove('flex');
+        mobileRecursosIcon?.classList.remove('rotate-180');
+      }
+    }
+    
+    toggle.addEventListener('click', () => setMenu(menu.classList.contains('hidden')));
+    menu.querySelectorAll('[data-nav-link]').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+
+    // Event Listener Acordeón Móvil
+    mobileRecursosBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      mobileRecursosMenu?.classList.toggle('hidden');
+      mobileRecursosMenu?.classList.toggle('flex');
+      mobileRecursosIcon?.classList.toggle('rotate-180');
+    });
+
+    let lastScroll = 0;
+    function onScroll() {
+      const y = window.scrollY;
+
+      // Cerca del tope: transparente
+      if (y < 50) {
+        navbar.style.transform = 'translateY(0)';
+        navbar.classList.add('bg-transparent', 'border-transparent');
+        navbar.classList.remove('bg-[#0A0F1C]/95', 'backdrop-blur-md', 'border-slate-800/80', 'shadow-lg');
+      } else {
+        // Más abajo: fondo sólido blur
+        navbar.classList.remove('bg-transparent', 'border-transparent');
+        navbar.classList.add('bg-[#0A0F1C]/95', 'backdrop-blur-md', 'border-slate-800/80', 'shadow-lg');
+        
+        // Baja → oculta | Sube → muestra
+        if (y > lastScroll && y > 120) {
+          navbar.style.transform = 'translateY(-100%)';
+          setMenu(false); 
+        } else {
+          navbar.style.transform = 'translateY(0)';
+        }
+      }
+      lastScroll = y;
+    }
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+  
+  initNavbar();
+  document.addEventListener('astro:page-load', initNavbar);
+</script>

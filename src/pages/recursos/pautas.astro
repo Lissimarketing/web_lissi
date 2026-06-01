@@ -1,0 +1,421 @@
+---
+// src/pages/recursos/pautas.astro
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+// Datos en archivo aparte y editable: src/data/pautas-mantencion.json
+import db from '../../data/pautas-mantencion.json';
+
+const SIGNUP_URL = "https://app.lissi.app/signup";
+const ultimaActualizacion = db._meta.ultimaActualizacion;
+---
+<Layout title="Generador de Pautas de Mantención HVAC | Lissi">
+  <Navbar />
+
+  <main class="relative bg-[#0A0F1C] min-h-screen pt-28 pb-24 font-sans selection:bg-amber-500/30 overflow-hidden">
+
+    <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-amber-900/15 to-transparent pointer-events-none"></div>
+    <div class="absolute top-1/3 -right-40 w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <a href="/recursos" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-amber-400 transition-colors group mb-8">
+        <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Volver a Recursos
+      </a>
+
+      <div class="grid lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12 items-start">
+
+        <!-- IZQUIERDA -->
+        <div class="lg:sticky lg:top-28">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span class="font-mono text-[10px] font-bold uppercase tracking-widest text-amber-300">Generador de pautas</span>
+          </div>
+
+          <h1 class="font-display text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.05] mb-5">
+            Pautas de<br/>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">mantención HVAC-R</span>
+          </h1>
+
+          <p class="text-slate-400 text-base leading-relaxed mb-8 max-w-md">
+            Arma checklists profesionales con campos para registrar parámetros en terreno. Elige el tipo de orden, el equipo y la frecuencia, y descárgalo en PDF.
+          </p>
+
+          <div class="rounded-2xl bg-slate-900/60 border border-slate-800 p-5 mb-5">
+            <p class="font-mono text-[10px] uppercase tracking-widest text-amber-400 font-bold mb-3">// Sobre estas pautas</p>
+            <ul class="space-y-3 text-sm text-slate-400">
+              <li class="flex gap-3"><span class="text-amber-400">→</span><span>Base según práctica estándar <strong class="text-slate-300">ASHRAE/ACCA 180</strong> y recomendaciones de fabricante.</span></li>
+              <li class="flex gap-3"><span class="text-amber-400">→</span><span>Tres tipos de orden: preventiva, correctiva e instalación.</span></li>
+              <li class="flex gap-3"><span class="text-amber-400">→</span><span>Con campos para anotar presiones, amperaje, delta T y más.</span></li>
+            </ul>
+          </div>
+
+          <div class="rounded-2xl bg-amber-500/5 border border-amber-500/20 p-4">
+            <div class="flex gap-3">
+              <svg class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M12 3l9 16H3l9-16z"/></svg>
+              <p class="text-xs text-amber-200/80 leading-relaxed">
+                <strong class="text-amber-200">Base de referencia, no norma obligatoria.</strong> Las tareas, parámetros y frecuencias dependen del equipo, fabricante, uso y condiciones de sitio. Adapta según el manual del fabricante y tu criterio profesional.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- DERECHA: Generador -->
+        <div class="bg-slate-900/80 rounded-3xl border border-slate-700/70 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl overflow-hidden flex flex-col min-h-[600px]">
+
+          <div class="p-5 sm:p-7 md:p-8 flex-1 flex flex-col">
+
+            <!-- STEP 1: Selección -->
+            <div id="step-selection" class="flex-1">
+
+              <!-- Tipo de orden -->
+              <label class="font-mono text-[10px] uppercase tracking-widest text-amber-400 font-bold block mb-3">1. Tipo de orden</label>
+              <div class="grid grid-cols-3 gap-2 mb-7" id="orden-grid"></div>
+
+              <!-- Equipo (desplegable) -->
+              <div id="equipo-section">
+                <label for="equipo-select" class="font-mono text-[10px] uppercase tracking-widest text-amber-400 font-bold block mb-3">2. Tipo de equipo</label>
+                <div class="relative mb-7">
+                  <select id="equipo-select" class="w-full appearance-none bg-[#0A0F1C] border border-slate-700 hover:border-amber-500/50 focus:border-amber-500 focus:outline-none rounded-xl pl-4 pr-10 py-3.5 text-sm font-bold text-white cursor-pointer transition-colors">
+                    <option value="" disabled selected>Selecciona el equipo…</option>
+                  </select>
+                  <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </div>
+
+              <!-- Frecuencia (solo preventiva) -->
+              <div id="freq-section" class="mb-8">
+                <label class="font-mono text-[10px] uppercase tracking-widest text-amber-400 font-bold block mb-3">3. Frecuencia</label>
+                <div class="grid grid-cols-4 gap-2" id="freq-grid"></div>
+                <p class="text-[11px] text-slate-500 mt-2.5">Cada frecuencia suma las tareas de las anteriores.</p>
+              </div>
+
+              <button id="btn-generate" class="w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold text-sm uppercase tracking-wider text-[#0A0F1C] bg-amber-400 hover:bg-amber-300 transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                Generar pauta
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+
+            <!-- STEP 2: Resultado -->
+            <div id="step-result" class="hidden flex-col h-full">
+              <div class="flex items-start justify-between mb-5 pb-5 border-b border-slate-800">
+                <div class="min-w-0">
+                  <span id="result-badge" class="inline-block px-2 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 font-mono text-[9px] uppercase tracking-widest text-amber-400 mb-2">Preventiva</span>
+                  <h2 id="result-title" class="font-display text-xl md:text-2xl font-bold text-white tracking-tight leading-tight">Equipo</h2>
+                  <p id="result-count" class="text-[11px] text-slate-500 mt-1 font-mono"></p>
+                </div>
+                <button id="btn-reset" class="w-10 h-10 shrink-0 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors" title="Nueva pauta">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                </button>
+              </div>
+
+              <div class="flex-1 overflow-y-auto custom-scrollbar pr-1 max-h-[440px]" id="task-container"></div>
+            </div>
+
+          </div>
+
+          <!-- Footer CTA -->
+          <div id="footer-cta" class="hidden p-5 sm:p-6 border-t border-slate-800 bg-[#0A0F1C]/60 space-y-2.5">
+            <button id="download-pdf" class="group w-full py-3.5 rounded-xl flex items-center justify-center gap-2 font-bold text-sm uppercase tracking-wider text-[#0A0F1C] bg-amber-400 hover:bg-amber-300 transition-all active:scale-[0.99]">
+              Descargar pauta en PDF
+              <svg class="w-4 h-4 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </button>
+            <a href={SIGNUP_URL} class="group w-full py-3 rounded-xl flex items-center justify-center gap-2 font-semibold text-xs uppercase tracking-wider text-slate-300 border border-slate-700 hover:border-amber-500/50 hover:text-white transition-all">
+              Lleva estas pautas a la app de tus técnicos con Lissi
+              <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <p class="text-center font-mono text-[10px] text-slate-600 mt-8">Base actualizada al {ultimaActualizacion} · Práctica estándar ASHRAE/ACCA 180</p>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+  .task-item { transition: all 0.15s ease; cursor: pointer; }
+  .task-item.checked { background-color: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.3); }
+  .task-item.checked .check-circle { background-color: #10b981; border-color: #10b981; }
+  .task-item.checked .check-icon { opacity: 1; }
+  .task-item.checked .task-text { color: #94a3b8; text-decoration: line-through; }
+  .check-icon { opacity: 0; transition: opacity 0.15s; }
+  #equipo-select option { background: #0A0F1C; color: white; }
+  input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .param-input { font-size: 16px; }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" is:inline></script>
+
+<script is:inline define:vars={{ DB: db.tiposOrden, META: db._meta }}>
+  let state = { orden: 'preventiva', equipo: '', freq: 'mensual' };
+  let paramValues = {}; // valores anotados por el usuario
+
+  const ordenGrid = document.getElementById('orden-grid');
+  const equipoSelect = document.getElementById('equipo-select');
+  const equipoSection = document.getElementById('equipo-section');
+  const freqSection = document.getElementById('freq-section');
+  const freqGrid = document.getElementById('freq-grid');
+  const btnGenerate = document.getElementById('btn-generate');
+  const stepSelection = document.getElementById('step-selection');
+  const stepResult = document.getElementById('step-result');
+  const footerCta = document.getElementById('footer-cta');
+  const btnReset = document.getElementById('btn-reset');
+  const taskContainer = document.getElementById('task-container');
+
+  const ORDENES = [
+    { id: 'preventiva', label: 'Preventiva', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
+    { id: 'correctiva', label: 'Correctiva', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' },
+    { id: 'instalacion', label: 'Instalación', icon: 'M5 13l4 4L19 7' },
+  ];
+  const FREQS = [
+    { id: 'mensual', label: 'Mensual' },
+    { id: 'trimestral', label: 'Trimestral' },
+    { id: 'semestral', label: 'Semestral' },
+    { id: 'anual', label: 'Anual' },
+  ];
+
+  function renderOrdenes() {
+    ordenGrid.innerHTML = '';
+    ORDENES.forEach((o) => {
+      const on = state.orden === o.id;
+      const btn = document.createElement('button');
+      btn.className = `flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${on ? 'border-amber-500 bg-amber-500/10 text-amber-400' : 'border-slate-800 bg-[#0A0F1C]/60 text-slate-400 hover:border-slate-600'}`;
+      btn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="${o.icon}"/></svg><span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">${o.label}</span>`;
+      btn.addEventListener('click', () => { state.orden = o.id; state.equipo = ''; renderAll(); });
+      ordenGrid.appendChild(btn);
+    });
+  }
+
+  function renderEquipos() {
+    const orden = DB[state.orden];
+    if (state.orden === 'correctiva') {
+      equipoSection.style.display = 'none';
+      freqSection.style.display = 'none';
+      return;
+    }
+    equipoSection.style.display = 'block';
+    const equipos = orden.equipos || {};
+    // Poblar select
+    equipoSelect.innerHTML = '<option value="" disabled' + (state.equipo ? '' : ' selected') + '>Selecciona el equipo…</option>';
+    Object.keys(equipos).forEach((key) => {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = equipos[key].nombre;
+      if (state.equipo === key) opt.selected = true;
+      equipoSelect.appendChild(opt);
+    });
+    freqSection.style.display = (state.orden === 'preventiva') ? 'block' : 'none';
+  }
+
+  function renderFreqs() {
+    freqGrid.innerHTML = '';
+    FREQS.forEach((f) => {
+      const on = state.freq === f.id;
+      const btn = document.createElement('button');
+      btn.className = `py-3 rounded-xl border-2 transition-all font-mono text-[10px] font-bold uppercase tracking-wider ${on ? 'border-amber-500 bg-amber-500/10 text-amber-400' : 'border-slate-800 bg-[#0A0F1C]/60 text-slate-500 hover:border-slate-600'}`;
+      btn.textContent = f.label;
+      btn.addEventListener('click', () => { state.freq = f.id; renderFreqs(); checkReady(); });
+      freqGrid.appendChild(btn);
+    });
+  }
+
+  function checkReady() {
+    btnGenerate.disabled = !(state.orden === 'correctiva' || state.equipo);
+  }
+
+  function renderAll() {
+    renderOrdenes();
+    renderEquipos();
+    renderFreqs();
+    checkReady();
+  }
+
+  equipoSelect.addEventListener('change', () => { state.equipo = equipoSelect.value; checkReady(); });
+
+  // Obtener mediciones del equipo/orden actual
+  function getMediciones() {
+    const orden = DB[state.orden];
+    if (state.orden === 'correctiva') return orden.mediciones || [];
+    const eq = orden.equipos[state.equipo];
+    return (eq && eq.mediciones) ? eq.mediciones : [];
+  }
+
+  function buildPauta() {
+    const orden = DB[state.orden];
+    if (state.orden === 'correctiva') {
+      return { titulo: 'Protocolo de diagnóstico correctivo', badge: 'Correctiva', grupos: orden.protocolo };
+    }
+    if (state.orden === 'instalacion') {
+      const eq = orden.equipos[state.equipo];
+      return { titulo: eq.nombre, badge: 'Instalación / Puesta en marcha', grupos: eq.checklist };
+    }
+    const eq = orden.equipos[state.equipo];
+    const order = ['mensual', 'trimestral', 'semestral', 'anual'];
+    const upto = order.indexOf(state.freq);
+    let grupos = [];
+    for (let i = 0; i <= upto; i++) {
+      const f = order[i];
+      if (eq[f]) eq[f].forEach((g) => grupos.push({ grupo: `${g.grupo} · ${f}`, tareas: g.tareas }));
+    }
+    const freqLabel = FREQS.find((x) => x.id === state.freq).label;
+    return { titulo: eq.nombre, badge: `Preventiva ${freqLabel}`, grupos };
+  }
+
+  function renderResult() {
+    paramValues = {};
+    const pauta = buildPauta();
+    const mediciones = getMediciones();
+    document.getElementById('result-title').textContent = pauta.titulo;
+    document.getElementById('result-badge').textContent = pauta.badge;
+    const totalTasks = pauta.grupos.reduce((sum, g) => sum + g.tareas.length, 0);
+    document.getElementById('result-count').textContent = `${totalTasks} tareas · ${mediciones.length} parámetros · ${pauta.grupos.length} secciones`;
+
+    taskContainer.innerHTML = '';
+
+    // --- Sección de parámetros medibles (arriba) ---
+    if (mediciones.length > 0) {
+      const pSection = document.createElement('div');
+      pSection.className = 'mb-6 rounded-2xl bg-amber-500/5 border border-amber-500/20 p-4';
+      const pHeader = document.createElement('p');
+      pHeader.className = 'font-mono text-[10px] uppercase tracking-widest text-amber-400 font-bold mb-3 flex items-center gap-2';
+      pHeader.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Parámetros a registrar';
+      pSection.appendChild(pHeader);
+      const pGrid = document.createElement('div');
+      pGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-2.5';
+      mediciones.forEach((m, idx) => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-2 bg-[#0A0F1C]/60 border border-slate-800 rounded-lg px-3 py-2';
+        const lab = document.createElement('span');
+        lab.className = 'text-[11px] text-slate-400 flex-1 leading-tight';
+        lab.textContent = m.label;
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.inputMode = 'decimal';
+        inp.placeholder = '—';
+        inp.className = 'param-input w-16 text-right bg-transparent border-0 border-b border-slate-700 focus:border-amber-500 focus:outline-none text-white font-mono text-sm font-bold py-0.5';
+        inp.addEventListener('input', () => { paramValues[idx] = inp.value; });
+        const unit = document.createElement('span');
+        unit.className = 'text-[10px] text-slate-500 font-mono w-10';
+        unit.textContent = m.unidad;
+        row.appendChild(lab); row.appendChild(inp); row.appendChild(unit);
+        pGrid.appendChild(row);
+      });
+      pSection.appendChild(pGrid);
+      taskContainer.appendChild(pSection);
+    }
+
+    // --- Tareas (checks) ---
+    pauta.grupos.forEach((g) => {
+      const section = document.createElement('div');
+      section.className = 'mb-5';
+      const header = document.createElement('p');
+      header.className = 'font-mono text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2.5';
+      header.textContent = g.grupo;
+      section.appendChild(header);
+      const ul = document.createElement('ul');
+      ul.className = 'space-y-2';
+      g.tareas.forEach((task) => {
+        const li = document.createElement('li');
+        li.className = 'task-item bg-[#0A0F1C]/80 border border-slate-800 rounded-xl p-3.5 flex items-start gap-3 hover:border-slate-600';
+        li.innerHTML = '<div class="check-circle w-5 h-5 shrink-0 rounded-full border-2 border-slate-600 flex items-center justify-center mt-0.5"><svg class="check-icon w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div><span class="task-text text-sm text-slate-300 leading-snug flex-1 select-none"></span>';
+        li.querySelector('.task-text').textContent = task;
+        li.addEventListener('click', () => li.classList.toggle('checked'));
+        ul.appendChild(li);
+      });
+      section.appendChild(ul);
+      taskContainer.appendChild(section);
+    });
+  }
+
+  btnGenerate.addEventListener('click', () => {
+    renderResult();
+    stepSelection.style.display = 'none';
+    stepResult.style.display = 'flex';
+    footerCta.style.display = 'block';
+  });
+
+  btnReset.addEventListener('click', () => {
+    stepResult.style.display = 'none';
+    footerCta.style.display = 'none';
+    stepSelection.style.display = 'block';
+  });
+
+  // PDF
+  document.getElementById('download-pdf').addEventListener('click', () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const pauta = buildPauta();
+    const mediciones = getMediciones();
+    const today = new Date().toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' });
+
+    doc.setFontSize(20); doc.setTextColor(10, 37, 64); doc.setFont(undefined, 'bold');
+    doc.text('Lissi - Pauta de mantencion', 20, 22);
+    doc.setFontSize(13); doc.setTextColor(217, 119, 6);
+    doc.text(`${pauta.badge} - ${pauta.titulo}`, 20, 31);
+    doc.setFontSize(9); doc.setTextColor(100, 116, 139); doc.setFont(undefined, 'normal');
+    doc.text(`Generada el ${today}`, 20, 37);
+    // Datos de cabecera para llenar
+    doc.text('Cliente: ____________________     Equipo / N: ____________________     Tecnico: ____________________', 20, 43);
+    doc.setDrawColor(217, 119, 6); doc.setLineWidth(0.5); doc.line(20, 47, 190, 47);
+
+    let y = 56;
+
+    // Parametros
+    if (mediciones.length > 0) {
+      doc.setFontSize(10); doc.setFont(undefined, 'bold'); doc.setTextColor(180, 83, 9);
+      doc.text('PARAMETROS REGISTRADOS', 20, y); y += 7;
+      doc.setFontSize(9); doc.setFont(undefined, 'normal'); doc.setTextColor(30, 41, 59);
+      // dos columnas
+      const colX = [20, 110];
+      mediciones.forEach((m, idx) => {
+        if (y > 275) { doc.addPage(); y = 20; }
+        const col = idx % 2;
+        const x = colX[col];
+        const val = (paramValues[idx] && paramValues[idx].trim()) ? `${paramValues[idx]} ${m.unidad}` : '______________';
+        doc.text(`${m.label}: ${val}`, x, y);
+        if (col === 1 || idx === mediciones.length - 1) y += 6;
+      });
+      y += 4;
+    }
+
+    // Tareas
+    doc.setFontSize(10); doc.setFont(undefined, 'bold'); doc.setTextColor(180, 83, 9);
+    if (y > 270) { doc.addPage(); y = 20; }
+    doc.text('CHECKLIST', 20, y); y += 7;
+    doc.setFontSize(9);
+    pauta.grupos.forEach((g) => {
+      if (y > 270) { doc.addPage(); y = 20; }
+      doc.setFont(undefined, 'bold'); doc.setTextColor(180, 83, 9);
+      doc.text(g.grupo.toUpperCase(), 20, y); y += 6;
+      doc.setFont(undefined, 'normal'); doc.setTextColor(30, 41, 59);
+      g.tareas.forEach((task) => {
+        if (y > 278) { doc.addPage(); y = 20; }
+        doc.rect(20, y - 3.5, 3.5, 3.5);
+        const lines = doc.splitTextToSize(task, 160);
+        doc.text(lines, 26, y);
+        y += lines.length * 5 + 1.5;
+      });
+      y += 3;
+    });
+
+    if (y > 250) { doc.addPage(); y = 20; }
+    y += 4;
+    doc.setFontSize(7.5); doc.setTextColor(120, 120, 120); doc.setFont(undefined, 'italic');
+    const disc = doc.splitTextToSize('Base de referencia segun practica estandar ASHRAE/ACCA 180 y recomendaciones de fabricante. No constituye norma de obligatorio cumplimiento. Adapte segun el manual del equipo, fabricante y condiciones de sitio.', 170);
+    doc.text(disc, 20, y); y += disc.length * 4 + 4;
+    doc.setFont(undefined, 'normal'); doc.setTextColor(148, 163, 184);
+    doc.text('Generado con Lissi - lissi.app', 20, y);
+
+    doc.save(`lissi-pauta-${state.orden}-${state.equipo || 'general'}.pdf`);
+  });
+
+  renderAll();
+</script>
