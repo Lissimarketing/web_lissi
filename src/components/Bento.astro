@@ -67,7 +67,7 @@ const extras = [
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[520px]">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-auto md:auto-rows-[520px]">
 
       <div data-reveal class="bento-card md:col-span-2 group relative rounded-3xl bg-slate-900/50 border border-slate-700/50 overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-lg hover:shadow-[0_0_40px_rgba(0,229,255,0.1)]">
         <div class="card-glow"></div>
@@ -133,11 +133,11 @@ const extras = [
         </div>
       </div>
 
-      <div data-reveal class="bento-card md:col-span-1 group relative rounded-3xl bg-slate-900/50 border border-slate-700/50 p-8 md:p-10 overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-lg">
+      <div data-reveal class="bento-card md:col-span-1 group relative rounded-3xl bg-slate-900/50 border border-slate-700/50 p-8 md:p-10 overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-lg flex flex-col">
         <div class="card-glow"></div>
         <div class="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent pointer-events-none"></div>
         
-        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 font-mono text-[10px] uppercase tracking-wider text-blue-400 mb-6 relative z-10">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 font-mono text-[10px] uppercase tracking-wider text-blue-400 mb-6 relative z-10 w-max">
           <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
           Telemetría General
         </span>
@@ -167,11 +167,11 @@ const extras = [
         </div>
       </div>
 
-      <div data-reveal class="bento-card md:col-span-1 group relative rounded-3xl bg-slate-900/50 border border-slate-700/50 p-8 md:p-10 overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-lg">
+      <div data-reveal class="bento-card md:col-span-1 group relative rounded-3xl bg-slate-900/50 border border-slate-700/50 p-8 md:p-10 overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-lg flex flex-col">
         <div class="card-glow"></div>
         <div class="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent pointer-events-none"></div>
         
-        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 font-mono text-[10px] uppercase tracking-wider text-emerald-400 mb-6 relative z-10">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 font-mono text-[10px] uppercase tracking-wider text-emerald-400 mb-6 relative z-10 w-max">
           <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           Motor de Informes
         </span>
@@ -211,13 +211,13 @@ const extras = [
         </div>
       </div>
 
-      <div data-reveal class="bento-card md:col-span-2 group relative rounded-3xl bg-slate-900/50 border border-slate-700/50 overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-lg">
+      <div data-reveal class="bento-card md:col-span-2 group relative rounded-3xl bg-slate-900/50 border border-slate-700/50 overflow-hidden hover:border-cyan-500/50 transition-all duration-500 shadow-lg flex flex-col md:flex-row">
         <div class="card-glow"></div>
         <div class="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent pointer-events-none"></div>
         <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-500/20 rounded-full blur-[120px] pointer-events-none group-hover:bg-blue-500/30 transition-colors duration-700"></div>
         
-        <div class="relative h-full p-8 md:p-12 flex flex-col lg:flex-row gap-10 lg:items-center z-10">
-          <div class="lg:w-2/5">
+        <div class="relative h-full p-8 md:p-12 flex flex-col md:flex-row gap-10 md:items-center z-10 w-full">
+          <div class="md:w-2/5 flex-shrink-0">
             <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 font-mono text-[10px] uppercase tracking-wider text-violet-400 mb-6">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               Alertas y Oportunidades
@@ -226,40 +226,43 @@ const extras = [
             <p class="text-slate-400 leading-relaxed text-lg font-light">Lissi controla automáticamente las garantías y el calendario de mantenimientos. Detecta exactamente cuándo un equipo necesita servicio, convirtiendo datos en ventas recurrentes.</p>
           </div>
           
-          <div class="lg:w-3/5 rounded-2xl bg-[#0A0F1C]/90 backdrop-blur-xl border border-slate-700/80 p-6 shadow-2xl group-hover:-translate-y-2 transition-transform duration-700 ease-out">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5">
-              <div class="flex items-center gap-3">
-                <span class="font-mono text-sm font-bold text-cyan-400">CHILLER-04-A</span>
-                <span class="text-[10px] uppercase font-bold text-slate-500 bg-slate-800 px-2 py-0.5 rounded">Garantía Activa</span>
+          <div class="w-full md:w-3/5 rounded-2xl bg-[#0A0F1C]/90 backdrop-blur-xl border border-slate-700/80 p-5 md:p-6 shadow-2xl group-hover:-translate-y-2 transition-transform duration-700 ease-out flex flex-col justify-center">
+            
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-800 pb-4 mb-4 md:mb-5 gap-3 sm:gap-0">
+              <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <span class="font-mono text-[11px] md:text-sm font-bold text-cyan-400">CHILLER-04-A</span>
+                <span class="text-[8px] md:text-[10px] uppercase font-bold text-slate-500 bg-slate-800 px-1.5 md:px-2 py-0.5 rounded">Garantía Activa</span>
               </div>
-              <span class="font-mono text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span> Requiere Visita</span>
+              <span class="font-mono text-[9px] md:text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded flex items-center gap-1.5 w-max">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span> Requiere Visita
+              </span>
             </div>
             
-            <div class="grid grid-cols-3 gap-4 mb-5">
-              <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-4 hover:border-cyan-500/30 transition-colors">
-                <p class="text-[10px] uppercase font-medium tracking-wider text-slate-500 mb-1">Próx. Mantención</p>
-                <p class="font-display text-2xl font-black text-amber-400">12<span class="text-[11px] font-medium text-amber-400/60 ml-1">Días</span></p>
+            <div class="grid grid-cols-3 gap-2 md:gap-4 mb-5">
+              <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-2.5 md:p-4 hover:border-cyan-500/30 transition-colors flex flex-col justify-center">
+                <p class="text-[8px] md:text-[10px] uppercase font-medium tracking-wider text-slate-500 mb-1 leading-tight">Próx. Mantención</p>
+                <p class="font-display text-lg md:text-2xl font-black text-amber-400 leading-none">12<span class="text-[8px] md:text-[11px] font-medium text-amber-400/60 ml-0.5 md:ml-1">Días</span></p>
               </div>
-              <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-4 hover:border-cyan-500/30 transition-colors">
-                <p class="text-[10px] uppercase font-medium tracking-wider text-slate-500 mb-1">Garantía Fab.</p>
+              <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-2.5 md:p-4 hover:border-cyan-500/30 transition-colors flex flex-col justify-center">
+                <p class="text-[8px] md:text-[10px] uppercase font-medium tracking-wider text-slate-500 mb-1 leading-tight">Garantía Fab.</p>
                 <div class="flex items-center gap-2">
-                  <p class="font-display text-xl font-black text-white mt-1">Activa</p>
+                  <p class="font-display text-base md:text-xl font-black text-white leading-none mt-1">Activa</p>
                 </div>
               </div>
-              <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-4 hover:border-cyan-500/30 transition-colors">
-                <p class="text-[10px] uppercase font-medium tracking-wider text-slate-500 mb-1">Salud Equipo</p>
-                <p class="font-display text-2xl font-black text-cyan-400">85<span class="text-[11px] font-medium text-slate-500 ml-1">%</span></p>
+              <div class="rounded-xl bg-slate-900/80 border border-slate-800 p-2.5 md:p-4 hover:border-cyan-500/30 transition-colors flex flex-col justify-center">
+                <p class="text-[8px] md:text-[10px] uppercase font-medium tracking-wider text-slate-500 mb-1 leading-tight">Salud Equipo</p>
+                <p class="font-display text-lg md:text-2xl font-black text-cyan-400 leading-none">85<span class="text-[9px] md:text-[11px] font-medium text-slate-500 ml-0.5 md:ml-1">%</span></p>
               </div>
             </div>
             
             <div class="rounded-xl bg-slate-900/50 border border-slate-800 p-4">
               <div class="flex items-center justify-between mb-3">
-                <span class="font-mono text-[9px] uppercase font-bold tracking-wider text-slate-400">Oportunidad de Negocio</span>
-                <span class="font-mono text-[9px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">ALTA PROBABILIDAD</span>
+                <span class="font-mono text-[8px] md:text-[9px] uppercase font-bold tracking-wider text-slate-400">Oportunidad de Negocio</span>
+                <span class="font-mono text-[8px] md:text-[9px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">ALTA PROBABILIDAD</span>
               </div>
               <div class="flex flex-col gap-2 w-full">
-                <p class="text-xs text-white">Contrato de mantención preventiva por vencer en 12 días.</p>
-                <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                <p class="text-[11px] md:text-xs text-white leading-tight">Contrato de mantención preventiva por vencer en 12 días.</p>
+                <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden mt-1">
                   <div class="h-full bg-gradient-to-r from-amber-500 to-amber-300 w-[90%] animate-pulse"></div>
                 </div>
               </div>
