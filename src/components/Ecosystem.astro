@@ -7,9 +7,10 @@
        style="background-image: linear-gradient(rgba(0,229,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.2) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse 90% 70% at 50% 50%, black 20%, transparent 100%);"></div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div class="grid lg:grid-cols-2 gap-12 md:gap-16 items-center">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
 
-      <div>
+      <!-- COLUMNA IZQUIERDA: TEXTOS (Capa Z-20 y GPU forzada para evitar bug de Safari) -->
+      <div class="relative z-20 transform-gpu">
         <div class="flex items-center gap-2 mb-6">
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
@@ -33,7 +34,7 @@
             { t: "Técnico en Terreno", d: "Revisa su agenda del día, inicia el trabajo con un clic y reporta hallazgos desde una app nativa.", icon: "M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" }
           ].map((item) => (
             <li class="flex items-start gap-4 p-5 rounded-2xl bg-slate-900/40 border border-slate-800/50 hover:bg-slate-800/60 transition-colors">
-              <div class="mt-0.5 w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700 text-cyan-400">
+              <div class="mt-0.5 w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700 text-cyan-400 shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d={item.icon}/></svg>
               </div>
               <div>
@@ -45,14 +46,18 @@
         </ul>
       </div>
 
-      <div data-reveal class="relative group mt-16 lg:mt-0" style="perspective: 2000px;">
+      <!-- COLUMNA DERECHA: MOCKUPS -->
+      <div data-reveal class="relative group mt-12 lg:mt-0 z-10" style="perspective: 2000px;">
         
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-cyan-600/10 rounded-full blur-[140px] pointer-events-none eco-aurora mix-blend-screen z-0"></div>
+        <!-- Luz de fondo suavizada en móvil -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[800px] h-[300px] md:h-[500px] bg-cyan-600/20 md:bg-cyan-600/10 rounded-full blur-[80px] md:blur-[140px] pointer-events-none eco-aurora md:mix-blend-screen z-0 transform-gpu"></div>
 
-        <div class="relative w-full rounded-3xl bg-slate-900 border border-slate-700/80 shadow-[0_30px_60px_rgba(0,0,0,0.6)] overflow-hidden transform group-hover:rotate-y-[-1deg] group-hover:rotate-x-[1deg] transition-transform duration-700 ease-out z-10">
+        <!-- Dashboard Principal -->
+        <div class="relative w-full rounded-2xl md:rounded-3xl bg-slate-900 border border-slate-700/80 shadow-[0_20px_40px_rgba(0,0,0,0.6)] overflow-hidden transform md:group-hover:rotate-y-[-1deg] md:group-hover:rotate-x-[1deg] transition-transform duration-700 ease-out z-10">
           
           <div class="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"></div>
 
+          <!-- Barra superior navegador -->
           <div class="flex items-center gap-4 px-4 h-10 border-b border-slate-800 bg-slate-900/80">
             <div class="flex gap-1.5">
               <span class="w-3 h-3 rounded-full bg-slate-700/50"></span>
@@ -61,39 +66,39 @@
             </div>
             <div class="flex-1 max-w-sm h-6 rounded-md bg-slate-950 border border-slate-800 flex items-center px-3 gap-2">
               <svg class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-              <span class="font-mono text-[9px] text-slate-500">app.lissi.cl/dashboard</span>
+              <span class="font-mono text-[9px] text-slate-500 truncate">app.lissi.cl/dashboard</span>
             </div>
           </div>
           
-          <div class="flex h-[420px] bg-[#0A0F1C]">
-            <div class="w-16 bg-slate-900 border-r border-slate-800 flex flex-col items-center py-5 gap-5 flex-shrink-0">
+          <div class="flex h-[360px] md:h-[420px] bg-[#0A0F1C]">
+            <!-- Sidebar (Oculto en móvil) -->
+            <div class="hidden sm:flex w-16 bg-slate-900 border-r border-slate-800 flex-col items-center py-5 gap-5 flex-shrink-0">
               <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(0,229,255,0.3)]">
                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
               </div>
               <div class="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
               <div class="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
-              <div class="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center text-slate-500 mt-auto"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
             </div>
             
-            <div class="flex-1 p-6 flex flex-col gap-4 overflow-hidden">
-              <div class="flex justify-between items-end mb-2">
+            <div class="flex-1 p-4 md:p-6 flex flex-col gap-4 overflow-hidden">
+              <div class="flex justify-between items-end mb-1 md:mb-2">
                 <div>
-                  <p class="font-mono text-[10px] uppercase text-slate-500 mb-1">Métricas Generales</p>
-                  <p class="font-display text-2xl font-bold text-white leading-none">Rendimiento Mensual</p>
+                  <p class="font-mono text-[9px] md:text-[10px] uppercase text-slate-500 mb-1">Métricas Generales</p>
+                  <p class="font-display text-xl md:text-2xl font-bold text-white leading-none">Rendimiento Mensual</p>
                 </div>
-                <div class="flex gap-2">
+                <div class="hidden sm:flex gap-2">
                   <span class="font-mono text-[9px] text-slate-400 bg-slate-800 px-2 py-1 rounded border border-slate-700">Exportar CSV</span>
                 </div>
               </div>
               
-              <div class="w-full h-28 bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col relative overflow-hidden">
+              <div class="w-full h-24 md:h-28 bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col relative overflow-hidden shrink-0">
                  <div class="flex justify-between items-start z-10 relative">
                    <div>
-                     <p class="text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-1">Órdenes Completadas</p>
-                     <p class="text-2xl font-black text-white">284 <span class="text-[10px] text-emerald-400 font-medium">↑ 12%</span></p>
+                     <p class="text-[8px] md:text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-1">Órdenes Completadas</p>
+                     <p class="text-xl md:text-2xl font-black text-white">284 <span class="text-[9px] md:text-[10px] text-emerald-400 font-medium">↑ 12%</span></p>
                    </div>
                  </div>
-                 <div class="absolute inset-x-0 bottom-0 h-16">
+                 <div class="absolute inset-x-0 bottom-0 h-14 md:h-16">
                    <svg viewBox="0 0 400 60" class="w-full h-full" preserveAspectRatio="none">
                      <defs>
                        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
@@ -107,29 +112,30 @@
                  </div>
               </div>
               
+              <!-- Tabla de datos (Responsive) -->
               <div class="flex-1 bg-slate-900/80 border border-slate-800 rounded-xl flex flex-col overflow-hidden">
-                <div class="grid grid-cols-12 gap-2 px-4 py-3 border-b border-slate-800 bg-slate-950/50 text-[9px] uppercase font-bold text-slate-500 tracking-wider">
-                  <div class="col-span-2">OT</div>
-                  <div class="col-span-4">Cliente</div>
-                  <div class="col-span-3">Técnico</div>
+                <div class="grid grid-cols-12 gap-2 px-3 py-2.5 border-b border-slate-800 bg-slate-950/50 text-[8px] md:text-[9px] uppercase font-bold text-slate-500 tracking-wider">
+                  <div class="col-span-3 sm:col-span-2">OT</div>
+                  <div class="col-span-6 sm:col-span-4">Cliente</div>
+                  <div class="hidden sm:block col-span-3">Técnico</div>
                   <div class="col-span-3 text-right">Estado</div>
                 </div>
-                <div class="flex flex-col p-2 gap-1.5 overflow-hidden">
+                <div class="flex flex-col p-1.5 gap-1 overflow-hidden">
                   {[
                     {ot: 'OT-8492', c: 'Clínica Bascur - Sede...', t: 'C. Silva', e: 'EN RUTA', ec: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20'},
-                    {ot: 'OT-8491', c: 'Mall Plaza Trébol', t: 'J. Ruiz', e: 'TRABAJANDO', ec: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'},
-                    {ot: 'OT-8490', c: 'Edificio Costanera', t: 'D. Vega', e: 'COMPLETADO', ec: 'text-slate-400 bg-slate-800 border-slate-700'},
-                    {ot: 'OT-8489', c: 'Supermercado Lider', t: 'M. Soto', e: 'COMPLETADO', ec: 'text-slate-400 bg-slate-800 border-slate-700'}
+                    {ot: 'OT-8491', c: 'Mall Plaza Trébol', t: 'J. Ruiz', e: 'TRABAJ.', ec: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'},
+                    {ot: 'OT-8490', c: 'Edificio Costanera', t: 'D. Vega', e: 'LISTO', ec: 'text-slate-400 bg-slate-800 border-slate-700'},
+                    {ot: 'OT-8489', c: 'Supermercado Lider', t: 'M. Soto', e: 'LISTO', ec: 'text-slate-400 bg-slate-800 border-slate-700'}
                   ].map((row) => (
                     <div class="grid grid-cols-12 gap-2 px-2 py-2 items-center rounded-lg hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700/50 cursor-default">
-                      <div class="col-span-2 font-mono text-[10px] text-white font-medium">{row.ot}</div>
-                      <div class="col-span-4 text-[11px] text-slate-300 truncate pr-2">{row.c}</div>
-                      <div class="col-span-3 flex items-center gap-1.5">
+                      <div class="col-span-3 sm:col-span-2 font-mono text-[9px] text-white font-medium">{row.ot}</div>
+                      <div class="col-span-6 sm:col-span-4 text-[10px] md:text-[11px] text-slate-300 truncate pr-1">{row.c}</div>
+                      <div class="hidden sm:flex col-span-3 items-center gap-1.5">
                         <div class="w-4 h-4 rounded-full bg-slate-800 flex items-center justify-center text-[7px] text-slate-400 font-bold border border-slate-700">{row.t.substring(0,1)}</div>
                         <span class="text-[10px] text-slate-400">{row.t}</span>
                       </div>
                       <div class="col-span-3 flex justify-end">
-                        <span class={`font-mono text-[8px] font-bold px-1.5 py-0.5 rounded border ${row.ec}`}>{row.e}</span>
+                        <span class={`font-mono text-[7px] md:text-[8px] font-bold px-1 md:px-1.5 py-0.5 rounded border ${row.ec}`}>{row.e}</span>
                       </div>
                     </div>
                   ))}
@@ -140,7 +146,8 @@
           </div>
         </div>
 
-        <div class="absolute -bottom-10 -right-4 md:-right-8 z-20 transform-gpu rotate-y-[-4deg] rotate-x-[2deg] group-hover:rotate-y-0 group-hover:rotate-x-0 group-hover:translate-x-2 transition-transform duration-700 ease-out shadow-[0_30px_70px_rgba(0,0,0,0.9)]">
+        <!-- Teléfono Flotante (Oculto en móvil para evitar desborde de pantalla) -->
+        <div class="hidden lg:flex absolute -bottom-10 -right-8 z-20 transform-gpu rotate-y-[-4deg] rotate-x-[2deg] group-hover:rotate-y-0 group-hover:rotate-x-0 group-hover:translate-x-2 transition-transform duration-700 ease-out shadow-[0_30px_70px_rgba(0,0,0,0.9)] flex-col">
           
           <div class="absolute top-24 -left-[2px] w-[2px] h-10 bg-slate-700 rounded-l-md z-0 shadow-[-2px_0_5px_rgba(0,0,0,0.5)]"></div>
           <div class="absolute top-44 -left-[2px] w-[2px] h-14 bg-slate-700 rounded-l-md z-0 shadow-[-2px_0_5px_rgba(0,0,0,0.5)]"></div>
@@ -238,8 +245,10 @@
 
 <style>
   .perspective-2000 { perspective: 2000px; }
-  .eco-aurora { animation: eco-aurora 20s ease-in-out infinite alternate; }
-  @keyframes eco-aurora { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.8; transform: translate(-45%, -48%) scale(1.1); } }
+  
+  /* Animación suavizada para no ahogar la GPU del celular */
+  .eco-aurora { animation: eco-aurora 20s ease-in-out infinite alternate; will-change: transform, opacity; }
+  @keyframes eco-aurora { 0% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.7; transform: translate(-45%, -48%) scale(1.05); } }
   
   /* Animación del gráfico de líneas en el Dashboard */
   .eco-chart-line { stroke-dasharray: 500; stroke-dashoffset: 500; }
@@ -264,7 +273,7 @@
           observer.unobserve(section);
         }
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0.2 });
 
     observer.observe(section);
   }
