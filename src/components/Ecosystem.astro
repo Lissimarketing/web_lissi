@@ -9,7 +9,6 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="grid lg:grid-cols-2 gap-16 items-center">
 
-      <!-- COLUMNA IZQUIERDA: TEXTOS (Capa Z-20 y GPU forzada para evitar bug de Safari) -->
       <div class="relative z-20 transform-gpu">
         <div class="flex items-center gap-2 mb-6">
           <span class="relative flex h-2 w-2">
@@ -21,7 +20,7 @@
         
         <h2 class="font-display text-4xl md:text-[3.75rem] font-black text-white tracking-tight mb-8 leading-[1.05]">
           Dos realidades.<br/>
-          <span class="bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-500 bg-clip-text text-transparent drop-shadow-md">Un solo ecosistema.</span>
+          <span class="inline-block bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-500 bg-clip-text text-transparent drop-shadow-md pb-1">Un solo ecosistema.</span>
         </h2>
         
         <p class="text-xl text-slate-300 leading-relaxed mb-12 max-w-lg font-light">
@@ -46,18 +45,14 @@
         </ul>
       </div>
 
-      <!-- COLUMNA DERECHA: MOCKUPS -->
       <div data-reveal class="relative group mt-12 lg:mt-0 z-10" style="perspective: 2000px;">
         
-        <!-- Luz de fondo suavizada en móvil -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[800px] h-[300px] md:h-[500px] bg-cyan-600/20 md:bg-cyan-600/10 rounded-full blur-[80px] md:blur-[140px] pointer-events-none eco-aurora md:mix-blend-screen z-0 transform-gpu"></div>
 
-        <!-- Dashboard Principal -->
         <div class="relative w-full rounded-2xl md:rounded-3xl bg-slate-900 border border-slate-700/80 shadow-[0_20px_40px_rgba(0,0,0,0.6)] overflow-hidden transform md:group-hover:rotate-y-[-1deg] md:group-hover:rotate-x-[1deg] transition-transform duration-700 ease-out z-10">
           
           <div class="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"></div>
 
-          <!-- Barra superior navegador -->
           <div class="flex items-center gap-4 px-4 h-10 border-b border-slate-800 bg-slate-900/80">
             <div class="flex gap-1.5">
               <span class="w-3 h-3 rounded-full bg-slate-700/50"></span>
@@ -71,7 +66,6 @@
           </div>
           
           <div class="flex h-[360px] md:h-[420px] bg-[#0A0F1C]">
-            <!-- Sidebar (Oculto en móvil) -->
             <div class="hidden sm:flex w-16 bg-slate-900 border-r border-slate-800 flex-col items-center py-5 gap-5 flex-shrink-0">
               <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(0,229,255,0.3)]">
                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
@@ -92,13 +86,16 @@
               </div>
               
               <div class="w-full h-24 md:h-28 bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col relative overflow-hidden shrink-0">
-                 <div class="flex justify-between items-start z-10 relative">
+                 <div class="flex justify-between items-start z-20 relative">
                    <div>
                      <p class="text-[8px] md:text-[9px] text-slate-500 uppercase font-bold tracking-wider mb-1">Órdenes Completadas</p>
-                     <p class="text-xl md:text-2xl font-black text-white">284 <span class="text-[9px] md:text-[10px] text-emerald-400 font-medium">↑ 12%</span></p>
+                     <p class="text-xl md:text-2xl font-black text-white flex items-center gap-1.5">
+                       284 
+                       <span class="text-[8px] md:text-[10px] text-emerald-400 font-bold bg-[#0A0F1C] border border-emerald-500/30 px-1.5 py-0.5 rounded-full shadow-sm">↑ 12%</span>
+                     </p>
                    </div>
                  </div>
-                 <div class="absolute inset-x-0 bottom-0 h-14 md:h-16">
+                 <div class="absolute inset-x-0 bottom-0 h-10 md:h-12 opacity-80">
                    <svg viewBox="0 0 400 60" class="w-full h-full" preserveAspectRatio="none">
                      <defs>
                        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
@@ -112,7 +109,6 @@
                  </div>
               </div>
               
-              <!-- Tabla de datos (Responsive) -->
               <div class="flex-1 bg-slate-900/80 border border-slate-800 rounded-xl flex flex-col overflow-hidden">
                 <div class="grid grid-cols-12 gap-2 px-3 py-2.5 border-b border-slate-800 bg-slate-950/50 text-[8px] md:text-[9px] uppercase font-bold text-slate-500 tracking-wider">
                   <div class="col-span-3 sm:col-span-2">OT</div>
@@ -146,7 +142,6 @@
           </div>
         </div>
 
-        <!-- Teléfono Flotante (Oculto en móvil para evitar desborde de pantalla) -->
         <div class="hidden lg:flex absolute -bottom-10 -right-8 z-20 transform-gpu rotate-y-[-4deg] rotate-x-[2deg] group-hover:rotate-y-0 group-hover:rotate-x-0 group-hover:translate-x-2 transition-transform duration-700 ease-out shadow-[0_30px_70px_rgba(0,0,0,0.9)] flex-col">
           
           <div class="absolute top-24 -left-[2px] w-[2px] h-10 bg-slate-700 rounded-l-md z-0 shadow-[-2px_0_5px_rgba(0,0,0,0.5)]"></div>
