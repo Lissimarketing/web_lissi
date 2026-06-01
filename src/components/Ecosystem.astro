@@ -9,7 +9,7 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="grid lg:grid-cols-2 gap-16 items-center">
 
-      <div class="relative z-20 transform-gpu">
+      <div class="relative z-20 transform-gpu isolate">
         <div class="flex items-center gap-2 mb-6">
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
@@ -20,7 +20,7 @@
         
         <h2 class="font-display text-4xl md:text-[3.75rem] font-black text-white tracking-tight mb-8 leading-[1.05]">
           Dos realidades.<br/>
-          <span class="inline-block bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-500 bg-clip-text text-transparent drop-shadow-md pb-1">Un solo ecosistema.</span>
+          <span class="inline-block bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-500 bg-clip-text text-transparent drop-shadow-md pb-1" style="-webkit-backface-visibility: hidden; backface-visibility: hidden; transform: translateZ(0);">Un solo ecosistema.</span>
         </h2>
         
         <p class="text-xl text-slate-300 leading-relaxed mb-12 max-w-lg font-light">
@@ -241,11 +241,9 @@
 <style>
   .perspective-2000 { perspective: 2000px; }
   
-  /* Animación suavizada para no ahogar la GPU del celular */
   .eco-aurora { animation: eco-aurora 20s ease-in-out infinite alternate; will-change: transform, opacity; }
   @keyframes eco-aurora { 0% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0.7; transform: translate(-45%, -48%) scale(1.05); } }
   
-  /* Animación del gráfico de líneas en el Dashboard */
   .eco-chart-line { stroke-dasharray: 500; stroke-dashoffset: 500; }
   #ecosistema.is-visible .eco-chart-line { animation: draw-chart 2s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.5s; }
   @keyframes draw-chart { to { stroke-dashoffset: 0; } }
