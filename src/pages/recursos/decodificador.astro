@@ -40,39 +40,41 @@ const ultimaActualizacion = dbData._meta.ultimaActualizacion;
         </h1>
 
         <p class="text-slate-400 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-          Elige la marca y el código del display. Te damos el significado verificado, las causas probables y los pasos de revisión seguros.
+          Haz clic en el buscador para desplegar los códigos. Filtra por marca o escribe el código del display.
         </p>
       </div>
 
-      <!-- BUSCADOR -->
-      <div class="w-full bg-slate-900/60 rounded-3xl border border-slate-700/70 shadow-[0_20px_50px_rgba(0,0,0,0.4)] p-2 backdrop-blur-xl mb-4 flex flex-col sm:flex-row items-stretch gap-2 transition-all focus-within:border-violet-500/50">
-        <div class="relative w-full sm:w-56 shrink-0">
-          <select id="brand-select" class="w-full h-full appearance-none bg-[#0A0F1C] sm:bg-transparent border border-slate-700 sm:border-transparent rounded-2xl pl-5 pr-10 py-4 font-display text-base font-bold text-white cursor-pointer focus:outline-none">
-            <option value="" disabled selected>Elegir marca…</option>
-            {marcas.map((m) => <option value={m}>{m}</option>)}
-          </select>
-          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      <!-- BUSCADOR + DESPLEGABLE -->
+      <div class="relative mb-4 z-30">
+        <div class="w-full bg-slate-900/60 rounded-3xl border border-slate-700/70 shadow-[0_20px_50px_rgba(0,0,0,0.4)] p-2 backdrop-blur-xl flex flex-col sm:flex-row items-stretch gap-2 transition-all focus-within:border-violet-500/50">
+          <div class="relative w-full sm:w-56 shrink-0">
+            <select id="brand-select" class="w-full h-full appearance-none bg-[#0A0F1C] sm:bg-transparent border border-slate-700 sm:border-transparent rounded-2xl pl-5 pr-10 py-4 font-display text-base font-bold text-white cursor-pointer focus:outline-none">
+              <option value="">Todas las marcas</option>
+              {marcas.map((m) => <option value={m}>{m}</option>)}
+            </select>
+            <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+
+          <div class="hidden sm:block w-px bg-slate-700 my-2"></div>
+
+          <div class="flex-1 flex items-center bg-[#0A0F1C] sm:bg-transparent rounded-2xl border border-slate-700 sm:border-transparent px-4 py-1">
+            <svg class="w-5 h-5 text-slate-500 shrink-0 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" id="error-input" placeholder="Haz clic para ver los códigos…" class="w-full bg-transparent border-0 outline-none text-white font-display text-lg font-bold uppercase placeholder-slate-600 placeholder:normal-case placeholder:font-medium" autocomplete="off" autocorrect="off" spellcheck="false" style="font-size:16px;">
+          </div>
+
+          <button id="search-btn" class="shrink-0 bg-violet-600 hover:bg-violet-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-2xl px-8 py-4 font-bold text-sm transition-colors">Buscar</button>
         </div>
 
-        <div class="hidden sm:block w-px bg-slate-700 my-2"></div>
-
-        <div class="flex-1 flex items-center bg-[#0A0F1C] sm:bg-transparent rounded-2xl border border-slate-700 sm:border-transparent px-4 py-1">
-          <svg class="w-5 h-5 text-slate-500 shrink-0 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          <input type="text" id="error-input" placeholder="Código (ej: E4, U4, CH05)" class="w-full bg-transparent border-0 outline-none text-white font-display text-lg font-bold uppercase placeholder-slate-600" autocomplete="off" autocorrect="off" spellcheck="false" style="font-size:16px;">
+        <!-- DESPLEGABLE de códigos (overlay, no empuja el contenido) -->
+        <div id="code-dropdown" class="hidden absolute left-0 right-0 top-[calc(100%+8px)] z-50 bg-[#0A0F1C]/95 backdrop-blur-xl border border-slate-700/80 rounded-2xl shadow-[0_24px_50px_rgba(0,0,0,0.6)] overflow-hidden">
+          <div id="dropdown-header" class="px-4 py-2.5 text-[10px] uppercase tracking-widest text-slate-500 font-bold border-b border-slate-800 bg-slate-900/40 sticky top-0"></div>
+          <div id="dropdown-list" class="max-h-[340px] overflow-y-auto"></div>
         </div>
-
-        <button id="search-btn" class="shrink-0 bg-violet-600 hover:bg-violet-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-2xl px-8 py-4 font-bold text-sm transition-colors">Buscar</button>
       </div>
 
       <!-- Nota del sistema de códigos de la marca -->
-      <div id="brand-note" class="hidden mb-4 rounded-xl bg-slate-900/60 border border-slate-800 p-3.5">
+      <div id="brand-note" class="hidden mb-8 rounded-xl bg-slate-900/60 border border-slate-800 p-3.5">
         <p class="text-[11px] text-slate-400 leading-relaxed"><span id="brand-note-text"></span></p>
-      </div>
-
-      <!-- Chips de códigos disponibles -->
-      <div id="available-codes" class="hidden mb-8">
-        <p class="font-mono text-[10px] uppercase text-slate-500 mb-2 px-1">Códigos en la base para esta marca:</p>
-        <div id="code-chips" class="flex flex-wrap gap-2"></div>
       </div>
 
       <!-- RESULTADOS -->
@@ -82,7 +84,7 @@ const ultimaActualizacion = dbData._meta.ultimaActualizacion;
           <div class="w-16 h-16 mb-5 rounded-full bg-slate-900/50 border border-slate-800 flex items-center justify-center">
             <svg class="w-7 h-7 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           </div>
-          <p class="text-slate-500 px-4">Elige una marca e ingresa el código para ver el diagnóstico.</p>
+          <p class="text-slate-500 px-4">Haz clic en el buscador y elige un código para ver el diagnóstico.</p>
         </div>
 
         <div id="state-result" class="hidden">
@@ -108,6 +110,14 @@ const ultimaActualizacion = dbData._meta.ultimaActualizacion;
             </div>
 
             <div class="p-6 md:p-7">
+
+              <!-- Modelos / Serie a los que aplica este código -->
+              <div id="models-section" class="hidden mb-6">
+                <h3 class="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2.5">Aplica a</h3>
+                <div id="result-models" class="flex flex-wrap gap-2"></div>
+                <p class="text-[10px] text-slate-600 mt-2 leading-relaxed">Los chips en violeta son <strong class="text-slate-500">modelos confirmados en manual</strong>; los grises son la serie/familia donde aplica.</p>
+              </div>
+
               <div class="mb-6">
                 <h3 class="font-mono text-[10px] uppercase tracking-widest text-violet-400 font-bold mb-2">Qué significa</h3>
                 <p id="result-desc" class="text-slate-300 leading-relaxed text-sm md:text-base"></p>
@@ -164,18 +174,16 @@ const ultimaActualizacion = dbData._meta.ultimaActualizacion;
 <style>
   input[type="text"] { font-size: 16px; }
   #brand-select option { background: #0A0F1C; color: white; }
+  #dropdown-list::-webkit-scrollbar { width: 8px; }
+  #dropdown-list::-webkit-scrollbar-thumb { background: #334155; border-radius: 8px; }
+  #dropdown-list::-webkit-scrollbar-track { background: transparent; }
 </style>
 
 <script is:inline define:vars={{ DB: dbData.marcas }}>
-  // ============================================
-  // Datos vienen del JSON externo (src/data/codigos-error.json)
-  // ============================================
-
-  // Pasos genéricos SEGUROS para códigos no encontrados (NO inventamos significado)
   const GENERIC = {
     titulo: "Código no disponible en la base verificada",
     significado: "No tenemos este código confirmado para esta marca en nuestra base. Para no darte información incorrecta, abajo tienes los pasos generales seguros y dónde encontrar el significado exacto.",
-    severidad: "desconocido", elec: false,
+    severidad: "desconocido", elec: false, serie: [], modelos: [],
     causas: ["Requiere manual del modelo específico"],
     pasos: [
       "Identifica el modelo exacto en la placa de características de la unidad (interior y exterior).",
@@ -198,58 +206,109 @@ const ultimaActualizacion = dbData._meta.ultimaActualizacion;
     amber: { text: "text-amber-400", border: "border-amber-500/50", glow: "bg-amber-500/10", pillBg: "bg-amber-500/10 border-amber-500/20", dot: "bg-amber-500" },
     slate: { text: "text-slate-400", border: "border-slate-600/50", glow: "bg-slate-500/10", pillBg: "bg-slate-800 border-slate-700", dot: "bg-slate-500" },
   };
+  const DOT = { sensor: "bg-amber-500", comunicacion: "bg-amber-500", refrigerante: "bg-rose-500", proteccion: "bg-rose-500", desconocido: "bg-slate-500" };
 
   const brandSelect = document.getElementById('brand-select');
   const errorInput = document.getElementById('error-input');
   const searchBtn = document.getElementById('search-btn');
   const stateEmpty = document.getElementById('state-empty');
   const stateResult = document.getElementById('state-result');
-  const availableCodes = document.getElementById('available-codes');
-  const codeChips = document.getElementById('code-chips');
   const brandNote = document.getElementById('brand-note');
   const brandNoteText = document.getElementById('brand-note-text');
+  const dropdown = document.getElementById('code-dropdown');
+  const dropdownList = document.getElementById('dropdown-list');
+  const dropdownHeader = document.getElementById('dropdown-header');
 
-  function updateButton() {
-    searchBtn.disabled = !(brandSelect.value && errorInput.value.trim());
-  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, (ch) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[ch])); }
+
+  const ALL = [];
+  Object.keys(DB).forEach((brand) => {
+    const cods = DB[brand].codigos || {};
+    Object.keys(cods).forEach((code) => {
+      ALL.push({ brand, code, titulo: cods[code].titulo, sev: cods[code].severidad });
+    });
+  });
+
+  function updateButton() { searchBtn.disabled = !errorInput.value.trim(); }
 
   function onBrandChange() {
+    const marca = DB[brandSelect.value];
+    if (marca && marca.nota) { brandNote.classList.remove('hidden'); brandNoteText.textContent = marca.nota; }
+    else { brandNote.classList.add('hidden'); }
+  }
+
+  let dropOpen = false, dropItems = [], dropActive = -1;
+  function openDropdown() { dropOpen = true; renderDropdown(); dropdown.classList.remove('hidden'); }
+  function closeDropdown() { dropOpen = false; dropdown.classList.add('hidden'); dropActive = -1; }
+
+  function renderDropdown() {
     const brand = brandSelect.value;
-    const marca = DB[brand];
-    // Nota de la marca
-    if (marca && marca.nota) {
-      brandNote.classList.remove('hidden');
-      brandNoteText.textContent = marca.nota;
-    } else {
-      brandNote.classList.add('hidden');
-    }
-    // Chips de códigos
-    const codes = marca ? Object.keys(marca.codigos) : [];
-    if (codes.length === 0) { availableCodes.classList.add('hidden'); updateButton(); return; }
-    availableCodes.classList.remove('hidden');
-    codeChips.innerHTML = '';
-    codes.forEach((code) => {
-      const chip = document.createElement('button');
-      chip.className = 'px-2.5 py-1 rounded-md bg-violet-500/10 border border-violet-500/30 text-[11px] font-mono font-bold text-violet-300 hover:bg-violet-500/20 transition-colors';
-      chip.textContent = code;
-      chip.addEventListener('click', () => { errorInput.value = code; updateButton(); executeSearch(); });
-      codeChips.appendChild(chip);
+    const term = errorInput.value.trim().toUpperCase();
+    let list = ALL;
+    if (brand) list = list.filter((x) => x.brand === brand);
+    if (term) list = list.filter((x) => x.code.toUpperCase().includes(term) || x.brand.toUpperCase().includes(term));
+    list = list.slice().sort((a, b) => {
+      if (term) {
+        const ap = a.code.toUpperCase().startsWith(term) ? 0 : 1;
+        const bp = b.code.toUpperCase().startsWith(term) ? 0 : 1;
+        if (ap !== bp) return ap - bp;
+      }
+      if (a.brand !== b.brand) return a.brand.localeCompare(b.brand);
+      return a.code.localeCompare(b.code);
     });
-    updateButton();
+    dropItems = list; dropActive = -1;
+
+    dropdownHeader.textContent = brand
+      ? `Códigos de ${brand} (${list.length})`
+      : `Todos los códigos (${list.length}) · escribe o elige una marca para filtrar`;
+
+    if (list.length === 0) {
+      dropdownList.innerHTML = '<div class="px-4 py-6 text-center text-slate-600 text-sm">Sin coincidencias</div>';
+      return;
+    }
+    dropdownList.innerHTML = list.map((x, i) =>
+      `<button type="button" data-i="${i}" class="drop-row w-full flex items-center justify-between gap-3 px-4 py-2.5 text-left hover:bg-violet-500/10 transition-colors border-b border-slate-800/40 last:border-0">
+         <span class="flex items-center gap-2.5 min-w-0">
+           <span class="font-mono font-bold text-sm text-violet-300 w-16 shrink-0">${esc(x.code)}</span>
+           <span class="w-1.5 h-1.5 rounded-full ${DOT[x.sev] || 'bg-slate-500'} shrink-0"></span>
+           <span class="text-xs text-slate-400 truncate">${esc(x.titulo)}</span>
+         </span>
+         <span class="font-mono text-[11px] text-slate-500 shrink-0">${esc(x.brand)}</span>
+       </button>`
+    ).join('');
+    dropdownList.querySelectorAll('.drop-row').forEach((el) => {
+      el.addEventListener('click', () => pickRow(parseInt(el.dataset.i)));
+    });
+  }
+
+  function paintActive(rows) {
+    rows.forEach((el, i) => el.classList.toggle('bg-violet-500/10', i === dropActive));
+    if (rows[dropActive]) rows[dropActive].scrollIntoView({ block: 'nearest' });
+  }
+
+  function pickRow(i) {
+    const x = dropItems[i];
+    if (!x) return;
+    brandSelect.value = x.brand;
+    errorInput.value = x.code;
+    onBrandChange(); updateButton(); closeDropdown(); executeSearch();
   }
 
   function executeSearch() {
     const brand = brandSelect.value;
     const code = errorInput.value.trim().toUpperCase();
-    if (!brand || !code) return;
-    const marca = DB[brand];
-    // Buscar código (case-insensitive)
-    let data = GENERIC;
-    if (marca && marca.codigos) {
-      const key = Object.keys(marca.codigos).find((k) => k.toUpperCase() === code);
-      if (key) data = marca.codigos[key];
+    if (!code) return;
+    let useBrand = brand, data = null;
+    if (brand && DB[brand]) {
+      const key = Object.keys(DB[brand].codigos).find((k) => k.toUpperCase() === code);
+      if (key) data = DB[brand].codigos[key];
+    } else {
+      for (const b of Object.keys(DB)) {
+        const key = Object.keys(DB[b].codigos).find((k) => k.toUpperCase() === code);
+        if (key) { useBrand = b; data = DB[b].codigos[key]; break; }
+      }
     }
-    renderResult(brand, code, data);
+    renderResult(useBrand || "—", code, data || GENERIC);
   }
 
   function renderResult(brand, code, data) {
@@ -271,31 +330,44 @@ const ultimaActualizacion = dbData._meta.ultimaActualizacion;
     pillText.textContent = sev.label;
     pillText.className = `font-mono text-[10px] font-bold uppercase tracking-widest ${c.text}`;
 
-    // Causas
+    const modelsSection = document.getElementById('models-section');
+    const modelsEl = document.getElementById('result-models');
+    modelsEl.innerHTML = '';
+    const series = data.serie || [];
+    const modelos = data.modelos || [];
+    if (series.length || modelos.length) {
+      modelsSection.classList.remove('hidden');
+      modelos.forEach((m) => {
+        const chip = document.createElement('span');
+        chip.className = 'px-2.5 py-1 rounded-md bg-violet-500/10 border border-violet-500/40 text-[11px] font-mono font-bold text-violet-300';
+        chip.textContent = m; modelsEl.appendChild(chip);
+      });
+      series.forEach((s) => {
+        const chip = document.createElement('span');
+        chip.className = 'px-2.5 py-1 rounded-md bg-slate-800/60 border border-slate-700 text-[11px] font-mono text-slate-300';
+        chip.textContent = s; modelsEl.appendChild(chip);
+      });
+    } else { modelsSection.classList.add('hidden'); }
+
     const causesEl = document.getElementById('result-causes');
     causesEl.innerHTML = '';
     (data.causas || []).forEach((cause) => {
       const li = document.createElement('li');
       li.className = 'px-3 py-1.5 rounded-lg bg-slate-800/60 border border-slate-700 text-xs text-slate-300';
-      li.textContent = cause;
-      causesEl.appendChild(li);
+      li.textContent = cause; causesEl.appendChild(li);
     });
 
-    // Aviso seguridad
     document.getElementById('safety-warning').classList.toggle('hidden', !data.elec);
 
-    // Pasos
     const stepsEl = document.getElementById('result-steps');
     stepsEl.innerHTML = '';
     (data.pasos || []).forEach((step, i) => {
       const li = document.createElement('li');
       li.className = 'flex items-start gap-4 text-sm text-slate-300';
       li.innerHTML = `<div class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-400 shrink-0 mt-0.5">${i + 1}</div><span class="leading-relaxed flex-1"></span>`;
-      li.querySelector('span').textContent = step;
-      stepsEl.appendChild(li);
+      li.querySelector('span').textContent = step; stepsEl.appendChild(li);
     });
 
-    // Meta: confianza + fuente
     const confEl = document.getElementById('result-confianza');
     const fuenteEl = document.getElementById('result-fuente');
     if (data.confianza && data.confianza !== '—') {
@@ -303,18 +375,35 @@ const ultimaActualizacion = dbData._meta.ultimaActualizacion;
       confEl.textContent = isAlta ? '✓ Confianza alta' : '~ Confianza media';
       confEl.className = `inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-mono font-bold ${isAlta ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'}`;
       confEl.style.display = '';
-    } else {
-      confEl.style.display = 'none';
-    }
+    } else { confEl.style.display = 'none'; }
     fuenteEl.textContent = (data.fuente && data.fuente !== '—') ? `Fuente: ${data.fuente}` : '';
 
     stateEmpty.classList.add('hidden');
     stateResult.classList.remove('hidden');
   }
 
-  brandSelect.addEventListener('change', onBrandChange);
-  errorInput.addEventListener('input', updateButton);
-  errorInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !searchBtn.disabled) executeSearch(); });
-  searchBtn.addEventListener('click', executeSearch);
+  errorInput.addEventListener('focus', openDropdown);
+  errorInput.addEventListener('click', openDropdown);
+  errorInput.addEventListener('input', () => { updateButton(); openDropdown(); });
+  brandSelect.addEventListener('change', () => { onBrandChange(); updateButton(); if (dropOpen) renderDropdown(); });
+
+  errorInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { closeDropdown(); errorInput.blur(); return; }
+    if (e.key === 'Enter') {
+      if (dropOpen && dropActive >= 0) { e.preventDefault(); pickRow(dropActive); return; }
+      if (!searchBtn.disabled) { executeSearch(); closeDropdown(); }
+      return;
+    }
+    if (!dropOpen) return;
+    const rows = dropdownList.querySelectorAll('.drop-row');
+    if (e.key === 'ArrowDown') { e.preventDefault(); dropActive = Math.min(dropActive + 1, rows.length - 1); paintActive(rows); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); dropActive = Math.max(dropActive - 1, 0); paintActive(rows); }
+  });
+
+  searchBtn.addEventListener('click', () => { executeSearch(); closeDropdown(); });
+  document.addEventListener('click', (e) => {
+    if (!dropdown.contains(e.target) && e.target !== errorInput) closeDropdown();
+  });
+
   updateButton();
 </script>

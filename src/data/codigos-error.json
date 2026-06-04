@@ -1,126 +1,2692 @@
 {
   "_meta": {
-    "version": "1.0",
-    "ultimaActualizacion": "2026-05-31",
-    "descripcion": "Base de datos de codigos de error HVAC para el decodificador de Lissi. Los datos provienen de manuales de fabricante y fuentes tecnicas cruzadas. IMPORTANTE: los codigos varian segun modelo y serie; esta informacion es orientativa y debe verificarse contra el manual de servicio del modelo especifico.",
-    "comoActualizar": "Para agregar un codigo: ubica la marca en 'marcas', y dentro de 'codigos' agrega una nueva entrada con la misma estructura (titulo, significado, severidad, elec, causas, pasos, fuente, confianza). Para agregar una marca nueva: copia un bloque de marca completo y cambia los valores. Guarda el archivo y vuelve a publicar el sitio.",
-    "camposCodigo": {
-      "titulo": "Nombre corto de la falla",
-      "significado": "Explicacion de que detecta el equipo",
-      "severidad": "sensor | comunicacion | refrigerante | proteccion (define el color y la etiqueta)",
-      "elec": "true si los pasos requieren medir con tension presente (muestra aviso de seguridad)",
-      "causas": "lista de causas probables (chips)",
-      "pasos": "lista de pasos de revision sugeridos, redactados con seguridad",
-      "fuente": "de donde se verifico el significado",
-      "confianza": "alta (varias fuentes coinciden) | media (fuente unica o con variaciones reportadas)"
-    },
-    "nivelesSeveridad": {
-      "sensor": "Falla de sensor / termistor (ambar)",
-      "comunicacion": "Comunicacion o problema electrico (ambar)",
-      "refrigerante": "Fuga o falta de gas; requiere personal certificado (rojo)",
-      "proteccion": "Proteccion critica: presion, voltaje, compresor (rojo)"
-    }
+    "version": "0.5.0",
+    "ultimaActualizacion": "Junio 2026",
+    "nota": "Esquema marcas->códigos. Unidad verificable = marca + modelo/serie + código."
   },
-
   "marcas": {
-    "Midea / Anwo": {
-      "nota": "Familia Midea. Anwo (distribuidor chileno) ha comercializado equipos fabricados por Midea, que comparten plataforma de placa y, en general, estos codigos. No es garantia para todo equipo Anwo: verifica el modelo. Los codigos varian entre series Midea.",
-      "codigos": {
-        "E1": { "titulo": "Error de comunicacion interior-exterior", "significado": "La unidad interior y la exterior no intercambian datos correctamente. Una de las fallas mas frecuentes en split inverter.", "severidad": "comunicacion", "elec": true, "causas": ["Cableado de interconexion", "Borneras flojas", "Falla de PCB", "Mala tierra / interferencia"], "pasos": ["Corta energia y verifica que el cable de interconexion este firme y en el orden correcto (L, N, comunicacion) en ambas borneras.", "Revisa continuidad del cable de comunicacion entre ambas unidades.", "Verifica la puesta a tierra: una tierra deficiente genera ruido que corta la comunicacion.", "Si el cableado esta correcto, la falla suele estar en una de las PCB."], "fuente": "Multiples fuentes Midea coinciden", "confianza": "alta" },
-        "E2": { "titulo": "Error de senal de cruce por cero", "significado": "El equipo no detecta correctamente la senal de cruce por cero de la red electrica, necesaria para sincronizar el control.", "severidad": "comunicacion", "elec": true, "causas": ["Calidad de la red electrica", "Falla de PCB interior"], "pasos": ["Verifica el voltaje de alimentacion dentro del rango nominal del equipo.", "Revisa que la alimentacion sea estable, sin caidas.", "Si la red es estable, la PCB interior puede estar fallando."], "fuente": "Manuales Midea serie split", "confianza": "media" },
-        "E3": { "titulo": "Velocidad del ventilador interior fuera de rango", "significado": "El motor del ventilador interior no alcanza o no mantiene la velocidad esperada. El equipo se detiene por proteccion.", "severidad": "proteccion", "elec": false, "causas": ["Motor del ventilador", "Obstruccion mecanica", "Falla de PCB"], "pasos": ["Corta energia. Verifica que el rodete gire libre, sin roces ni obstrucciones.", "Revisa el conector del motor del ventilador en la placa.", "Si el motor esta libre y conectado, puede requerir reemplazo del motor o de la PCB."], "fuente": "Multiples fuentes Midea coinciden", "confianza": "alta" },
-        "E4": { "titulo": "Sensor de temperatura ambiente interior (T1)", "significado": "Circuito abierto o cortocircuito en el termistor de temperatura ambiente de la unidad interior. NOTA: en algunas series Midea, E4 corresponde a otro sensor; verifica el manual del modelo.", "severidad": "sensor", "elec": false, "causas": ["Termistor T1 danado", "Conector suelto", "Falla de PCB"], "pasos": ["Corta energia. Ubica el sensor T1 y revisa que su conector este firme en la placa.", "Mide la resistencia del termistor con multimetro y compara con la tabla del manual del modelo.", "Si marca circuito abierto o cortocircuito, reemplaza el sensor. Si esta en rango, revisa la PCB."], "fuente": "Midea (significado varia por serie)", "confianza": "media" },
-        "E5": { "titulo": "Sensor del serpentin evaporador (T2)", "significado": "Circuito abierto o corto en el sensor de temperatura del serpentin del evaporador (unidad interior).", "severidad": "sensor", "elec": false, "causas": ["Termistor T2 danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector del sensor T2 en la placa interior.", "Mide la resistencia del termistor y comparala con la tabla del manual del modelo.", "Reemplaza el sensor si esta fuera de rango."], "fuente": "Midea / Carrier coinciden", "confianza": "media" },
-        "EC": { "titulo": "Deteccion de fuga de refrigerante", "significado": "El sistema detecta una posible fuga de refrigerante por comportamiento anomalo de presiones y temperaturas.", "severidad": "refrigerante", "elec": false, "causas": ["Fuga de gas", "Carga insuficiente", "Sensor de presion"], "pasos": ["Realiza una inspeccion de fugas (detector electronico o solucion jabonosa) en uniones y serpentines.", "Verifica la carga de refrigerante contra la placa del equipo.", "La recarga y reparacion de fuga debe hacerla personal certificado. No recargues sin reparar la fuga."], "fuente": "Midea / Carrier / York coinciden", "confianza": "alta" },
-        "F1": { "titulo": "Sensor de temperatura exterior (T4)", "significado": "Circuito abierto o corto en el sensor de temperatura ambiente de la unidad exterior.", "severidad": "sensor", "elec": false, "causas": ["Termistor T4 danado", "Conector suelto en PCB exterior"], "pasos": ["Corta energia. Revisa el conector del sensor en la PCB exterior.", "Mide la resistencia del termistor y comparala con el manual.", "Reemplaza si esta fuera de rango."], "fuente": "Midea / Carrier coinciden", "confianza": "alta" },
-        "F2": { "titulo": "Sensor del serpentin condensador (T3)", "significado": "Circuito abierto o corto en el sensor de temperatura del condensador (unidad exterior).", "severidad": "sensor", "elec": false, "causas": ["Termistor T3 danado", "Conector suelto"], "pasos": ["Corta energia. Revisa conector del sensor T3 en la PCB exterior.", "Mide resistencia y compara con manual del modelo.", "Reemplaza si corresponde."], "fuente": "Midea / Carrier coinciden", "confianza": "alta" },
-        "F3": { "titulo": "Sensor de descarga del compresor (TP / T5)", "significado": "Falla en el sensor de temperatura de descarga del compresor. Importante: protege al compresor de sobrecalentamiento.", "severidad": "sensor", "elec": false, "causas": ["Termistor de descarga danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector del sensor de descarga en la PCB exterior.", "Mide la resistencia del termistor y compara con el manual.", "Reemplaza si esta fuera de rango. No operes el equipo con este sensor fallado: el compresor queda sin proteccion termica."], "fuente": "Midea / Carrier coinciden", "confianza": "alta" },
-        "P1": { "titulo": "Proteccion por sobre/bajo voltaje", "significado": "El voltaje de alimentacion esta fuera del rango seguro de operacion. El equipo se detiene para protegerse.", "severidad": "proteccion", "elec": true, "causas": ["Voltaje de red fuera de rango", "Conexion deficiente"], "pasos": ["Mide el voltaje de alimentacion en el equipo y compáralo con el rango nominal de la placa.", "Si el voltaje es anormal, el problema es la instalacion o la red, no el equipo.", "Considera un estabilizador si la red es inestable."], "fuente": "Midea / Carrier coinciden", "confianza": "alta" },
-        "P2": { "titulo": "Proteccion de alta temperatura (IPM / tope de compresor)", "significado": "Sobretemperatura en el modulo de potencia (IPM) o en la parte superior del compresor. Proteccion critica.", "severidad": "proteccion", "elec": false, "causas": ["Mala disipacion / condensador sucio", "Sobrecarga de refrigerante", "Ventilacion insuficiente"], "pasos": ["Corta energia. Limpia el condensador y verifica que el ventilador exterior funcione.", "Revisa que haya espacio de ventilacion alrededor de la unidad exterior.", "Verifica la carga de refrigerante. Si persiste, revisa el IPM en la placa."], "fuente": "Midea / Carrier coinciden", "confianza": "alta" },
-        "P4": { "titulo": "Error de drive del compresor inverter", "significado": "Falla en el control/accionamiento del compresor inverter (modulo IPM / IGBT).", "severidad": "proteccion", "elec": true, "causas": ["Modulo de potencia (IPM)", "Compresor", "Conexiones del compresor"], "pasos": ["Corta energia 5 min y reinicia para descartar falla transitoria.", "Verifica las conexiones del compresor (U, V, W) y su aislamiento.", "Esta falla suele requerir diagnostico de la PCB de potencia por personal especializado."], "fuente": "Midea / Carrier coinciden", "confianza": "alta" }
-      }
-    },
-
     "Daikin": {
-      "nota": "Daikin usa familias de codigos: U (sistema), A (interior), E (exterior), J/F (sensores). Los codigos de la serie U son consistentes entre modelos. Verifica siempre el manual del modelo o VRV especifico.",
+      "nota": "Daikin codifica la topología en la primera letra: A/C = unidad interior, E/H/J/L = unidad exterior, U = red y comunicaciones. Ojo: el código E1 cambia de significado entre VRV y split residencial FTXS, confirma la familia antes de actuar.",
       "codigos": {
-        "U0": { "titulo": "Falta de refrigerante / falla de valvula de expansion", "significado": "Baja presion por escasez de refrigerante o falla de la valvula de expansion electronica (EEV). Temperatura de descarga anormalmente alta.", "severidad": "refrigerante", "elec": false, "causas": ["Fuga de refrigerante", "Carga insuficiente", "Falla de EEV"], "pasos": ["Inspecciona el circuito en busca de fugas.", "Verifica la carga contra la especificacion del equipo.", "La reparacion de fuga y recarga debe hacerla personal certificado.", "Si la carga es correcta, evalua la valvula de expansion electronica."], "fuente": "Daikin (multiples fuentes)", "confianza": "alta" },
-        "U1": { "titulo": "Fase invertida / fase abierta", "significado": "En equipos trifasicos, las fases estan invertidas o hay una fase abierta.", "severidad": "proteccion", "elec": true, "causas": ["Conexion de fases incorrecta", "Fase abierta en alimentacion"], "pasos": ["Corta energia. Verifica la secuencia de fases en la alimentacion trifasica.", "Intercambia dos fases si la secuencia esta invertida.", "Verifica que las tres fases tengan tension."], "fuente": "Daikin (multiples fuentes)", "confianza": "alta" },
-        "U2": { "titulo": "Voltaje insuficiente / desequilibrio", "significado": "Voltaje de alimentacion insuficiente o desequilibrado, o caida de tension DC del motor del ventilador.", "severidad": "proteccion", "elec": true, "causas": ["Caida de tension", "Desequilibrio entre fases", "Conexion deficiente"], "pasos": ["Mide el voltaje de alimentacion y compáralo con el rango nominal.", "Verifica el equilibrio entre fases (trifasico).", "Revisa el apriete de las conexiones de alimentacion."], "fuente": "Daikin (multiples fuentes)", "confianza": "alta" },
-        "U4": { "titulo": "Error de comunicacion interior-exterior", "significado": "Perdida de transmision de datos entre la unidad interior y la exterior. Falla muy comun en Daikin.", "severidad": "comunicacion", "elec": true, "causas": ["Cable de interconexion", "PCB interior o exterior", "Borneras"], "pasos": ["Corta energia. Verifica el cableado de interconexion entre unidades (orden y apriete).", "Revisa continuidad y aislamiento del cable de comunicacion.", "Si el cableado esta correcto, evalua las PCB."], "fuente": "Daikin (multiples fuentes)", "confianza": "alta" },
-        "U5": { "titulo": "Error de comunicacion con control remoto", "significado": "Perdida de comunicacion entre la unidad interior y el control remoto cableado.", "severidad": "comunicacion", "elec": false, "causas": ["Cable del control remoto", "Falla del control", "PCB interior"], "pasos": ["Revisa el cableado del control remoto.", "Prueba con otro control si esta disponible.", "Evalua la PCB interior si persiste."], "fuente": "Daikin (multiples fuentes)", "confianza": "alta" },
-        "A5": { "titulo": "Proteccion por congelamiento / alta presion", "significado": "Proteccion anticongelamiento en modo frio, o alta presion en modo calor. Generalmente por flujo de aire insuficiente.", "severidad": "proteccion", "elec": false, "causas": ["Filtros sucios", "Flujo de aire bloqueado", "Refrigerante bajo", "Sensor"], "pasos": ["Limpia filtros y verifica que no haya obstruccion al flujo de aire.", "Verifica que el ventilador funcione correctamente.", "Revisa la carga de refrigerante."], "fuente": "Daikin (multiples fuentes)", "confianza": "alta" },
-        "J3": { "titulo": "Falla del sensor de tubo de descarga", "significado": "Falla del termistor de la tuberia de descarga del compresor.", "severidad": "sensor", "elec": false, "causas": ["Termistor de descarga danado", "Cableado del sensor"], "pasos": ["Corta energia. Revisa el conector y cableado del sensor de descarga.", "Mide la resistencia del termistor y comparala con el manual.", "Reemplaza si esta fuera de rango."], "fuente": "Daikin (multiples fuentes)", "confianza": "media" }
+        "U4": {
+          "titulo": "Fallo de transmision entre unidad interior y exterior",
+          "significado": "Fallo de transmision entre unidad interior y exterior.",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "VRV",
+            "VRF"
+          ],
+          "modelos": [
+            "RXYQ",
+            "RXYscq"
+          ],
+          "causas": [
+            "Cable F1",
+            "F2",
+            "borne de señal",
+            "PCB interior o exterior"
+          ],
+          "pasos": [
+            "Inspeccionar cableado de transmision F1/F2; re-apretar bornes (la vibracion del compresor los afloja con los años).",
+            "Valor esperado en buen estado: Continuidad y bus de datos activo en F1/F2.",
+            "Lectura que confirma la falla: Cortocircuito, cable cortado, cruce de cables, dirección de sistema no coincidente o PCB defectuosa.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Daikin Service Manual VRV (mensaje oficial U4), confirmado multi-fuente",
+          "confianza": "alta"
+        },
+        "U0": {
+          "titulo": "Detección inteligente de falta de gas",
+          "significado": "Detección inteligente de falta de gas (refrigerante insuficiente).",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "FTXS",
+            "RXS"
+          ],
+          "modelos": [],
+          "causas": [
+            "Carga de refrigerante",
+            "fuga",
+            "EEV"
+          ],
+          "pasos": [
+            "Evaluar angulo de apertura de la EEV, corriente absorbida y sobrecalentamiento contra el modelo matematico del equipo.",
+            "Valor esperado en buen estado: Sobrecalentamiento en rango y EEV en apertura nominal.",
+            "Lectura que confirma la falla: Divergencia: infiere perdida de masa termodinamica antes de que falle el compresor.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Daikin Engineering Data Book; doc técnico del usuario",
+          "confianza": "media"
+        },
+        "A1": {
+          "titulo": "Defecto de la PCB de la unidad interior",
+          "significado": "Defecto de la PCB de la unidad interior.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "FTXS-G",
+            "FTXS-K",
+            "FTXS-L",
+            "FTXS-N"
+          ],
+          "modelos": [
+            "FTXS35K2V1B",
+            "FTXS42K2V1B"
+          ],
+          "causas": [
+            "PCB unidad interior"
+          ],
+          "pasos": [
+            "Reiniciar; si persiste, inspeccionar la placa lógica interior por corrupcion de memoria o ruido eléctrico.",
+            "Valor esperado en buen estado: Carga normal de configuracion al arranque.",
+            "Lectura que confirma la falla: Corrupcion de datos o defecto de componente lógico.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Daikin FTXS-G Operation Manual 3P207037-1B (daikin.be)",
+          "confianza": "alta"
+        },
+        "A5": {
+          "titulo": "Control de alta presión o protector anti-congelamiento",
+          "significado": "Control de alta presión o protector anti-congelamiento.",
+          "severidad": "proteccion",
+          "elec": false,
+          "serie": [
+            "FTXS-G",
+            "FTXS-K",
+            "FTXS-L"
+          ],
+          "modelos": [],
+          "causas": [
+            "Filtro",
+            "ventilador",
+            "serpentin",
+            "carga"
+          ],
+          "pasos": [
+            "En frio: verificar congelamiento del serpentin (filtro/flujo de aire). En calor: alta presión (ventilador/condensador).",
+            "Valor esperado en buen estado: Temperatura de serpentin sobre 0 grados C y presión en rango.",
+            "Lectura que confirma la falla: Congelamiento por flujo reducido o alta presión por condensación deficiente.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Daikin FTXS-G Operation Manual (daikin.be)",
+          "confianza": "alta"
+        },
+        "A6": {
+          "titulo": "Fallo del motor del ventilador interior",
+          "significado": "Fallo del motor del ventilador interior (motor DC) - bloqueo o sobrecorriente.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "FTXS-G",
+            "FTXS-K",
+            "SkyAir"
+          ],
+          "modelos": [],
+          "causas": [
+            "Motor DC interior",
+            "conector",
+            "PCB del ventilador"
+          ],
+          "pasos": [
+            "Girar el ventilador a mano y verificar conectores; sub-código A6-01 = motor bloqueado, A6-10 = sobrecorriente.",
+            "Valor esperado en buen estado: Giro libre y conectores firmes entre motor y PCB.",
+            "Lectura que confirma la falla: Rodete bloqueado o sobrecorriente del motor.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Daikin SkyAir List of Detailed Error Codes (A6-01/A6-10)",
+          "confianza": "alta"
+        },
+        "E5": {
+          "titulo": "Activacion de OL",
+          "significado": "Activacion de OL (sobrecarga del compresor) / bloqueo del compresor.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "FTXS",
+            "RKS",
+            "RXS"
+          ],
+          "modelos": [
+            "RKS30LVJU",
+            "RKS36LVJU",
+            "RXS30LVJU"
+          ],
+          "causas": [
+            "Compresor",
+            "protección OL",
+            "IPM"
+          ],
+          "pasos": [
+            "Verificar sobrecarga térmica del compresor, equilibrio de fases y posible bloqueo mecánico.",
+            "Valor esperado en buen estado: Compresor arranca y opera sin disparar OL.",
+            "Lectura que confirma la falla: Sobrecorriente sostenida o compresor trabado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Daikin FTX-N Service Manual (ManualsLib p.128) / FTXS-G Operation Manual",
+          "confianza": "alta"
+        },
+        "E1": {
+          "titulo": "Código polisémico - confirmar modelo",
+          "significado": "Este código es polisémico: en split residencial = defecto de la PCB exterior (NO confundir con E1 de otras familias) Por eso no debe diagnosticarse sin confirmar el modelo exacto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "FTXS-G",
+            "FTXS-N"
+          ],
+          "modelos": [],
+          "causas": [
+            "PCB unidad exterior"
+          ],
+          "pasos": [
+            "CONFIRMAR familia antes de actuar. En FTXS residencial: fallo general de hardware en PCB exterior por ruido o pico de voltaje.",
+            "Valor esperado en buen estado: PCB exterior operativa.",
+            "Lectura que confirma la falla: Falla de hardware en condensadora.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Daikin FTX-N Service Manual / FTXS-G Operation Manual ('E1 outdoor unit PCB abnormality')",
+          "confianza": "alta"
+        },
+        "E3": {
+          "titulo": "Actuacion del presostato de alta presión",
+          "significado": "Actuacion del presostato de alta presión (HPS).",
+          "severidad": "proteccion",
+          "elec": false,
+          "serie": [
+            "VRV",
+            "VRF"
+          ],
+          "modelos": [],
+          "causas": [
+            "Ventilador exterior",
+            "condensador",
+            "sobrecarga de gas"
+          ],
+          "pasos": [
+            "Verificar ventilador del condensador, limpieza del serpentin y carga; medir presión de alta.",
+            "Valor esperado en buen estado: Condensación normal, presión de alta en rango.",
+            "Lectura que confirma la falla: Ventilador exterior bloqueado, condensador sucio o sobrecarga de refrigerante.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Daikin Service Manual; doc técnico del usuario",
+          "confianza": "media"
+        },
+        "L5": {
+          "titulo": "Sobrecorriente instantanea del módulo IPM al arrancar el compresor",
+          "significado": "Sobrecorriente instantanea del módulo IPM al arrancar el compresor.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "VRV"
+          ],
+          "modelos": [],
+          "causas": [
+            "IPM",
+            "compresor"
+          ],
+          "pasos": [
+            "Medir equilibrio de resistencias U-V-W del compresor; revisar IPM y compresor duro.",
+            "Valor esperado en buen estado: Resistencias de fase equilibradas; arranque limpio.",
+            "Lectura que confirma la falla: Pico de sobrecorriente por compresor atascado o IPM dañado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Daikin Service Manual serie L; doc técnico del usuario",
+          "confianza": "media"
+        }
       }
     },
-
     "LG": {
-      "nota": "LG usa codigos tipo CH (chequeo). Algunos equipos muestran el equivalente E0 / F4 / CH53. Fuente principal: soporte oficial LG. Verifica el manual del modelo.",
+      "nota": "LG usa el prefijo CH (Check) seguido de un número, consistente entre lineas residenciales, PAC y Multi V (VRF). Algunos modelos muestran el equivalente numérico (ej. C5 = CH05).",
       "codigos": {
-        "CH05": { "titulo": "Error de comunicacion interior-exterior", "significado": "Falla de comunicacion entre la unidad interior y exterior en equipos inverter LG. Equivale a E0 / CH53 en algunos modelos.", "severidad": "comunicacion", "elec": true, "causas": ["Cableado de interconexion", "Mala tierra / interferencia", "PCB"], "pasos": ["Haz un power cycle: corta energia 5 min y reconecta. Puede ser falla transitoria por red inestable.", "Si persiste, corta energia y verifica el cableado de comunicacion (orden y apriete en ambas borneras).", "Verifica la puesta a tierra fisica del equipo.", "Si el cableado esta correcto, evalua las PCB."], "fuente": "Soporte oficial LG", "confianza": "alta" },
-        "CH38": { "titulo": "Bajo refrigerante (posible fuga)", "significado": "Baja presion de refrigerante, normalmente causada por fuga. Es una proteccion para evitar dano al equipo. Equivale a F4 en algunos modelos.", "severidad": "refrigerante", "elec": false, "causas": ["Fuga de refrigerante", "Carga insuficiente", "Conexion de canerias"], "pasos": ["Inspecciona uniones y canerias en busca de fugas.", "Verifica la carga contra la especificacion del equipo.", "La reparacion de fuga y recarga debe hacerla personal certificado.", "Revisa el correcto abocardado de las conexiones de caneria."], "fuente": "Soporte oficial LG", "confianza": "alta" },
-        "CH10": { "titulo": "Falla del motor del ventilador interior", "significado": "El motor del ventilador de la unidad interior no gira a la velocidad esperada o esta bloqueado.", "severidad": "proteccion", "elec": false, "causas": ["Motor del ventilador", "Obstruccion", "PCB"], "pasos": ["Corta energia. Verifica que el rodete gire libre sin roces.", "Revisa el conector del motor en la placa.", "Si el motor esta libre y conectado, puede requerir reemplazo."], "fuente": "Soporte LG / fuentes coinciden", "confianza": "alta" },
-        "CH07": { "titulo": "Modos distintos en equipo 2-en-1", "significado": "En equipos multisplit 2-en-1, las unidades interiores estan configuradas en modos distintos (ej. una en frio y otra en calor), lo cual no es posible simultaneamente.", "severidad": "comunicacion", "elec": false, "causas": ["Configuracion de modos incompatible"], "pasos": ["Ajusta todas las unidades interiores al mismo modo de operacion.", "Verifica el modo en cada control remoto."], "fuente": "Soporte oficial LG", "confianza": "alta" }
+        "CH05": {
+          "titulo": "Error de comunicación entre unidad interior y exterior",
+          "significado": "Error de comunicación entre unidad interior y exterior.",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "Multi V",
+            "Split inverter",
+            "PAC"
+          ],
+          "modelos": [],
+          "causas": [
+            "Breaker exterior",
+            "cable de interconexión",
+            "PCB"
+          ],
+          "pasos": [
+            "Verificar breaker exterior; apagar ambos breakers 5 min y reenergizar a la vez. Medir oscilación en bornes N-3.",
+            "Valor esperado en buen estado: Voltaje DC intermitente (0-65 VDC) entre N y 3.",
+            "Lectura que confirma la falla: Voltaje plano = bus muerto, breaker exterior caido o cable dañado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "LG USA Support - Guide to Error Codes (lg.com)",
+          "confianza": "alta"
+        },
+        "CH38": {
+          "titulo": "Baja presión / falta de gas",
+          "significado": "Baja presión / falta de gas (protección). Puede mostrarse como F4 según modelo..",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Circuito de refrigerante",
+            "conexión de tuberia"
+          ],
+          "pasos": [
+            "Inspeccionar fugas, conexiones de tuberia y carga de refrigerante.",
+            "Valor esperado en buen estado: Presión y carga en rango.",
+            "Lectura que confirma la falla: Fuga o subcarga detectada.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "LG USA Support - Guide to Error Codes (lg.com)",
+          "confianza": "alta"
+        },
+        "CH01": {
+          "titulo": "Sensor de aire de retorno",
+          "significado": "Sensor de aire de retorno (interior) abierto/corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Termistor de aire de retorno",
+            "conector PCB"
+          ],
+          "pasos": [
+            "Medir resistencia del termistor de retorno (referencia ~10 kOhm).",
+            "Valor esperado en buen estado: Resistencia coherente con curva NTC a la temperatura ambiente.",
+            "Lectura que confirma la falla: Infinito (abierto) o 0 Ohm (corto).",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "LG training cruzado; doc técnico del usuario",
+          "confianza": "media"
+        },
+        "CH21": {
+          "titulo": "Sobrecorriente en circuito DC del inversor",
+          "significado": "Sobrecorriente en circuito DC del inversor (fallo IPM).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Multi V"
+          ],
+          "modelos": [],
+          "causas": [
+            "IGBT del IPM",
+            "devanado del compresor"
+          ],
+          "pasos": [
+            "Medir equilibrio de resistencias U-V-W del compresor; ~1 Ohm de variacion entre pares confirma micro-corto de barniz.",
+            "Valor esperado en buen estado: Resistencias de fase equilibradas entre si.",
+            "Lectura que confirma la falla: Desbalance vectorial -> IPM cancela inyeccion PWM.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "LG manual de entrenamiento inversor; doc técnico del usuario",
+          "confianza": "media"
+        },
+        "CH10": {
+          "titulo": "Ventilador interior no gira",
+          "significado": "Ventilador interior no gira (BLDC) - tambien CA según modelo.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Motor BLDC interior",
+            "sensor Hall"
+          ],
+          "pasos": [
+            "Verificar arrastre/bloqueo del rodete y lectura del sensor Hall.",
+            "Valor esperado en buen estado: Giro libre y pulsos Hall presentes.",
+            "Lectura que confirma la falla: Rodete trabado o sin retorno de pulsos.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "LG cruzado; doc técnico del usuario",
+          "confianza": "media"
+        },
+        "CH06": {
+          "titulo": "Exceso de corriente en circuito DC del inversor",
+          "significado": "Exceso de corriente en circuito DC del inversor (pico DC).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Multi V"
+          ],
+          "modelos": [],
+          "causas": [
+            "IPM",
+            "compresor",
+            "placa inversora exterior"
+          ],
+          "pasos": [
+            "Revisar IPM, compresor y carga del bus DC; la unidad interior entra en apagado de protección.",
+            "Valor esperado en buen estado: Corriente DC dentro de limites del IPM.",
+            "Lectura que confirma la falla: Pico de DC -> apagado para evitar daño.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "LG split system error code references (multi-fuente distribuidor)",
+          "confianza": "media"
+        },
+        "CH22": {
+          "titulo": "Corriente de marcha del compresor inversor alta",
+          "significado": "Corriente de marcha del compresor inversor alta.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Multi V"
+          ],
+          "modelos": [],
+          "causas": [
+            "Compresor",
+            "cableado de potencia",
+            "IPM"
+          ],
+          "pasos": [
+            "Medir devanados del compresor: deben ser iguales 1 a 4 Ohm. Aislamiento a tierra 50 MOhm mínimo. Verificar corriente de marcha.",
+            "Valor esperado en buen estado: Devanados equilibrados 1-4 Ohm, aislamiento >=50 MOhm.",
+            "Lectura que confirma la falla: Desbalance de devanados o aislamiento bajo -> sobrecorriente.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "LG Electronics Australia - LG A/C Fault Codes (arma.org.au PDF)",
+          "confianza": "alta"
+        },
+        "CH23": {
+          "titulo": "Voltaje DC del inversor bajo",
+          "significado": "Voltaje DC del inversor bajo.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Multi V"
+          ],
+          "modelos": [],
+          "causas": [
+            "Puente rectificador",
+            "condensadores",
+            "PCB inversora exterior"
+          ],
+          "pasos": [
+            "Medir voltaje DC de condensadores: 300 VDC (monofasico) o 600 VDC (trifasico). Si OK, cambiar PCB inversora exterior.",
+            "Valor esperado en buen estado: 300 VDC (1ph) / 600 VDC (3ph) en el bus.",
+            "Lectura que confirma la falla: Caida por debajo del mínimo vital.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "LG Electronics Australia - LG A/C Fault Codes (arma.org.au PDF)",
+          "confianza": "alta"
+        },
+        "CH26": {
+          "titulo": "Compresor inversor agarrotado",
+          "significado": "Compresor inversor agarrotado (seized).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Multi V"
+          ],
+          "modelos": [],
+          "causas": [
+            "Compresor",
+            "IPM"
+          ],
+          "pasos": [
+            "Medir devanados iguales 1 a 4 Ohm, aislamiento a tierra 50 MOhm mínimo; revisar corriente de marcha y salidas del inversor.",
+            "Valor esperado en buen estado: Devanados equilibrados, sin fuga a tierra.",
+            "Lectura que confirma la falla: Compresor mecánicamente trabado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "LG Electronics Australia - LG A/C Fault Codes (arma.org.au PDF)",
+          "confianza": "alta"
+        }
       }
     },
-
-    "Samsung": {
-      "nota": "Samsung tiene dos sistemas: codigos cortos (E1, E5, E6) en modelos antiguos y codigos largos (E1xx, E2xx, E4xx) en modelos modernos inverter, que son mas precisos. Si tu equipo muestra un codigo largo, usalo. Fuente principal: soporte oficial Samsung.",
+    "Panasonic": {
+      "nota": "Panasonic agrupa los códigos por letra: H = anomalías de sensores y comunicación, F = electrónica de potencia y ciclo de refrigeración. Datos tomados de manuales de servicio de las series CS-NE y CS-HE.",
       "codigos": {
-        "E1": { "titulo": "Sensor de temperatura ambiente (termistor)", "significado": "Segun soporte oficial Samsung, el sensor de temperatura ambiente (room thermistor) esta en corto o defectuoso y el equipo no enciende. NOTA: en algunos modelos antiguos E1 indica comunicacion; verifica el modelo.", "severidad": "sensor", "elec": false, "causas": ["Termistor de ambiente danado", "Conector suelto"], "pasos": ["Anota el codigo exacto que muestra el display.", "Corta energia y revisa el conector del sensor de ambiente.", "El reemplazo del sensor generalmente requiere servicio tecnico autorizado."], "fuente": "Soporte oficial Samsung", "confianza": "media" },
-        "E5": { "titulo": "Sensor del intercambiador interior", "significado": "Problema con el sensor del intercambiador de calor interior (abierto o en corto).", "severidad": "sensor", "elec": false, "causas": ["Sensor del intercambiador interior danado"], "pasos": ["Corta energia y revisa el conector del sensor del intercambiador interior.", "Mide su resistencia y compara con el manual.", "Reemplazo usualmente por servicio autorizado."], "fuente": "Soporte oficial Samsung", "confianza": "media" },
-        "E6": { "titulo": "Sensor del intercambiador exterior", "significado": "Problema con el sensor del intercambiador de calor exterior (abierto o en corto).", "severidad": "sensor", "elec": false, "causas": ["Sensor del intercambiador exterior danado"], "pasos": ["Corta energia y revisa el conector del sensor del intercambiador exterior.", "Mide su resistencia y compara con el manual.", "Reemplazo usualmente por servicio autorizado."], "fuente": "Soporte oficial Samsung", "confianza": "media" },
-        "E101": { "titulo": "Error de comunicacion interior-exterior", "significado": "Tiempo de comunicacion excedido entre unidades. Conexion rota o defectuosa alrededor de la unidad interior.", "severidad": "comunicacion", "elec": true, "causas": ["Cableado de interconexion", "Conexion floja", "PCB"], "pasos": ["Corta energia y revisa los cables de alimentacion y comunicacion de la unidad interior.", "Verifica que las conexiones esten firmes en ambas borneras.", "Si persiste, puede requerir reemplazo de la PCB."], "fuente": "Multiples fuentes Samsung coinciden", "confianza": "alta" },
-        "E121": { "titulo": "Sensor de temperatura ambiente interior", "significado": "Error en el sensor de temperatura ambiente de la unidad interior (room TH abierto o en corto).", "severidad": "sensor", "elec": false, "causas": ["Termistor de ambiente danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector del sensor de ambiente interior.", "Mide la resistencia del termistor y compara con el manual.", "Reemplaza si esta fuera de rango."], "fuente": "Multiples fuentes Samsung coinciden", "confianza": "alta" },
-        "E122": { "titulo": "Sensor de tuberia / evaporador interior", "significado": "Error en el sensor de temperatura de la tuberia o evaporador de la unidad interior.", "severidad": "sensor", "elec": false, "causas": ["Termistor de tuberia danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector del sensor de tuberia interior.", "Mide la resistencia y compara con el manual.", "Reemplaza si esta fuera de rango."], "fuente": "Multiples fuentes Samsung coinciden", "confianza": "alta" },
-        "E154": { "titulo": "Falla del ventilador interior", "significado": "Error del motor del ventilador interior. Segun Samsung, suele indicar motor del ventilador o condensador defectuoso.", "severidad": "proteccion", "elec": false, "causas": ["Motor del ventilador", "Condensador del motor", "Obstruccion"], "pasos": ["Corta energia. Verifica que el rodete gire libre sin roces.", "Revisa el conector del motor y el condensador asociado.", "Si el motor esta libre, puede requerir reemplazo del motor o condensador."], "fuente": "Soporte oficial Samsung India", "confianza": "alta" },
-        "E162": { "titulo": "Error de EEPROM interior", "significado": "Error en la memoria EEPROM de la PCB interior.", "severidad": "proteccion", "elec": false, "causas": ["PCB interior danada"], "pasos": ["Realiza un reinicio cortando energia 5 minutos.", "Si persiste, la PCB interior probablemente requiere reemplazo."], "fuente": "Multiples fuentes Samsung coinciden", "confianza": "alta" },
-        "E554": { "titulo": "Fuga de refrigerante", "significado": "El sistema detecta una fuga de refrigerante.", "severidad": "refrigerante", "elec": false, "causas": ["Fuga de gas", "Carga insuficiente"], "pasos": ["Inspecciona el circuito en busca de fugas.", "Verifica la carga contra la especificacion.", "La reparacion y recarga debe hacerla personal certificado."], "fuente": "Multiples fuentes Samsung coinciden", "confianza": "alta" },
-        "E461": { "titulo": "El compresor no arranca", "significado": "El compresor no logra iniciar.", "severidad": "proteccion", "elec": true, "causas": ["Compresor", "Modulo de potencia", "Conexiones del compresor"], "pasos": ["Corta energia 5 min y reinicia para descartar falla transitoria.", "Verifica las conexiones del compresor y su aislamiento.", "Requiere diagnostico especializado de la PCB de potencia."], "fuente": "Multiples fuentes Samsung coinciden", "confianza": "alta" }
+        "H11": {
+          "titulo": "Comunicación anormal entre unidad interior y exterior",
+          "significado": "Comunicación anormal entre unidad interior y exterior.",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "CS-NE",
+            "CS-HE",
+            "Split inverter"
+          ],
+          "modelos": [
+            "CS-NE7GKE",
+            "CS-HE9JKE",
+            "CS-HE9NKE"
+          ],
+          "causas": [
+            "Cable de interconexión",
+            "PCB exterior"
+          ],
+          "pasos": [
+            "Verificar cableado de interconexión, contactos sucios y PCB exterior.",
+            "Valor esperado en buen estado: Transmision serial normal interior-exterior.",
+            "Lectura que confirma la falla: Cableado erroneo, contacto sucio o PCB exterior defectuosa.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Panasonic Service Manual CS-NE7GKE/CS-HE9JKE - tabla de error codes",
+          "confianza": "alta"
+        },
+        "F99": {
+          "titulo": "Detección de pico de Corriente Continua",
+          "significado": "Detección de pico de Corriente Continua (DC) en unidad exterior.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "CS-NE",
+            "CS-HE",
+            "Split inverter"
+          ],
+          "modelos": [
+            "CS-NE7GKE",
+            "CS-HE9JKE"
+          ],
+          "causas": [
+            "IPM",
+            "compresor",
+            "placa inversora"
+          ],
+          "pasos": [
+            "Revisar IPM, equilibrio de fases del compresor y carga del bus DC.",
+            "Valor esperado en buen estado: Corriente DC dentro de limites del IPM.",
+            "Lectura que confirma la falla: Pico de DC por compresor duro o IPM dañado -> apagado en microsegundos.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Panasonic Service Manual CS-NE7GKE/CS-HE9JKE - tabla de error codes",
+          "confianza": "alta"
+        },
+        "F96": {
+          "titulo": "Protección por sobrecalentamiento del IPM",
+          "significado": "Protección por sobrecalentamiento del IPM (transistor de potencia).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "CS-NE",
+            "CS-HE",
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "IPM",
+            "disipador",
+            "pasta térmica",
+            "ventilacion exterior"
+          ],
+          "pasos": [
+            "Medir temperatura del disipador del IPM; verificar pasta térmica y ventilacion.",
+            "Valor esperado en buen estado: Disipador por debajo del umbral (tip. 85-95 grados C).",
+            "Lectura que confirma la falla: Exceso térmico -> detiene conmutacion.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Panasonic Service Manual - tabla de error codes",
+          "confianza": "alta"
+        },
+        "F91": {
+          "titulo": "Anomalía del ciclo de refrigeración",
+          "significado": "Anomalía del ciclo de refrigeración (protección baja presión / falta de gas).",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "CS-NE",
+            "CS-HE",
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Circuito de refrigerante",
+            "carga de gas"
+          ],
+          "pasos": [
+            "Inspeccionar fuga, carga de refrigerante y presiones del ciclo.",
+            "Valor esperado en buen estado: Ciclo de refrigeración en rango.",
+            "Lectura que confirma la falla: Baja carga o fuga cronica activa protección.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Panasonic Service Manual - tabla de error codes",
+          "confianza": "alta"
+        },
+        "H27": {
+          "titulo": "Anomalía del sensor de temperatura de aire exterior",
+          "significado": "Anomalía del sensor de temperatura de aire exterior.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "CS-NE",
+            "CS-HE",
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Termistor de aire exterior",
+            "conector PCB exterior"
+          ],
+          "pasos": [
+            "Medir resistencia del termistor de aire exterior contra curva NTC.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura ambiente.",
+            "Lectura que confirma la falla: Abierto (infinito) o corto (0 Ohm).",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Panasonic Service Manual - tabla de error codes",
+          "confianza": "alta"
+        },
+        "H33": {
+          "titulo": "Conexión interior/exterior incorrecta",
+          "significado": "Conexión interior/exterior incorrecta (mismatch de voltaje de alimentacion).",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "CS-NE",
+            "CS-HE",
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Combinacion de unidades",
+            "cableado de alimentacion"
+          ],
+          "pasos": [
+            "Verificar combinacion interior/exterior compatible y tensión de alimentacion correcta.",
+            "Valor esperado en buen estado: Modelos compatibles y voltaje correcto.",
+            "Lectura que confirma la falla: Unidades incompatibles o cableado de alimentacion mal conectado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Panasonic Service Manual - tabla de error codes",
+          "confianza": "alta"
+        },
+        "H14": {
+          "titulo": "Anomalía del sensor de temperatura de aire de admision",
+          "significado": "Anomalía del sensor de temperatura de aire de admision (interior).",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "CS-NE",
+            "CS-HE",
+            "Split inverter"
+          ],
+          "modelos": [
+            "CS-HE9NKE"
+          ],
+          "causas": [
+            "Termistor de admision interior",
+            "conector"
+          ],
+          "pasos": [
+            "Medir resistencia del termistor de admision; limpiar y reconectar contactos.",
+            "Valor esperado en buen estado: Resistencia NTC coherente con ambiente.",
+            "Lectura que confirma la falla: Abierto o corto; contacto sucio o sensor desconectado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Panasonic Service Manual CS-HE9NKE (ManualsLib p.58)",
+          "confianza": "alta"
+        },
+        "H16": {
+          "titulo": "Transformador de corriente",
+          "significado": "Transformador de corriente (CT) exterior en circuito abierto / consumo bajo.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "CS-NE",
+            "CS-HE",
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "PCB exterior",
+            "IPM",
+            "carga de refrigerante"
+          ],
+          "pasos": [
+            "Bajo consumo del exterior puede indicar falta de refrigerante, circuito abierto o fallo del IPM/PCB exterior.",
+            "Valor esperado en buen estado: CT detecta corriente esperada del compresor.",
+            "Lectura que confirma la falla: Corriente muy baja: falta de gas, circuito abierto o módulo IPM defectuoso.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Panasonic Service Manual - tabla de error codes (H16 CT open)",
+          "confianza": "alta"
+        },
+        "H19": {
+          "titulo": "Motor del ventilador interior bloqueado",
+          "significado": "Motor del ventilador interior bloqueado (mecanismo).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "CS-NE",
+            "CS-HE",
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Motor del ventilador interior",
+            "PCB interior"
+          ],
+          "pasos": [
+            "Verificar giro libre del rodete y estado del motor; revisar PCB interior.",
+            "Valor esperado en buen estado: Rodete gira libre, motor responde.",
+            "Lectura que confirma la falla: Rodete trabado (detectado 7 veces consecutivas).",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Panasonic Service Manual - tabla de error codes (H19)",
+          "confianza": "alta"
+        },
+        "F95": {
+          "titulo": "Protección de alta presión en refrigeración",
+          "significado": "Protección de alta presión en refrigeración (cool high pressure).",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "CS-NE",
+            "CS-HE",
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Ventilador exterior",
+            "condensador",
+            "carga"
+          ],
+          "pasos": [
+            "Verificar ventilador exterior, limpieza del condensador y sobrecarga de refrigerante.",
+            "Valor esperado en buen estado: Condensación y presión de alta en rango.",
+            "Lectura que confirma la falla: Condensador sucio, ventilador exterior debil o exceso de carga.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Panasonic Service Manual - tabla de error codes (F95)",
+          "confianza": "alta"
+        }
       }
     },
-
+    "Mitsubishi Electric": {
+      "nota": "Mitsubishi Electric (Mr. Slim) separa: P = diagnosticos de la unidad interior, E = comunicación y control, U = fallas de la unidad exterior. Varios códigos traen su equivalente del controlador central (ej. U2 = 1102).",
+      "codigos": {
+        "P1": {
+          "titulo": "Fallo del termistor de aire de retorno / admision",
+          "significado": "Fallo del termistor de aire de retorno / admision (TH1 / RT1).",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Mr. Slim P",
+            "Mr. Slim K"
+          ],
+          "modelos": [
+            "PLY-ZM50EA",
+            "PEY-M50JAL"
+          ],
+          "causas": [
+            "Termistor TH1",
+            "conector de placa interior"
+          ],
+          "pasos": [
+            "Medir resistencia de TH1; verificar que no este desconectado, abierto o en corto.",
+            "Valor esperado en buen estado: Resistencia NTC coherente con temperatura ambiente.",
+            "Lectura que confirma la falla: Abierto o en corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mitsubishi Electric Mr. Slim P-Series Service / Troubleshooting",
+          "confianza": "alta"
+        },
+        "P8": {
+          "titulo": "Temperatura de tuberia anormal",
+          "significado": "Temperatura de tuberia anormal (frecuentemente fuga de refrigerante).",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "Mr. Slim P",
+            "Mr. Slim K"
+          ],
+          "modelos": [],
+          "causas": [
+            "Carga",
+            "válvula cerrada",
+            "termistores TH2-TH5"
+          ],
+          "pasos": [
+            "Verificar válvulas de servicio abiertas, termistores TH2/TH5 bien colocados, y carga de refrigerante. Rango: tuberia +-9 grados C vs ambiente.",
+            "Valor esperado en buen estado: Diferencial de tuberia en rango (rangos A/B/C del manual).",
+            "Lectura que confirma la falla: Tuberia >9 grados C bajo el ambiente sostenido -> infiere fuga.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mitsubishi Electric Mr. Slim P-Series Troubleshooting (rangos de tuberia)",
+          "confianza": "alta"
+        },
+        "E6": {
+          "titulo": "Error de comunicación interior/exterior",
+          "significado": "Error de comunicación interior/exterior (CC 6840).",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "Mr. Slim P",
+            "Mr. Slim K"
+          ],
+          "modelos": [],
+          "causas": [
+            "Cableado S1",
+            "S2",
+            "S3",
+            "secuencia",
+            "placa interior"
+          ],
+          "pasos": [
+            "Verificar cableado S1/S2/S3; secuencia correcta (interior antes que exterior); que la bomba de drenaje no este cableada en S1/S2.",
+            "Valor esperado en buen estado: 12/24 VDC presentes en S2/S3.",
+            "Lectura que confirma la falla: Exterior energizado antes que interior, cable cruzado o interferencia de bomba.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mitsubishi Electric Mr. Slim - comunicación I/O (S1/S2/S3)",
+          "confianza": "alta"
+        },
+        "P5": {
+          "titulo": "Nivel alto de condensado / fallo de bomba de drenaje",
+          "significado": "Nivel alto de condensado / fallo de bomba de drenaje.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Mr. Slim P",
+            "Mr. Slim K"
+          ],
+          "modelos": [],
+          "causas": [
+            "Bomba de drenaje",
+            "flotador",
+            "linea de drenaje"
+          ],
+          "pasos": [
+            "Verificar conectores CN31/CN4F en placa interior; medir resistencia de la bomba; comprobar drenaje.",
+            "Valor esperado en buen estado: Bomba funcional y drenaje libre.",
+            "Lectura que confirma la falla: Bomba fallida o drenaje obstruido.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mitsubishi Electric Mr. Slim - chequeo drenaje (CN31/CN4F)",
+          "confianza": "alta"
+        },
+        "P6": {
+          "titulo": "Congelamiento",
+          "significado": "Congelamiento (frio) / sobrecalentamiento (calor) del serpentin interior.",
+          "severidad": "proteccion",
+          "elec": false,
+          "serie": [
+            "Mr. Slim P",
+            "Mr. Slim K"
+          ],
+          "modelos": [],
+          "causas": [
+            "Filtro",
+            "ventilador interior",
+            "restriccion de circuito"
+          ],
+          "pasos": [
+            "Verificar filtro y serpentin limpios, motor de ventilador y tuberia no obstruida.",
+            "Valor esperado en buen estado: Flujo de aire normal a traves del serpentin.",
+            "Lectura que confirma la falla: Flujo reducido por filtro sucio, ventilador debil o restriccion.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mitsubishi Electric Mr. Slim - protección de serpentin",
+          "confianza": "alta"
+        },
+        "U2": {
+          "titulo": "Temperatura de descarga alta / 49C activado / refrigerante insuficiente",
+          "significado": "Temperatura de descarga alta / 49C activado / refrigerante insuficiente (CC 1102).",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "Mr. Slim P"
+          ],
+          "modelos": [
+            "PUZ",
+            "PUHZ"
+          ],
+          "causas": [
+            "Carga de refrigerante",
+            "termistor de descarga",
+            "49C",
+            "compresor"
+          ],
+          "pasos": [
+            "Verificar carga de refrigerante, termistor de descarga y condiciones de ambiente alto; revisar 49C (klixon/termostato interno del compresor).",
+            "Valor esperado en buen estado: Temperatura de descarga en rango y carga correcta.",
+            "Lectura que confirma la falla: Sobrecalentamiento del compresor por falta de gas, termistor fallido o ambiente extremo.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mitsubishi Electric Mr. Slim P-Series (CC 1102) / Mr Slim Error Code PLY-PEY-PCY",
+          "confianza": "alta"
+        },
+        "U5": {
+          "titulo": "Temperatura del disipador del inversor demasiado alta",
+          "significado": "Temperatura del disipador del inversor demasiado alta (TH8) (CC 4230).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Mr. Slim P"
+          ],
+          "modelos": [
+            "PUZ",
+            "PUHZ"
+          ],
+          "causas": [
+            "Disipador IPM",
+            "pasta de silicona",
+            "termistor TH8"
+          ],
+          "pasos": [
+            "Verificar flujo de aire alrededor del disipador, presencia de pasta de silicona y termistor TH8; leer temperatura desde herramienta de servicio o PAR21.",
+            "Valor esperado en buen estado: Disipador del IPM en rango con buena disipacion.",
+            "Lectura que confirma la falla: Falta de flujo de aire, sin pasta térmica o termistor fallido.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mitsubishi Electric Mr. Slim P-Series (CC 4230, TH8)",
+          "confianza": "alta"
+        },
+        "U6": {
+          "titulo": "Sobrecorriente del compresor / anomalía del módulo de potencia",
+          "significado": "Sobrecorriente del compresor / anomalía del módulo de potencia (CC 4250).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Mr. Slim P"
+          ],
+          "modelos": [
+            "PUZ",
+            "PUHZ"
+          ],
+          "causas": [
+            "Compresor",
+            "módulo IPM",
+            "placa de potencia"
+          ],
+          "pasos": [
+            "Realizar prueba de salida del inversor; medir equilibrio de devanados del compresor y revisar IPM.",
+            "Valor esperado en buen estado: Corriente del compresor en rango y módulo de potencia sano.",
+            "Lectura que confirma la falla: Sobrecorriente o módulo IPM defectuoso.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mitsubishi Electric Mr. Slim P-Series (CC 4250)",
+          "confianza": "alta"
+        },
+        "P9": {
+          "titulo": "Anomalía del termistor de tuberia",
+          "significado": "Anomalía del termistor de tuberia (condensador/evaporador, TH5).",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Mr. Slim P",
+            "Mr. Slim K"
+          ],
+          "modelos": [],
+          "causas": [
+            "Termistor TH5",
+            "conector placa interior"
+          ],
+          "pasos": [
+            "Medir resistencia de TH5; verificar conexión al colector de tuberia.",
+            "Valor esperado en buen estado: Resistencia NTC coherente con temperatura de tuberia.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mitsubishi Mr. Slim Error Code (TH5 pipe thermistor)",
+          "confianza": "alta"
+        }
+      }
+    },
     "Carrier": {
-      "nota": "Muchos equipos Carrier split usan plataforma OEM tipo Midea, por lo que comparten estos codigos (E/F/P). Verifica el manual del modelo, ya que lineas comerciales o VRF pueden diferir.",
+      "nota": "Carrier reutiliza nomenclaturas según la familia del equipo y la generacion de placa. Convive mas de un mapa de códigos en sus splits inverter. En muchos modelos usa el mapa Midea (T1-T5). Confirma SIEMPRE contra el manual del modelo.",
       "codigos": {
-        "E0": { "titulo": "Error de EEPROM interior", "significado": "Error de parametros en la memoria EEPROM de la unidad interior.", "severidad": "proteccion", "elec": false, "causas": ["PCB interior danada"], "pasos": ["Reinicia cortando energia 5 minutos.", "Si persiste, la PCB interior probablemente requiere reemplazo."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "E1": { "titulo": "Error de comunicacion interior-exterior", "significado": "La unidad interior y la exterior no intercambian datos correctamente.", "severidad": "comunicacion", "elec": true, "causas": ["Cableado de interconexion", "Borneras flojas", "PCB", "Mala tierra"], "pasos": ["Corta energia y verifica el cable de interconexion (orden y apriete) en ambas borneras.", "Revisa continuidad del cable de comunicacion.", "Verifica la puesta a tierra.", "Si el cableado esta correcto, evalua las PCB."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "E3": { "titulo": "Velocidad del ventilador interior fuera de control", "significado": "El ventilador interior no mantiene la velocidad esperada.", "severidad": "proteccion", "elec": false, "causas": ["Motor del ventilador", "Obstruccion", "PCB"], "pasos": ["Corta energia. Verifica que el rodete gire libre.", "Revisa el conector del motor.", "Si esta libre y conectado, puede requerir reemplazo."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "E4": { "titulo": "Sensor de temperatura ambiente interior (T1)", "significado": "Circuito abierto o corto en el sensor de temperatura ambiente interior.", "severidad": "sensor", "elec": false, "causas": ["Termistor T1 danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector del sensor T1.", "Mide la resistencia y compara con el manual.", "Reemplaza si esta fuera de rango."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "E5": { "titulo": "Sensor del serpentin evaporador (T2)", "significado": "Circuito abierto o corto en el sensor del evaporador interior.", "severidad": "sensor", "elec": false, "causas": ["Termistor T2 danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector del sensor T2.", "Mide la resistencia y compara con el manual.", "Reemplaza si esta fuera de rango."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "EC": { "titulo": "Deteccion de fuga de refrigerante", "significado": "El sistema detecta una posible fuga de refrigerante.", "severidad": "refrigerante", "elec": false, "causas": ["Fuga de gas", "Carga insuficiente"], "pasos": ["Inspecciona fugas en uniones y serpentines.", "Verifica la carga contra la placa.", "Reparacion y recarga por personal certificado."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "F1": { "titulo": "Sensor de temperatura exterior (T4)", "significado": "Circuito abierto o corto en el sensor ambiente de la unidad exterior.", "severidad": "sensor", "elec": false, "causas": ["Termistor T4 danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector en la PCB exterior.", "Mide la resistencia y compara con el manual.", "Reemplaza si corresponde."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "F2": { "titulo": "Sensor del serpentin condensador (T3)", "significado": "Circuito abierto o corto en el sensor del condensador exterior.", "severidad": "sensor", "elec": false, "causas": ["Termistor T3 danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector del sensor T3.", "Mide la resistencia y compara con el manual.", "Reemplaza si corresponde."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "F3": { "titulo": "Sensor de descarga del compresor (T5)", "significado": "Falla en el sensor de descarga del compresor. Protege contra sobrecalentamiento.", "severidad": "sensor", "elec": false, "causas": ["Termistor de descarga danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector del sensor de descarga.", "Mide la resistencia y compara con el manual.", "No operes sin este sensor: el compresor queda sin proteccion termica."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "F4": { "titulo": "Error de EEPROM exterior", "significado": "Error de parametros en la memoria de la PCB exterior.", "severidad": "proteccion", "elec": false, "causas": ["PCB exterior danada"], "pasos": ["Reinicia cortando energia 5 minutos.", "Si persiste, la PCB exterior probablemente requiere reemplazo."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "P1": { "titulo": "Proteccion por sobre/bajo voltaje", "significado": "El voltaje de alimentacion esta fuera del rango seguro.", "severidad": "proteccion", "elec": true, "causas": ["Voltaje de red fuera de rango", "Conexion deficiente"], "pasos": ["Mide el voltaje de alimentacion y compara con la placa.", "Si es anormal, el problema es la instalacion o la red.", "Considera un estabilizador si la red es inestable."], "fuente": "Carrier (familia Midea)", "confianza": "alta" },
-        "P4": { "titulo": "Error de drive del compresor inverter", "significado": "Falla en el accionamiento del compresor inverter (IPM / IGBT).", "severidad": "proteccion", "elec": true, "causas": ["Modulo de potencia (IPM)", "Compresor"], "pasos": ["Corta energia 5 min y reinicia.", "Verifica las conexiones del compresor y su aislamiento.", "Suele requerir diagnostico especializado de la PCB de potencia."], "fuente": "Carrier (familia Midea)", "confianza": "alta" }
+        "E1": {
+          "titulo": "Código polisémico - confirmar modelo",
+          "significado": "Este código es polisémico: en el mapa comun = comunicación interior/exterior; en otro mapa Carrier = error de señal de cruce por cero / ventilador interior; en comerciales = alta presión Por eso no debe diagnosticarse sin confirmar el modelo exacto.",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "Inverter split (mapa T1-T5)",
+            "On-Off"
+          ],
+          "modelos": [],
+          "causas": [
+            "Requiere manual del modelo específico"
+          ],
+          "pasos": [
+            "PRIMERO confirmar el mapa del modelo. Carrier tiene al menos dos mapas de códigos distintos en splits inverter. No diagnosticar sin manual del modelo.",
+            "Valor esperado en buen estado: Depende del modelo.",
+            "Lectura que confirma la falla: Depende del modelo: cable de señal / cruce por cero / presostato de alta.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Multiples mapas Carrier en conflicto (Twintech, Republic World, Arlington). REQUIERE manual del modelo.",
+          "confianza": "media"
+        },
+        "EC": {
+          "titulo": "Detección de fuga de refrigerante",
+          "significado": "Detección de fuga de refrigerante.",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "Inverter split (mapa T1-T5)"
+          ],
+          "modelos": [],
+          "causas": [
+            "Carga de refrigerante",
+            "fuga en circuito"
+          ],
+          "pasos": [
+            "Cruzar activacion del compresor con tasa de descenso térmico del sensor T2 del evaporador.",
+            "Valor esperado en buen estado: El serpentin se enfria a la tasa esperada en tiempo t.",
+            "Lectura que confirma la falla: El serpentin NO se enfria -> infiere falta de masa de fluido.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa T1-T5 Carrier (consenso Twintech/Republic World). Confirmar manual del modelo.",
+          "confianza": "media"
+        },
+        "E4": {
+          "titulo": "Sensor de temperatura de aire de habitacion T1 abierto o en corto",
+          "significado": "Sensor de temperatura de aire de habitacion T1 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Inverter split (mapa T1-T5)"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T1 (aire interior)",
+            "conector PCB interior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T1 (aire interior) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura ambiente.",
+            "Lectura que confirma la falla: Abierto (infinito) o corto (0 Ohm).",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa T1-T5 Carrier (Twintech, Republic World). Confirmar manual del modelo.",
+          "confianza": "media"
+        },
+        "E5": {
+          "titulo": "Sensor de temperatura del serpentin evaporador T2 abierto o en corto",
+          "significado": "Sensor de temperatura del serpentin evaporador T2 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Inverter split (mapa T1-T5)"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T2 (evaporador)",
+            "conector PCB interior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T2 (serpentin interior) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura del serpentin.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa T1-T5 Carrier (Twintech, Republic World). Confirmar manual del modelo.",
+          "confianza": "media"
+        },
+        "F1": {
+          "titulo": "Sensor de temperatura ambiente exterior T4 abierto o en corto",
+          "significado": "Sensor de temperatura ambiente exterior T4 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Inverter split (mapa T1-T5)"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T4 (aire exterior)",
+            "conector PCB exterior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T4 (aire exterior) contra curva NTC; revisar conector y cableado.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura exterior.",
+            "Lectura que confirma la falla: Abierto o corto; sensor sucio o dañado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa T1-T5 Carrier (Twintech, Republic World). Confirmar manual del modelo.",
+          "confianza": "media"
+        },
+        "F3": {
+          "titulo": "Sensor de temperatura de descarga del compresor T5 abierto o en corto",
+          "significado": "Sensor de temperatura de descarga del compresor T5 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Inverter split (mapa T1-T5)"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T5 (descarga)",
+            "conector PCB exterior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T5 (descarga del compresor) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura de descarga.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa T1-T5 Carrier (Twintech, Republic World). Confirmar manual del modelo.",
+          "confianza": "media"
+        },
+        "P0": {
+          "titulo": "Mal funcionamiento del IPM o protección por sobrecorriente del IGBT",
+          "significado": "Mal funcionamiento del IPM o protección por sobrecorriente del IGBT.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Inverter split (mapa T1-T5)"
+          ],
+          "modelos": [],
+          "causas": [
+            "IPM",
+            "IGBT",
+            "compresor"
+          ],
+          "pasos": [
+            "PRECAUCION ALTA Tensión: esperar 5 min y confirmar que el bus DC bajo de 42V antes de tocar bornes. Revisar IPM y equilibrio de fases del compresor.",
+            "Valor esperado en buen estado: IGBT/IPM conmutando sin sobrecorriente.",
+            "Lectura que confirma la falla: Sobrecorriente del IGBT o IPM defectuoso.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa T1-T5 Carrier (Twintech, Republic World, Primax). Confirmar manual del modelo.",
+          "confianza": "media"
+        }
       }
     },
-
-    "York": {
-      "nota": "Muchos equipos York split usan plataforma OEM tipo Midea y comparten estos codigos (E/F). Lineas comerciales/chiller pueden tener sistemas propios distintos: verifica el manual del modelo.",
+    "Toshiba": {
+      "nota": "Toshiba usa familias E (comunicación), F (sensores, con nombres TD/TE/TO/TA/TC), H (compresor/inverter) y P (protecciones). Cobertura para series RAS, RAV, Digital Inverter y SMMS-i (VRF).",
       "codigos": {
-        "E0": { "titulo": "Error de EEPROM interior", "significado": "Error en la memoria EEPROM de la unidad interior.", "severidad": "proteccion", "elec": false, "causas": ["PCB interior danada"], "pasos": ["Reinicia cortando energia 5 minutos.", "Si persiste, la PCB interior probablemente requiere reemplazo."], "fuente": "York (familia Midea)", "confianza": "alta" },
-        "E1": { "titulo": "Error de comunicacion interior-exterior", "significado": "La unidad interior y exterior no intercambian datos correctamente.", "severidad": "comunicacion", "elec": true, "causas": ["Cableado de interconexion", "Borneras flojas", "PCB", "Mala tierra"], "pasos": ["Corta energia y verifica el cable de interconexion (orden y apriete) en ambas borneras.", "Revisa continuidad del cable de comunicacion.", "Verifica la puesta a tierra.", "Si el cableado esta correcto, evalua las PCB."], "fuente": "York (familia Midea)", "confianza": "alta" },
-        "E3": { "titulo": "Velocidad del ventilador interior fuera de rango", "significado": "El ventilador interior no mantiene la velocidad esperada.", "severidad": "proteccion", "elec": false, "causas": ["Motor del ventilador", "Obstruccion", "PCB"], "pasos": ["Corta energia. Verifica que el rodete gire libre.", "Revisa el conector del motor.", "Si esta libre y conectado, puede requerir reemplazo."], "fuente": "York (familia Midea)", "confianza": "alta" },
-        "E4": { "titulo": "Sensor de temperatura ambiente interior", "significado": "Error en el sensor de temperatura ambiente de la unidad interior.", "severidad": "sensor", "elec": false, "causas": ["Termistor danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector del sensor de ambiente.", "Mide la resistencia y compara con el manual.", "Reemplaza si esta fuera de rango."], "fuente": "York (familia Midea)", "confianza": "alta" },
-        "E5": { "titulo": "Sensor del serpentin evaporador", "significado": "Error en el sensor del evaporador interior.", "severidad": "sensor", "elec": false, "causas": ["Termistor danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector del sensor.", "Mide la resistencia y compara con el manual.", "Reemplaza si esta fuera de rango."], "fuente": "York (familia Midea)", "confianza": "alta" },
-        "EC": { "titulo": "Deteccion de fuga de refrigerante", "significado": "El sistema detecta una posible fuga de refrigerante.", "severidad": "refrigerante", "elec": false, "causas": ["Fuga de gas", "Carga insuficiente"], "pasos": ["Inspecciona fugas en uniones y serpentines.", "Verifica la carga contra la placa.", "Reparacion y recarga por personal certificado."], "fuente": "York (familia Midea)", "confianza": "alta" },
-        "EE": { "titulo": "Alarma de nivel de agua", "significado": "Alarma del sistema de drenaje / nivel de agua (comun en equipos cassette o ductos con bomba de condensado).", "severidad": "proteccion", "elec": false, "causas": ["Drenaje bloqueado", "Bomba de condensado", "Flotador"], "pasos": ["Revisa que el drenaje de condensado no este obstruido.", "Verifica el funcionamiento de la bomba de condensado y el flotador.", "Limpia la bandeja de condensado."], "fuente": "York (familia Midea)", "confianza": "alta" },
-        "F1": { "titulo": "Sensor de temperatura exterior", "significado": "Error en el sensor ambiente de la unidad exterior.", "severidad": "sensor", "elec": false, "causas": ["Termistor danado", "Conector suelto"], "pasos": ["Corta energia. Revisa el conector en la PCB exterior.", "Mide la resistencia y compara con el manual.", "Reemplaza si corresponde."], "fuente": "York (familia Midea)", "confianza": "alta" },
-        "F4": { "titulo": "Error de EEPROM exterior", "significado": "Error en la memoria de la PCB exterior.", "severidad": "proteccion", "elec": false, "causas": ["PCB exterior danada"], "pasos": ["Reinicia cortando energia 5 minutos.", "Si persiste, la PCB exterior probablemente requiere reemplazo."], "fuente": "York (familia Midea)", "confianza": "alta" }
+        "E04": {
+          "titulo": "La unidad interior no recibe comunicación desde la exterior",
+          "significado": "La unidad interior no recibe comunicación desde la exterior.",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "RAS",
+            "RAV",
+            "Digital Inverter",
+            "SMMS-i"
+          ],
+          "modelos": [],
+          "causas": [
+            "Cableado U1",
+            "U2",
+            "direccionamiento",
+            "PCB exterior"
+          ],
+          "pasos": [
+            "Verificar cableado U1/U2 interior-exterior y resistencia de terminal; revisar direcciones (29 y 30 no son validas en exterior) y klixon de la linea de descarga.",
+            "Valor esperado en buen estado: Bus U1/U2 activo y direcciones correctas.",
+            "Lectura que confirma la falla: Cable abierto/cruzado, dirección invalida o klixon de descarga abierto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Toshiba SMMS-i Error Code Quick Reference (toshiba-aircon.com.sg)",
+          "confianza": "alta"
+        },
+        "F04": {
+          "titulo": "Sensor TD",
+          "significado": "Sensor TD (descarga) de la unidad exterior abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "RAS",
+            "RAV",
+            "Digital Inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor TD (descarga)",
+            "conector PCB exterior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor TD (descarga) en kOhm contra curva NTC; revisar conector en PCB exterior.",
+            "Valor esperado en buen estado: Resistencia coherente con la temperatura de descarga.",
+            "Lectura que confirma la falla: Abierto o en corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Toshiba AC Error Code Guide (RAS/RAV) - sensores TD/TE/TO/TA",
+          "confianza": "alta"
+        },
+        "F06": {
+          "titulo": "Sensor TE",
+          "significado": "Sensor TE (serpentin) de la unidad exterior abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "RAS",
+            "RAV",
+            "Digital Inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor TE (serpentin exterior)",
+            "conector PCB"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor TE (serpentin exterior) en kOhm; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con la temperatura del serpentin.",
+            "Lectura que confirma la falla: Abierto o en corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Toshiba AC Error Code Guide (sensores TD/TE/TO/TA)",
+          "confianza": "alta"
+        },
+        "F10": {
+          "titulo": "Sensor TA",
+          "significado": "Sensor TA (aire de retorno) de la unidad interior abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "RAS",
+            "RAV",
+            "Digital Inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor TA (aire de retorno)",
+            "conector PCB interior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor TA (aire de retorno) en kOhm; revisar conector en PCB interior.",
+            "Valor esperado en buen estado: Resistencia coherente con la temperatura ambiente.",
+            "Lectura que confirma la falla: Abierto o en corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Toshiba AC Error Code Guide (sensores TD/TE/TO/TA)",
+          "confianza": "alta"
+        },
+        "H01": {
+          "titulo": "Sobrecorriente del compresor inverter de la unidad exterior",
+          "significado": "Sobrecorriente del compresor inverter de la unidad exterior.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "RAS",
+            "SMMS-i",
+            "Super Digital Inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Compresor",
+            "IPDU-IPM",
+            "alimentacion"
+          ],
+          "pasos": [
+            "Revisar IPDU/IPM, equilibrio de devanados del compresor y voltaje de alimentacion; descartar compresor agarrotado.",
+            "Valor esperado en buen estado: Corriente del compresor en rango.",
+            "Lectura que confirma la falla: Sobrecorriente detectada por el IPDU.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Toshiba SMMS-i / Appliance error code (H01 inverter compressor overcurrent)",
+          "confianza": "alta"
+        },
+        "P03": {
+          "titulo": "Temperatura de descarga alta de la unidad exterior",
+          "significado": "Temperatura de descarga alta de la unidad exterior (TD1 supero 115 grados C).",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "RAS",
+            "RAV",
+            "Digital Inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Carga de refrigerante",
+            "sensor TD1",
+            "restriccion de circuito"
+          ],
+          "pasos": [
+            "Verificar carga de refrigerante (posible falta), sensor TD1 y condiciones de ambiente; medir presiones.",
+            "Valor esperado en buen estado: TD1 por debajo de 115 grados C.",
+            "Lectura que confirma la falla: Sobrecalentamiento por falta de gas, restriccion o sensor TD1.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Toshiba AC Error Code Guide (P03, TD1 >115C)",
+          "confianza": "alta"
+        },
+        "P07": {
+          "titulo": "Disipador del PCB de la unidad exterior sobrecalentado",
+          "significado": "Disipador del PCB de la unidad exterior sobrecalentado (temperatura sobre 90 grados C).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "RAS",
+            "SMMS-i",
+            "Digital Inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Disipador IPDU",
+            "IPM",
+            "pasta térmica",
+            "ventilacion"
+          ],
+          "pasos": [
+            "Verificar flujo de aire al disipador del IPDU, pasta térmica y termistor; descartar sobrecarga del compresor.",
+            "Valor esperado en buen estado: Disipador bajo el umbral con buena disipacion.",
+            "Lectura que confirma la falla: Disipador sobre 90 grados C por mala ventilacion o sobrecarga.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Toshiba AC Error Code Guide (P07, heat sink >90C)",
+          "confianza": "alta"
+        }
       }
     },
-
     "Fujitsu": {
-      "nota": "Fujitsu es distinto: en equipos con control cableado muestra codigos alfanumericos (E:XX). En equipos con control inalambrico, el error se lee contando PARPADEOS de las luces Operation y Timer del panel. Para entrar a autodiagnostico en control cableado, presiona 'Energy Save' + 'Zone Control' 3 segundos. Un reset duro (corta energia en el isolator exterior 20 min) resuelve muchos glitches. Verifica el manual del modelo (J Series y VRF difieren).",
+      "nota": "Fujitsu General muestra los códigos en formato E:XX mediante autodiagnostico (mantener los botones de temperatura 5 s). Estructura: comunicación, sensores y protecciones de potencia. Cubre series ASTG/AOYG/AUYG y la marca General.",
       "codigos": {
-        "E:00": { "titulo": "Sin error / comunicacion normal", "significado": "Estado normal o sin error registrado en el autodiagnostico.", "severidad": "comunicacion", "elec": false, "causas": ["Sin falla activa"], "pasos": ["Si el equipo no opera bien pero no hay codigo, realiza un reset duro: corta energia en el isolator exterior por 20 minutos y reinicia."], "fuente": "Fujitsu (control cableado)", "confianza": "media" },
-        "E:0": { "titulo": "Falla de comunicacion con el control remoto", "significado": "Falla de comunicacion entre la unidad interior y el control remoto cableado. Puede haber interferencia o cableado defectuoso.", "severidad": "comunicacion", "elec": true, "causas": ["Cableado del control remoto", "Interferencia", "PCB"], "pasos": ["Revisa el cableado del control remoto y su conexion.", "Verifica que no haya fuentes de interferencia cercanas.", "Si persiste, evalua la PCB interior o el control."], "fuente": "Fujitsu (Airway, fuentes coinciden)", "confianza": "media" },
-        "COMM-IND-OUT": { "titulo": "Falla de comunicacion interior-exterior (parpadeo)", "significado": "En control inalambrico: las luces Operation y Timer parpadean 5 veces indicando comunicacion interior-exterior. Verifica el patron exacto en el manual.", "severidad": "comunicacion", "elec": true, "causas": ["Cableado de interconexion", "PCB"], "pasos": ["Corta energia. Verifica el cableado de interconexion entre unidades (orden y apriete).", "Revisa continuidad del cable de comunicacion.", "Realiza un reset duro de 20 minutos en el isolator.", "Si persiste, evalua las PCB."], "fuente": "Fujitsu (fuentes coinciden)", "confianza": "media" },
-        "SENSOR-AIRE-IND": { "titulo": "Falla del sensor de aire interior (parpadeo)", "significado": "En control inalambrico: Operation 2 + Timer 2 parpadeos indican falla del sensor de aire interior. Verifica el patron en el manual del modelo.", "severidad": "sensor", "elec": false, "causas": ["Sensor de aire interior danado", "Filtros obstruidos", "Modo test/timer activo"], "pasos": ["Verifica que el equipo no este en modo timer o test.", "Revisa que los filtros no esten obstruidos.", "Corta energia y revisa el conector del sensor de aire interior.", "Mide la resistencia y compara con el manual."], "fuente": "Fujitsu (Airway, fuentes coinciden)", "confianza": "media" },
-        "COMPRESOR-ALTA-PRESION": { "titulo": "Falla de compresor / alta presion (parpadeo)", "significado": "En control inalambrico: 10 parpadeos del Operation suelen indicar falla del compresor o problema de alta presion. Verifica el patron exacto en el manual.", "severidad": "proteccion", "elec": false, "causas": ["Compresor", "Alta presion", "Mala disipacion / condensador sucio"], "pasos": ["Corta energia. Limpia el condensador exterior y verifica el ventilador.", "Verifica que haya ventilacion adecuada alrededor de la unidad exterior.", "Revisa la carga de refrigerante.", "Esta falla suele requerir diagnostico especializado."], "fuente": "Fujitsu (fuentes coinciden)", "confianza": "media" }
+        "E:01": {
+          "titulo": "Error de comunicación entre unidad interior y exterior",
+          "significado": "Error de comunicación entre unidad interior y exterior.",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Multi"
+          ],
+          "modelos": [
+            "ASTG24KMTC",
+            "AOYG30LAT4"
+          ],
+          "causas": [
+            "Cable de interconexión",
+            "PCB interior o exterior"
+          ],
+          "pasos": [
+            "Verificar cableado de interconexión y PCB; iniciar autodiagnostico manteniendo los botones de temperatura 5 s.",
+            "Valor esperado en buen estado: Transmision serial normal interior-exterior.",
+            "Lectura que confirma la falla: Cable de señal cortado/cruzado o PCB defectuosa.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Fujitsu self-diagnosis (Airpro / Luce). Display: E:01",
+          "confianza": "media"
+        },
+        "E:02": {
+          "titulo": "Sensor de temperatura de habitacion abierto",
+          "significado": "Sensor de temperatura de habitacion abierto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter"
+          ],
+          "modelos": [
+            "ASGA18JCC"
+          ],
+          "causas": [
+            "Termistor de habitacion",
+            "conector PCB interior"
+          ],
+          "pasos": [
+            "Medir resistencia del termistor de habitacion contra curva NTC; revisar conector (no confundir con fallo de PCB).",
+            "Valor esperado en buen estado: Resistencia NTC coherente con ambiente.",
+            "Lectura que confirma la falla: Circuito abierto del sensor de habitacion.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Fujitsu General error list (Luce / acerrorcode). Display: E:02",
+          "confianza": "media"
+        },
+        "E:0E": {
+          "titulo": "Error de alta presión / disipador del IPM exterior",
+          "significado": "Error de alta presión / disipador del IPM exterior.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "IPM",
+            "disipador",
+            "condensador",
+            "carga"
+          ],
+          "pasos": [
+            "Verificar disipador del IPM, ventilacion exterior y presión de alta; revisar pasta térmica.",
+            "Valor esperado en buen estado: Disipador y presión de alta en rango.",
+            "Lectura que confirma la falla: Sobrecalentamiento del disipador o alta presión.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Fujitsu self-diagnosis (Luce). Display: E:0E / 0E",
+          "confianza": "media"
+        },
+        "1A": {
+          "titulo": "Fallo del compresor",
+          "significado": "Fallo del compresor.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Compresor",
+            "IPM"
+          ],
+          "pasos": [
+            "Medir equilibrio de devanados del compresor y aislamiento a tierra; revisar IPM y arranque V-PAM/I-PAM.",
+            "Valor esperado en buen estado: Devanados equilibrados, sin fuga a tierra.",
+            "Lectura que confirma la falla: Compresor agarrotado o desbalance que impide la sincronía.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Fujitsu fault list (removeandreplace / Arlington). Código 1A",
+          "confianza": "media"
+        },
+        "1C": {
+          "titulo": "Error de comunicación entre el inversor y la PCB exterior",
+          "significado": "Error de comunicación entre el inversor y la PCB exterior.",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "Split inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Placa inversora",
+            "PCB exterior",
+            "conectores"
+          ],
+          "pasos": [
+            "Verificar conexión entre la placa inversora y la PCB principal exterior; revisar ruido y conectores.",
+            "Valor esperado en buen estado: Comunicación interna exterior normal.",
+            "Lectura que confirma la falla: Perdida de enlace inversor-PCB por ruido o conector flojo.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Fujitsu fault list (removeandreplace / Arlington). Código 1C",
+          "confianza": "media"
+        },
+        "09": {
+          "titulo": "Activacion del interruptor de flotador",
+          "significado": "Activacion del interruptor de flotador (drenaje).",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [
+            "AUYG18LVLB"
+          ],
+          "causas": [
+            "Bomba de drenaje",
+            "flotador",
+            "linea de drenaje"
+          ],
+          "pasos": [
+            "Verificar bandeja de condensado, bomba de drenaje y flotador.",
+            "Valor esperado en buen estado: Flotador en posicion baja, drenaje libre.",
+            "Lectura que confirma la falla: Flotador elevado por agua acumulada.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Fujitsu self-diagnosis (Luce). Código 09 float switch",
+          "confianza": "media"
+        }
+      }
+    },
+    "Mitsubishi Heavy": {
+      "nota": "Mitsubishi Heavy Industries (MHI) generaliza casi todo bajo la letra E con doble digito. ATENCION: el significado varia bastante entre series (FD Split, SRK, FDT, KX VRF) y rebrands. Códigos en tier B: confirma contra el manual de la serie exacta.",
+      "codigos": {
+        "E5": {
+          "titulo": "Comunicación deficiente entre unidad interior y exterior",
+          "significado": "Comunicación deficiente entre unidad interior y exterior.",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "FD Split",
+            "SRK",
+            "FDT"
+          ],
+          "modelos": [
+            "SRK-18YL-S"
+          ],
+          "causas": [
+            "Cableado de señal",
+            "conectores",
+            "PCB"
+          ],
+          "pasos": [
+            "Verificar pines/conectores de señal (contacto flojo o cable cortado) entre interior y exterior.",
+            "Valor esperado en buen estado: Bus de comunicación estable.",
+            "Lectura que confirma la falla: Contacto pobre, cable roto o ruido en la linea.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "MHI fault codes (becoolrefrigeration / MHI-Haier flash codes). Varia por serie.",
+          "confianza": "media"
+        },
+        "E6": {
+          "titulo": "Fallo del sensor del intercambiador de calor interior",
+          "significado": "Fallo del sensor del intercambiador de calor interior.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "FD Split",
+            "SRK",
+            "FDT"
+          ],
+          "modelos": [],
+          "causas": [
+            "Termistor del intercambiador interior",
+            "conector"
+          ],
+          "pasos": [
+            "Medir resistencia del termistor del serpentin interior contra curva; revisar conexión.",
+            "Valor esperado en buen estado: Resistencia NTC coherente.",
+            "Lectura que confirma la falla: Sensor abierto/cerrado o desconectado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "MHI fault codes (airconditioningmanuals / becoolrefrigeration)",
+          "confianza": "media"
+        },
+        "E7": {
+          "titulo": "Fallo del sensor de aire de retorno interior",
+          "significado": "Fallo del sensor de aire de retorno interior (THi-A).",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "FD Split",
+            "SRK",
+            "FDT"
+          ],
+          "modelos": [],
+          "causas": [
+            "Termistor de aire de retorno (THi-A)",
+            "conector"
+          ],
+          "pasos": [
+            "Medir resistencia del termistor de retorno (THi-A); revisar cortocircuito.",
+            "Valor esperado en buen estado: Resistencia NTC coherente con ambiente.",
+            "Lectura que confirma la falla: Cortocircuito o apertura del sensor.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "MHI fault codes (MHI-Haier flash codes / airconditioningmanuals)",
+          "confianza": "media"
+        },
+        "E9": {
+          "titulo": "Fallo de la bomba de drenaje o sensor de flotador",
+          "significado": "Fallo de la bomba de drenaje o sensor de flotador.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "FD Split",
+            "FDT",
+            "FDF"
+          ],
+          "modelos": [
+            "FDF125CR"
+          ],
+          "causas": [
+            "Bomba de drenaje",
+            "flotador",
+            "linea de drenaje"
+          ],
+          "pasos": [
+            "Verificar bomba de drenaje, flotador y linea; limpiar drenaje.",
+            "Valor esperado en buen estado: Bomba funcional y drenaje libre.",
+            "Lectura que confirma la falla: Bomba fallida, flotador activado o drenaje obstruido.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "MHI fault codes (becoolrefrigeration / airconditioningmanuals)",
+          "confianza": "media"
+        },
+        "E40": {
+          "titulo": "Anomalía de alta presión",
+          "significado": "Anomalía de alta presión (presostato 63H1 disparado ~4.15 MPa).",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "FD Split",
+            "KX VRF"
+          ],
+          "modelos": [],
+          "causas": [
+            "Condensador sucio",
+            "ventilador exterior",
+            "carga",
+            "presostato 63H1"
+          ],
+          "pasos": [
+            "Revisar serpentin sucio, ventilador exterior, sobrecarga de refrigerante y presostato 63H1.",
+            "Valor esperado en buen estado: Presión de alta bajo el umbral del 63H1.",
+            "Lectura que confirma la falla: Disparo del 63H1 por condensación deficiente o sobrecarga.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "MHI fault codes (becoolrefrigeration, E40 = 63H1 ~4.15 MPa)",
+          "confianza": "media"
+        },
+        "E59": {
+          "titulo": "Fallo del compresor",
+          "significado": "Fallo del compresor (recurrente: usualmente PCB inversora o voltaje de alimentacion).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "FD Split",
+            "KX VRF"
+          ],
+          "modelos": [],
+          "causas": [
+            "PCB inversora",
+            "voltaje de alimentacion",
+            "compresor"
+          ],
+          "pasos": [
+            "Medir devanados del compresor y voltaje de alimentacion; revisar PCB inversora antes de condenar el compresor.",
+            "Valor esperado en buen estado: Devanados equilibrados y voltaje estable.",
+            "Lectura que confirma la falla: Desbalance, PCB inversora fallida o voltaje fuera de rango.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "MHI fault codes (becoolrefrigeration, E59 recurrente = PCB/voltaje)",
+          "confianza": "media"
+        }
+      }
+    },
+    "Gree": {
+      "nota": "Gree (gran OEM que fabrica para multiples marcas) separa: E = protecciones del sistema, H = inversor y mecánica, F = sensores. E1 = alta presión (no comunicación). Cubre Vireo, Bora, Lomo y derivados.",
+      "codigos": {
+        "E1": {
+          "titulo": "Protección por alta presión del sistema",
+          "significado": "Protección por alta presión del sistema.",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "Vireo",
+            "Bora",
+            "Lomo Inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Condensador",
+            "ventilador exterior",
+            "carga",
+            "presostato"
+          ],
+          "pasos": [
+            "Verificar serpentines limpios, ventilador exterior, sobrecarga de refrigerante y presostato de alta.",
+            "Valor esperado en buen estado: Presión de alta en rango.",
+            "Lectura que confirma la falla: Condensador sucio, sobrecarga o presostato de alta defectuoso.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Gree Comfort - Mini-Split Error Codes (greecomfort.com)",
+          "confianza": "media"
+        },
+        "E2": {
+          "titulo": "Protección anti-congelamiento del lado interior",
+          "significado": "Protección anti-congelamiento del lado interior.",
+          "severidad": "proteccion",
+          "elec": false,
+          "serie": [
+            "Vireo",
+            "Bora"
+          ],
+          "modelos": [],
+          "causas": [
+            "Filtro",
+            "serpentin interior",
+            "ventilador interior"
+          ],
+          "pasos": [
+            "Verificar flujo de aire interior (filtro/serpentin) y velocidad del ventilador interior.",
+            "Valor esperado en buen estado: Flujo de aire normal a traves del serpentin.",
+            "Lectura que confirma la falla: Bajo flujo por filtro/serpentin sucio o ventilador lento -> congela.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Gree Comfort / Gree Vireo service (greecomfort.com)",
+          "confianza": "media"
+        },
+        "E4": {
+          "titulo": "Protección por alta temperatura de descarga del compresor",
+          "significado": "Protección por alta temperatura de descarga del compresor.",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "Vireo",
+            "Bora"
+          ],
+          "modelos": [],
+          "causas": [
+            "Carga de refrigerante",
+            "sensor de descarga",
+            "compresor"
+          ],
+          "pasos": [
+            "Revisar carga de refrigerante (posible falta), sobrecarga y sensor de descarga; ver analisis de descarga/overload del manual.",
+            "Valor esperado en buen estado: Temperatura de descarga en rango.",
+            "Lectura que confirma la falla: Sobrecalentamiento por falta de gas o sobrecarga.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Gree Vireo service manual (removeandreplace / greecomfort)",
+          "confianza": "media"
+        },
+        "E5": {
+          "titulo": "Protección por sobrecorriente / bajo voltaje",
+          "significado": "Protección por sobrecorriente / bajo voltaje.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Vireo",
+            "Bora"
+          ],
+          "modelos": [],
+          "causas": [
+            "Alimentacion eléctrica",
+            "serpentin interior",
+            "IPM"
+          ],
+          "pasos": [
+            "Verificar estabilidad y nivel del voltaje de alimentacion; revisar serpentin interior sucio y carga del sistema.",
+            "Valor esperado en buen estado: Voltaje estable y dentro de rango.",
+            "Lectura que confirma la falla: Voltaje inestable/bajo con carga alta -> sobrecorriente.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Gree Comfort / Gree Vireo (greecomfort.com)",
+          "confianza": "media"
+        },
+        "E6": {
+          "titulo": "Fallo de comunicación interior/exterior",
+          "significado": "Fallo de comunicación interior/exterior (en 380V puede ser rotacion de fase).",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "Vireo",
+            "Bora",
+            "Lomo Inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "Cableado de comunicación",
+            "PCB",
+            "(380V) secuencia de fases"
+          ],
+          "pasos": [
+            "Verificar cableado de comunicación y conectores; en sistemas 380V revisar tambien secuencia de fases.",
+            "Valor esperado en buen estado: Bus de comunicación estable.",
+            "Lectura que confirma la falla: Cable de señal dañado, conector flojo o (380V) fase invertida.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Gree Comfort (greecomfort.com) + Gree E6 guide",
+          "confianza": "media"
+        },
+        "H5": {
+          "titulo": "Protección del módulo de potencia inteligente",
+          "significado": "Protección del módulo de potencia inteligente (IPM).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Vireo",
+            "Bora",
+            "Lomo Inverter"
+          ],
+          "modelos": [],
+          "causas": [
+            "IPM",
+            "compresor",
+            "disipador"
+          ],
+          "pasos": [
+            "Revisar IPM (voltaje y temperatura), equilibrio de devanados del compresor y disipacion.",
+            "Valor esperado en buen estado: IPM conmutando sin disparo de protección.",
+            "Lectura que confirma la falla: Sobrecorriente/sobretemperatura del IPM o compresor duro.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Gree Comfort (greecomfort.com, H5 IPM protection)",
+          "confianza": "media"
+        },
+        "H6": {
+          "titulo": "Sin retroalimentacion del motor del ventilador interior",
+          "significado": "Sin retroalimentacion del motor del ventilador interior (rodete bloqueado).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Vireo",
+            "Bora"
+          ],
+          "modelos": [],
+          "causas": [
+            "Motor del ventilador interior",
+            "sensor Hall",
+            "conector"
+          ],
+          "pasos": [
+            "Verificar giro libre del rodete y señal del motor (Hall); revisar conector del motor.",
+            "Valor esperado en buen estado: Rodete gira libre y entrega feedback.",
+            "Lectura que confirma la falla: Rodete trabado o sin señal de retorno del motor.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Gree Comfort (greecomfort.com, H6 fan feedback)",
+          "confianza": "media"
+        },
+        "F1": {
+          "titulo": "Fallo del sensor de ambiente interior",
+          "significado": "Fallo del sensor de ambiente interior.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Vireo",
+            "Bora"
+          ],
+          "modelos": [],
+          "causas": [
+            "Termistor de ambiente interior",
+            "conector"
+          ],
+          "pasos": [
+            "Medir resistencia del termistor de ambiente interior contra tabla de resistencia Gree; asegurar conexión firme.",
+            "Valor esperado en buen estado: Resistencia coherente con la tabla NTC de Gree.",
+            "Lectura que confirma la falla: Abierto o en corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Gree Comfort (greecomfort.com, F1-F5 sensores)",
+          "confianza": "media"
+        }
+      }
+    },
+    "Midea": {
+      "nota": "Midea es uno de los mayores OEM del mundo y fabrica para Carrier, Comfee, Anwo y muchas marcas. Mapa estandar en tres familias: E = sensores y comunicación interior, F = sensores exteriores, P = protecciones criticas de inversor/compresor. Usa el esquema de sensores T1 (ambiente int.), T2 (evaporador), T3 (condensador), T4 (ambiente ext.), TP (descarga). Existe variacion en lineas comerciales: confirma el modelo.",
+      "codigos": {
+        "E0": {
+          "titulo": "EEPROM error de parámetros",
+          "significado": "EEPROM error de parámetros (placa interior).",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "PCB interior",
+            "EEPROM"
+          ],
+          "pasos": [
+            "Reiniciar; si persiste, la PCB interior tiene corrupcion de memoria de parámetros.",
+            "Valor esperado en buen estado: Carga normal de configuracion al arranque.",
+            "Lectura que confirma la falla: Datos de EEPROM corruptos.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "E1": {
+          "titulo": "Error de comunicación interior/exterior",
+          "significado": "Error de comunicación interior/exterior.",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [
+            "MSX-07HRN1-QC2",
+            "M5OA-36HRDN1-Q"
+          ],
+          "causas": [
+            "Cable de interconexión",
+            "PCB interior o exterior"
+          ],
+          "pasos": [
+            "Verificar cable de interconexión S/N, conectores y PCB; medir oscilación de voltaje en la linea de señal.",
+            "Valor esperado en buen estado: Tren de pulsos DC en la linea de señal.",
+            "Lectura que confirma la falla: Voltaje plano = bus muerto, cable cortado o cruzado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "E2": {
+          "titulo": "Error de detección de cruce por cero",
+          "significado": "Error de detección de cruce por cero (zero-crossing).",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "PCB interior",
+            "alimentacion"
+          ],
+          "pasos": [
+            "Verificar la señal de cruce por cero desde la alimentacion hacia la PCB interior; revisar voltaje y conexiones.",
+            "Valor esperado en buen estado: Señal de sincronía de red presente.",
+            "Lectura que confirma la falla: Sin detección de cruce por cero.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "E3": {
+          "titulo": "Velocidad del ventilador interior fuera de control",
+          "significado": "Velocidad del ventilador interior fuera de control.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Motor ventilador interior",
+            "sensor Hall"
+          ],
+          "pasos": [
+            "Verificar giro libre del rodete y señal del motor (Hall); revisar conector del motor.",
+            "Valor esperado en buen estado: Rodete gira libre y entrega feedback de RPM.",
+            "Lectura que confirma la falla: Rodete trabado o sin señal de RPM.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "E4": {
+          "titulo": "Sensor de temperatura de habitacion T1 abierto o en corto",
+          "significado": "Sensor de temperatura de habitacion T1 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T1 (aire interior)",
+            "conector PCB interior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T1 (aire interior) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura ambiente.",
+            "Lectura que confirma la falla: Abierto (infinito) o corto (0 Ohm).",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "E5": {
+          "titulo": "Sensor del serpentin evaporador T2 abierto o en corto",
+          "significado": "Sensor del serpentin evaporador T2 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T2 (evaporador)",
+            "conector PCB interior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T2 (serpentin interior) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura del serpentin.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "E6": {
+          "titulo": "Fallo de sensor interior",
+          "significado": "Fallo de sensor interior (habitacion/serpentin) o sensor exterior.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Termistores",
+            "conectores PCB"
+          ],
+          "pasos": [
+            "Medir los termistores interiores y, según modelo, el exterior; revisar conectores.",
+            "Valor esperado en buen estado: Resistencias NTC coherentes.",
+            "Lectura que confirma la falla: Abierto o corto en alguno de los sensores.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "EC": {
+          "titulo": "Detección de fuga de refrigerante",
+          "significado": "Detección de fuga de refrigerante.",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Carga de refrigerante",
+            "fuga en circuito"
+          ],
+          "pasos": [
+            "Cruzar activacion del compresor con tasa de descenso térmico del sensor T2; inspeccionar fugas y carga.",
+            "Valor esperado en buen estado: El serpentin se enfria a la tasa esperada.",
+            "Lectura que confirma la falla: El serpentin NO se enfria -> infiere falta de masa de fluido.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "EE": {
+          "titulo": "Alarma de nivel de agua",
+          "significado": "Alarma de nivel de agua (cassette/ducto).",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Bomba de drenaje",
+            "flotador",
+            "drenaje"
+          ],
+          "pasos": [
+            "Verificar bandeja de condensado, bomba de drenaje y flotador.",
+            "Valor esperado en buen estado: Flotador en posicion baja, drenaje libre.",
+            "Lectura que confirma la falla: Flotador elevado por agua acumulada.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "F0": {
+          "titulo": "Protección por sobrecorriente",
+          "significado": "Protección por sobrecorriente (overload).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Compresor",
+            "IPM",
+            "carga"
+          ],
+          "pasos": [
+            "Medir corriente de la unidad exterior; revisar compresor, IPM y carga del sistema.",
+            "Valor esperado en buen estado: Corriente dentro de los limites del equipo.",
+            "Lectura que confirma la falla: Sobrecorriente sostenida.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "F1": {
+          "titulo": "Sensor de temperatura ambiente exterior T4 abierto o en corto",
+          "significado": "Sensor de temperatura ambiente exterior T4 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T4 (aire exterior)",
+            "conector PCB exterior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T4 (aire exterior) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura exterior.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "F2": {
+          "titulo": "Sensor del serpentin condensador T3 abierto o en corto",
+          "significado": "Sensor del serpentin condensador T3 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T3 (condensador)",
+            "conector PCB exterior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T3 (serpentin exterior) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura del condensador.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "F3": {
+          "titulo": "Sensor de temperatura de descarga del compresor",
+          "significado": "Sensor de temperatura de descarga del compresor (TP/T5) abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor TP",
+            "T5 (descarga)",
+            "conector PCB exterior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor de descarga (TP) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura de descarga.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "F5": {
+          "titulo": "Velocidad del ventilador exterior fuera de control",
+          "significado": "Velocidad del ventilador exterior fuera de control.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Motor ventilador exterior",
+            "sensor Hall"
+          ],
+          "pasos": [
+            "Verificar giro libre del ventilador exterior y señal del motor; revisar conector.",
+            "Valor esperado en buen estado: Ventilador gira libre y entrega feedback.",
+            "Lectura que confirma la falla: Rodete trabado o sin señal de RPM.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "P0": {
+          "titulo": "Mal funcionamiento del IPM o sobrecorriente del IGBT",
+          "significado": "Mal funcionamiento del IPM o sobrecorriente del IGBT.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [
+            "MSX-07HRN1-QC2",
+            "M5OA-36HRDN1-Q"
+          ],
+          "causas": [
+            "IPM",
+            "IGBT",
+            "compresor"
+          ],
+          "pasos": [
+            "PRECAUCION ALTA Tensión: esperar 5 min y confirmar bus DC bajo 42V antes de tocar bornes. Revisar IPM y equilibrio de fases del compresor.",
+            "Valor esperado en buen estado: IGBT/IPM conmutando sin sobrecorriente.",
+            "Lectura que confirma la falla: Sobrecorriente del IGBT o IPM defectuoso.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "P1": {
+          "titulo": "Protección por sobre o bajo voltaje",
+          "significado": "Protección por sobre o bajo voltaje.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Alimentacion eléctrica",
+            "puente rectificador",
+            "bus DC"
+          ],
+          "pasos": [
+            "Medir voltaje de alimentacion y bus DC; verificar estabilidad de la red.",
+            "Valor esperado en buen estado: Voltaje de alimentacion y bus DC en rango.",
+            "Lectura que confirma la falla: Voltaje fuera de rango (alto o bajo).",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "P2": {
+          "titulo": "Protección por alta temperatura del IPM / tope del compresor",
+          "significado": "Protección por alta temperatura del IPM / tope del compresor.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "IPM",
+            "disipador",
+            "compresor",
+            "carga"
+          ],
+          "pasos": [
+            "Medir temperatura del disipador del IPM y del tope del compresor; verificar ventilacion y carga.",
+            "Valor esperado en buen estado: Temperaturas bajo el umbral.",
+            "Lectura que confirma la falla: Sobretemperatura por mala disipacion, falta de gas o sobrecarga.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        },
+        "P4": {
+          "titulo": "Error de accionamiento del compresor inverter",
+          "significado": "Error de accionamiento del compresor inverter (drive).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "IPM",
+            "placa inversora",
+            "compresor"
+          ],
+          "pasos": [
+            "Realizar prueba de salida del inversor; medir equilibrio de devanados del compresor y revisar IPM.",
+            "Valor esperado en buen estado: Compresor arranca y sincroniza.",
+            "Lectura que confirma la falla: Desbalance o compresor duro impiden el arranque sincronizado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Mapa Midea E/F/P (consenso Arlington/Twintech/Appliance Helper). Mismo OEM que Carrier/Comfee/Anwo.",
+          "confianza": "media"
+        }
+      }
+    },
+    "Anwo": {
+      "nota": "Anwo distribuye equipos Midea en Chile, por lo que los códigos siguen el mapa Midea (E/F/P, sensores T1-T4/TP). Verifica siempre contra la ficha técnica del modelo Anwo/Midea específico.",
+      "codigos": {
+        "E0": {
+          "titulo": "EEPROM error de parámetros",
+          "significado": "EEPROM error de parámetros (placa interior).",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "PCB interior",
+            "EEPROM"
+          ],
+          "pasos": [
+            "Reiniciar; si persiste, la PCB interior tiene corrupcion de memoria de parámetros.",
+            "Valor esperado en buen estado: Carga normal de configuracion al arranque.",
+            "Lectura que confirma la falla: Datos de EEPROM corruptos.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "E1": {
+          "titulo": "Error de comunicación interior/exterior",
+          "significado": "Error de comunicación interior/exterior.",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [
+            "MSAFBU-12HRDN1",
+            "MSAGBU-18HRDN1"
+          ],
+          "causas": [
+            "Cable de interconexión",
+            "PCB interior o exterior"
+          ],
+          "pasos": [
+            "Verificar cable de interconexión S/N, conectores y PCB; medir oscilación de voltaje en la linea de señal.",
+            "Valor esperado en buen estado: Tren de pulsos DC en la linea de señal.",
+            "Lectura que confirma la falla: Voltaje plano = bus muerto, cable cortado o cruzado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "E2": {
+          "titulo": "Error de detección de cruce por cero",
+          "significado": "Error de detección de cruce por cero (zero-crossing).",
+          "severidad": "comunicacion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "PCB interior",
+            "alimentacion"
+          ],
+          "pasos": [
+            "Verificar la señal de cruce por cero desde la alimentacion hacia la PCB interior; revisar voltaje y conexiones.",
+            "Valor esperado en buen estado: Señal de sincronía de red presente.",
+            "Lectura que confirma la falla: Sin detección de cruce por cero.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "E3": {
+          "titulo": "Velocidad del ventilador interior fuera de control",
+          "significado": "Velocidad del ventilador interior fuera de control.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Motor ventilador interior",
+            "sensor Hall"
+          ],
+          "pasos": [
+            "Verificar giro libre del rodete y señal del motor (Hall); revisar conector del motor.",
+            "Valor esperado en buen estado: Rodete gira libre y entrega feedback de RPM.",
+            "Lectura que confirma la falla: Rodete trabado o sin señal de RPM.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "E4": {
+          "titulo": "Sensor de temperatura de habitacion T1 abierto o en corto",
+          "significado": "Sensor de temperatura de habitacion T1 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T1 (aire interior)",
+            "conector PCB interior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T1 (aire interior) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura ambiente.",
+            "Lectura que confirma la falla: Abierto (infinito) o corto (0 Ohm).",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "E5": {
+          "titulo": "Sensor del serpentin evaporador T2 abierto o en corto",
+          "significado": "Sensor del serpentin evaporador T2 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T2 (evaporador)",
+            "conector PCB interior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T2 (serpentin interior) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura del serpentin.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "E6": {
+          "titulo": "Fallo de sensor interior",
+          "significado": "Fallo de sensor interior (habitacion/serpentin) o sensor exterior.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Termistores",
+            "conectores PCB"
+          ],
+          "pasos": [
+            "Medir los termistores interiores y, según modelo, el exterior; revisar conectores.",
+            "Valor esperado en buen estado: Resistencias NTC coherentes.",
+            "Lectura que confirma la falla: Abierto o corto en alguno de los sensores.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "EC": {
+          "titulo": "Detección de fuga de refrigerante",
+          "significado": "Detección de fuga de refrigerante.",
+          "severidad": "refrigerante",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Carga de refrigerante",
+            "fuga en circuito"
+          ],
+          "pasos": [
+            "Cruzar activacion del compresor con tasa de descenso térmico del sensor T2; inspeccionar fugas y carga.",
+            "Valor esperado en buen estado: El serpentin se enfria a la tasa esperada.",
+            "Lectura que confirma la falla: El serpentin NO se enfria -> infiere falta de masa de fluido.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "EE": {
+          "titulo": "Alarma de nivel de agua",
+          "significado": "Alarma de nivel de agua (cassette/ducto).",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Bomba de drenaje",
+            "flotador",
+            "drenaje"
+          ],
+          "pasos": [
+            "Verificar bandeja de condensado, bomba de drenaje y flotador.",
+            "Valor esperado en buen estado: Flotador en posicion baja, drenaje libre.",
+            "Lectura que confirma la falla: Flotador elevado por agua acumulada.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "F0": {
+          "titulo": "Protección por sobrecorriente",
+          "significado": "Protección por sobrecorriente (overload).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Compresor",
+            "IPM",
+            "carga"
+          ],
+          "pasos": [
+            "Medir corriente de la unidad exterior; revisar compresor, IPM y carga del sistema.",
+            "Valor esperado en buen estado: Corriente dentro de los limites del equipo.",
+            "Lectura que confirma la falla: Sobrecorriente sostenida.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "F1": {
+          "titulo": "Sensor de temperatura ambiente exterior T4 abierto o en corto",
+          "significado": "Sensor de temperatura ambiente exterior T4 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T4 (aire exterior)",
+            "conector PCB exterior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T4 (aire exterior) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura exterior.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "F2": {
+          "titulo": "Sensor del serpentin condensador T3 abierto o en corto",
+          "significado": "Sensor del serpentin condensador T3 abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor T3 (condensador)",
+            "conector PCB exterior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor T3 (serpentin exterior) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura del condensador.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "F3": {
+          "titulo": "Sensor de temperatura de descarga del compresor",
+          "significado": "Sensor de temperatura de descarga del compresor (TP/T5) abierto o en corto.",
+          "severidad": "sensor",
+          "elec": false,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Sensor TP",
+            "T5 (descarga)",
+            "conector PCB exterior"
+          ],
+          "pasos": [
+            "Medir resistencia del sensor de descarga (TP) contra curva NTC; revisar conector.",
+            "Valor esperado en buen estado: Resistencia coherente con temperatura de descarga.",
+            "Lectura que confirma la falla: Abierto o corto.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "F5": {
+          "titulo": "Velocidad del ventilador exterior fuera de control",
+          "significado": "Velocidad del ventilador exterior fuera de control.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Motor ventilador exterior",
+            "sensor Hall"
+          ],
+          "pasos": [
+            "Verificar giro libre del ventilador exterior y señal del motor; revisar conector.",
+            "Valor esperado en buen estado: Ventilador gira libre y entrega feedback.",
+            "Lectura que confirma la falla: Rodete trabado o sin señal de RPM.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "P0": {
+          "titulo": "Mal funcionamiento del IPM o sobrecorriente del IGBT",
+          "significado": "Mal funcionamiento del IPM o sobrecorriente del IGBT.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [
+            "MSAFBU-12HRDN1",
+            "MSAGBU-18HRDN1"
+          ],
+          "causas": [
+            "IPM",
+            "IGBT",
+            "compresor"
+          ],
+          "pasos": [
+            "PRECAUCION ALTA Tensión: esperar 5 min y confirmar bus DC bajo 42V antes de tocar bornes. Revisar IPM y equilibrio de fases del compresor.",
+            "Valor esperado en buen estado: IGBT/IPM conmutando sin sobrecorriente.",
+            "Lectura que confirma la falla: Sobrecorriente del IGBT o IPM defectuoso.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "P1": {
+          "titulo": "Protección por sobre o bajo voltaje",
+          "significado": "Protección por sobre o bajo voltaje.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "Alimentacion eléctrica",
+            "puente rectificador",
+            "bus DC"
+          ],
+          "pasos": [
+            "Medir voltaje de alimentacion y bus DC; verificar estabilidad de la red.",
+            "Valor esperado en buen estado: Voltaje de alimentacion y bus DC en rango.",
+            "Lectura que confirma la falla: Voltaje fuera de rango (alto o bajo).",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "P2": {
+          "titulo": "Protección por alta temperatura del IPM / tope del compresor",
+          "significado": "Protección por alta temperatura del IPM / tope del compresor.",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "IPM",
+            "disipador",
+            "compresor",
+            "carga"
+          ],
+          "pasos": [
+            "Medir temperatura del disipador del IPM y del tope del compresor; verificar ventilacion y carga.",
+            "Valor esperado en buen estado: Temperaturas bajo el umbral.",
+            "Lectura que confirma la falla: Sobretemperatura por mala disipacion, falta de gas o sobrecarga.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        },
+        "P4": {
+          "titulo": "Error de accionamiento del compresor inverter",
+          "significado": "Error de accionamiento del compresor inverter (drive).",
+          "severidad": "proteccion",
+          "elec": true,
+          "serie": [
+            "Split inverter",
+            "Cassette",
+            "Ducto"
+          ],
+          "modelos": [],
+          "causas": [
+            "IPM",
+            "placa inversora",
+            "compresor"
+          ],
+          "pasos": [
+            "Realizar prueba de salida del inversor; medir equilibrio de devanados del compresor y revisar IPM.",
+            "Valor esperado en buen estado: Compresor arranca y sincroniza.",
+            "Lectura que confirma la falla: Desbalance o compresor duro impiden el arranque sincronizado.",
+            "Confirma el código contra el manual de servicio del modelo exacto antes de reemplazar cualquier componente."
+          ],
+          "fuente": "Anwo distribuye Midea en Chile; los códigos siguen el mapa Midea E/F/P. Confirmar contra la ficha del modelo Anwo/Midea.",
+          "confianza": "media"
+        }
       }
     }
   }
