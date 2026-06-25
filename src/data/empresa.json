@@ -1,0 +1,42 @@
+{
+  "_meta": "RELLENA ESTOS DATOS UNA SOLA VEZ. Se usan en las 3 paginas legales (privacidad, terminos, cookies). Los valores entre <> son marcadores que debes reemplazar con tus datos reales. Lo que no apliques, ajustalo o pidele a tu abogado que lo revise.",
+
+  "nombreComercial": "Lissi",
+  "razonSocial": "<RAZÓN SOCIAL LEGAL SpA / Ltda>",
+  "rut": "<RUT DE LA EMPRESA>",
+  "domicilio": "<DIRECCIÓN LEGAL, COMUNA, CIUDAD>",
+  "pais": "Chile",
+  "dominio": "lissi.app",
+  "sitioWeb": "https://lissi.app",
+
+  "emailContacto": "contacto@lissi.app",
+  "emailPrivacidad": "privacidad@lissi.app",
+  "telefono": "+56 9 6319 2849",
+
+  "encargadoDatos": "<NOMBRE DEL RESPONSABLE/ENCARGADO DE DATOS O 'el equipo de Lissi'>",
+
+  "hosting": {
+    "proveedor": "<PROVEEDOR DE HOSTING, ej: Amazon Web Services / Google Cloud / Vercel>",
+    "paisServidores": "<PAÍS DE LOS SERVIDORES, ej: Estados Unidos / Chile>",
+    "transferenciaInternacional": true
+  },
+
+  "pasarelaPago": "<PASARELA DE PAGO, ej: Transbank / Flow / Stripe / Mercado Pago>",
+
+  "subprocesadores": [
+    "Proveedor de infraestructura / hosting en la nube",
+    "Pasarela de pagos (procesamiento de suscripciones)",
+    "Google Analytics (analítica de uso del sitio web)",
+    "Proveedor de correo transaccional (notificaciones)"
+  ],
+
+  "trialDias": 21,
+
+  "_notas_para_abogado": [
+    "Confirmar si Lissi actua como Responsable y/o Encargado del tratamiento segun la Ley 19.628 y la Ley 21.719 (vigente desde 01-12-2026).",
+    "Revisar clausula de transferencia internacional de datos si los servidores estan fuera de Chile.",
+    "Definir plazo de conservacion de datos exacto.",
+    "Evaluar si se requiere designar un Delegado de Proteccion de Datos (DPO) bajo la Ley 21.719.",
+    "Validar limitacion de responsabilidad y jurisdiccion."
+  ]
+}

@@ -27,8 +27,9 @@ const LOGIN_URL = "https://app.lissi.app/login";
       <div>
         <a href="/recursos" class="text-white font-semibold mb-6 tracking-wide block hover:text-cyan-400 transition-colors">Recursos</a>
         <ul class="space-y-4 text-sm text-slate-400 font-light">
-          <li><a href="/recursos" class="hover:text-cyan-400 transition-colors">Calculadoras HVAC-R</a></li>
-          <li><a href="/recursos" class="hover:text-cyan-400 transition-colors">Plantillas y checklists</a></li>
+          <li><a href="/recursos/decodificador" class="hover:text-cyan-400 transition-colors">Códigos de error</a></li>
+          <li><a href="/recursos/pautas" class="hover:text-cyan-400 transition-colors">Pautas de mantención</a></li>
+          <li><a href="/recursos" class="hover:text-cyan-400 transition-colors">Ver todos los recursos</a></li>
           <li><a href={LOGIN_URL} class="hover:text-white transition-colors font-medium text-cyan-400 pt-2 block">Iniciar sesión →</a></li>
         </ul>
       </div>
@@ -50,6 +51,13 @@ const LOGIN_URL = "https://app.lissi.app/login";
 
     <div class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
       <p class="text-slate-600 text-xs font-light">© {year} Lissi SpA. Todos los derechos reservados.</p>
+
+      <div class="flex flex-wrap justify-center items-center gap-x-5 gap-y-2 text-xs">
+        <a href="/terminos" class="text-slate-500 hover:text-cyan-400 transition-colors font-light">Términos y Condiciones</a>
+        <a href="/privacidad" class="text-slate-500 hover:text-cyan-400 transition-colors font-light">Política de Privacidad</a>
+        <a href="/cookies" class="text-slate-500 hover:text-cyan-400 transition-colors font-light">Cookies</a>
+      </div>
+
       <div class="flex gap-2 items-center text-slate-600 text-xs font-medium">
         <span>Santiago, Chile</span>
         <img src="https://flagcdn.com/20x15/cl.png" width="20" height="15" alt="Chile" class="opacity-30" />

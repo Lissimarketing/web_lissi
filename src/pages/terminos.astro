@@ -1,0 +1,73 @@
+---
+// src/pages/terminos.astro
+import LegalLayout from '../components/LegalLayout.astro';
+import empresa from '../data/empresa.json';
+const hoy = "31 de mayo de 2026";
+---
+<LegalLayout titulo="Términos y Condiciones" actualizado={hoy} descripcion="Las reglas de uso del servicio Lissi.">
+
+  <p class="lead">Estos Términos y Condiciones regulan el uso de la plataforma {empresa.nombreComercial}. Al crear una cuenta o utilizar el servicio, aceptas estos términos en su totalidad.</p>
+
+  <div class="callout">
+    <strong>Aviso:</strong> este documento es una versión inicial y debe revisarse con asesoría legal antes de considerarlo definitivo.
+  </div>
+
+  <h2>1. Quiénes somos</h2>
+  <p>El servicio es prestado por {empresa.razonSocial}, RUT {empresa.rut}, domiciliada en {empresa.domicilio}, {empresa.pais} ("{empresa.nombreComercial}", "nosotros"). Puedes contactarnos en <a href={`mailto:${empresa.emailContacto}`}>{empresa.emailContacto}</a>.</p>
+
+  <h2>2. Descripción del servicio</h2>
+  <p>Lissi es una plataforma de software como servicio (SaaS) para la gestión de operaciones de empresas del rubro HVAC-R, que incluye, entre otras funciones, gestión de órdenes de trabajo, trazabilidad de equipos, generación de informes y una aplicación móvil para terreno. Podemos mejorar, modificar o discontinuar funciones del servicio con el tiempo.</p>
+
+  <h2>3. Cuenta y registro</h2>
+  <ul>
+    <li>Debes proporcionar información veraz y mantenerla actualizada.</li>
+    <li>Eres responsable de la confidencialidad de tus credenciales y de la actividad realizada desde tu cuenta.</li>
+    <li>Debes notificarnos ante cualquier uso no autorizado de tu cuenta.</li>
+  </ul>
+
+  <h2>4. Planes, prueba gratuita y pagos</h2>
+  <ul>
+    <li>Lissi ofrece distintos planes de suscripción. Las características y precios vigentes se informan en nuestro sitio.</li>
+    <li>Ofrecemos una prueba gratuita de {empresa.trialDias} días. Al finalizar, podrás contratar un plan para continuar usando el servicio.</li>
+    <li>Las suscripciones se cobran de forma anticipada según la periodicidad contratada, a través de nuestra pasarela de pagos.</li>
+    <li>Salvo que la ley disponga lo contrario, los pagos efectuados no son reembolsables por periodos ya iniciados.</li>
+  </ul>
+
+  <h2>5. Uso aceptable</h2>
+  <p>Te comprometes a no utilizar Lissi para:</p>
+  <ul>
+    <li>Infringir la ley o derechos de terceros.</li>
+    <li>Cargar contenido ilícito, malicioso o que no tengas derecho a tratar.</li>
+    <li>Intentar vulnerar la seguridad o el funcionamiento de la plataforma.</li>
+    <li>Revender o explotar el servicio sin nuestra autorización.</li>
+  </ul>
+
+  <h2>6. Propiedad de tus datos</h2>
+  <p>Los datos y contenidos que cargas en Lissi (órdenes, equipos, registros, fotografías y datos de tus clientes) son y siguen siendo de tu propiedad. Nos otorgas una licencia limitada para alojarlos y procesarlos con el único fin de prestarte el servicio. Puedes exportar tus datos conforme a las funcionalidades disponibles. Tratamos estos datos conforme a nuestra <a href="/privacidad">Política de Privacidad</a>.</p>
+
+  <h2>7. Propiedad intelectual de Lissi</h2>
+  <p>La plataforma, su software, marca, diseño y contenidos son de propiedad de {empresa.nombreComercial} o de sus licenciantes. Estos términos no te transfieren ningún derecho de propiedad intelectual sobre el servicio, más allá del derecho de uso aquí descrito.</p>
+
+  <h2>8. Disponibilidad del servicio</h2>
+  <p>Trabajamos para mantener el servicio disponible y funcionando correctamente, pero no garantizamos que opere de forma ininterrumpida o libre de errores. Podremos realizar mantenciones programadas y actualizaciones. La aplicación móvil puede operar sin conexión y sincronizar los datos cuando se restablezca la conectividad.</p>
+
+  <h2>9. Limitación de responsabilidad</h2>
+  <p>En la máxima medida permitida por la ley, Lissi no será responsable por daños indirectos, lucro cesante o pérdida de datos derivados del uso o la imposibilidad de uso del servicio. El servicio se presta como una herramienta de apoyo a la gestión; las decisiones técnicas y operativas, así como el cumplimiento normativo de tu actividad, son de tu exclusiva responsabilidad.</p>
+
+  <h2>10. Cancelación y término</h2>
+  <ul>
+    <li>Puedes cancelar tu suscripción en cualquier momento; el servicio seguirá activo hasta el final del periodo pagado.</li>
+    <li>Podemos suspender o terminar el acceso ante incumplimientos de estos términos.</li>
+    <li>Tras el término, podrás solicitar la exportación de tus datos dentro de un plazo razonable, luego del cual podremos eliminarlos.</li>
+  </ul>
+
+  <h2>11. Modificaciones de los términos</h2>
+  <p>Podremos actualizar estos términos. Si los cambios son relevantes, te lo informaremos por medios razonables. El uso continuado del servicio tras la actualización implica la aceptación de los nuevos términos.</p>
+
+  <h2>12. Ley aplicable y jurisdicción</h2>
+  <p>Estos términos se rigen por las leyes de {empresa.pais}. Cualquier controversia se someterá a los tribunales competentes de {empresa.pais}, sin perjuicio de los derechos que la ley reconozca a los consumidores.</p>
+
+  <h2>13. Contacto</h2>
+  <p>Para consultas sobre estos términos, escríbenos a <a href={`mailto:${empresa.emailContacto}`}>{empresa.emailContacto}</a>.</p>
+
+</LegalLayout>

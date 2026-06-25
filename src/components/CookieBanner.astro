@@ -13,7 +13,7 @@ const GA_ID = "G-XXXXXXXXXX";
       </div>
       <div>
         <p class="font-bold text-white text-sm mb-1 tracking-tight">Privacidad y Cookies</p>
-        <p class="text-[11px] text-slate-400 leading-relaxed font-light">Usamos cookies para analítica y mejorar tu experiencia. Puedes configurar tus preferencias.</p>
+        <p class="text-[11px] text-slate-400 leading-relaxed font-light">Usamos cookies para analítica y mejorar tu experiencia. Lee nuestra <a href="/cookies" class="text-cyan-400 hover:text-cyan-300 underline underline-offset-2">Política de Cookies</a>.</p>
       </div>
     </div>
     
@@ -29,26 +29,20 @@ const GA_ID = "G-XXXXXXXXXX";
 </div>
 
 <style>
-  /* Animación de entrada elegante con retraso */
   .animate-cookie-in {
     animation: cookie-slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.5s;
   }
-  
-  /* Animación de salida rápida */
   .animate-cookie-out {
     animation: cookie-slide-down 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
-
   @keyframes cookie-slide-up {
     from { opacity: 0; transform: translateY(20px) scale(0.95); }
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
-
   @keyframes cookie-slide-down {
     from { opacity: 1; transform: translateY(0) scale(1); }
     to { opacity: 0; transform: translateY(20px) scale(0.95); }
   }
-
   @media (prefers-reduced-motion: reduce) {
     .animate-cookie-in { animation: none; opacity: 1; }
     .animate-cookie-out { animation: none; opacity: 0; }
@@ -76,14 +70,12 @@ const GA_ID = "G-XXXXXXXXXX";
     if (choice === 'accepted') { loadGA(); return; }
     if (choice === 'rejected') { return; }
 
-    // Quita el hidden y agrega la clase que inicia la animación css (con delay)
     banner.classList.remove('hidden');
     banner.classList.add('animate-cookie-in');
 
     const closeBanner = () => {
       banner.classList.remove('animate-cookie-in');
       banner.classList.add('animate-cookie-out');
-      // Ocultar del DOM después de que termine la animación de salida
       setTimeout(() => banner.classList.add('hidden'), 400);
     };
 
