@@ -1,41 +1,42 @@
 ---
 // src/components/Bento.astro
 const extras = [
-  { 
+{ 
     n: "01", t: "Portal de Cliente", 
     d: "Transparencia total. Tus clientes acceden a un portal privado para descargar informes y ver el estado de sus equipos al instante.", 
     icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z", 
     tag: "Portal VIP" 
   },
   { 
-    n: "02", t: "Dictado Inteligente", 
-    d: "Manos libres en terreno. El técnico dicta los hallazgos por voz; la IA de Lissi transcribe y estructura la información en el informe.", 
+    n: "02", t: "Dictado por Voz", 
+    d: "Manos libres en terreno. El técnico dicta los hallazgos por voz y Lissi los transcribe y ordena en el informe, sin tipear.", 
     icon: "M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3zM5 10v2a7 7 0 0014 0v-2M12 19v4", 
-    tag: "Motor NLP" 
+    tag: "Pronto", 
+    soon: true 
   },
   { 
-    n: "03", t: "Trazabilidad F-Gas", 
-    d: "Cumplimiento ambiental automático. Control exacto de carga y recuperación de refrigerantes para tu huella de CO₂.", 
+    n: "03", t: "Registro de Refrigerantes", 
+    d: "Trazabilidad por equipo del tipo de gas, las recargas y las fugas. Tienes el historial completo de refrigerante de cada activo cuando lo necesites.", 
     icon: "M12 2v6m0 0l3-3m-3 3L9 5M5 12a7 7 0 1014 0 7 7 0 00-14 0z", 
-    tag: "Normativa RegTech" 
+    tag: "Trazabilidad" 
   },
   { 
-    n: "04", t: "Lissi IA Copilot", 
-    d: "Tu experto técnico 24/7. Un asistente virtual que responde dudas cruzando datos de tus manuales y el historial de intervenciones.", 
+    n: "04", t: "Lía, tu asistente", 
+    d: "Tu copiloto en Lissi. Lía crea órdenes de trabajo conversando contigo, registra clientes y equipos, y te guía paso a paso.", 
     icon: "M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z", 
-    tag: "LLM Agent" 
+    tag: "Asistente IA" 
   },
   { 
-    n: "05", t: "Control de Flota", 
-    d: "Rutas optimizadas. Visualiza en el mapa a tus cuadrillas, asigna urgencias por cercanía y reduce tiempos muertos en traslados.", 
-    icon: "M9 19v-6m4 6V9m4 10V5M3 21h18", 
-    tag: "Despacho GPS" 
+    n: "05", t: "Agenda y Seguimiento", 
+    d: "Planifica las visitas de tu equipo en un calendario claro y sigue el avance de cada orden: pendiente, en terreno o cerrada. Todo ordenado, sin perseguir a nadie.", 
+    icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z", 
+    tag: "Operación" 
   },
   { 
     n: "06", t: "Visión Artificial (OCR)", 
     d: "Cero tipeo. Captura con la cámara el modelo y número de serie desde la placa del equipo para digitalizarlo en un segundo.", 
     icon: "M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2M7 12h10", 
-    tag: "En Beta", 
+    tag: "Pronto", 
     soon: true 
   },
 ];
@@ -90,7 +91,7 @@ const extras = [
             <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-5">
               <div>
                 <span class="block font-mono text-xs font-bold text-cyan-400 mb-0.5">CHILLER-04-A</span>
-                <span class="block text-[10px] text-slate-500">Clínica Santa Maria</span>
+                <span class="block text-[10px] text-slate-500">Clínica Santo Domingo</span>
               </div>
               <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>En línea
